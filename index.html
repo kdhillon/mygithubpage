@@ -1,51 +1,456 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
-	<head>
-		<title>Kyle Dhillon</title>
-		<style> 
-			h1 {
-				font-family: "Arial",serif;
-				font-size: 1.7em;
-			}
-			section {
-				width:556px;
-				font-family: "Arial",serif;
-				font-size: 1.5em;
-				font-weight: bold;
-				position: absolute;
-				left: 50%;
-				margin-right: -50%;
-				transform:translate(-50%);
-			}
-			ul {
-				list-style-type: square;
-			}
-			
-			a {color:black}
-			a:link{text-decoration: underline; color:black}
-			a:visited {text-decoration: underline;}
-			a:hover {text-decoration: none;}
+<head>
 
-		</style>
-	</head>
-	
-	<center>
-	<div>
-		<img src="triblack.png" style="width:600px;height:170px;">
-	</div>
-	</center>
-	<section>
-	<h1> 
-		I'm Kyle.
-	</h1>
-	<body>	
-		I'm a senior studying CS at Princeton.<p>
-		Here's some stuff I've worked on:<p>
-		<ul>
-			<li>I once killed a man with an <a href="http://www.apple.com">iPod classic</a>.</li>
-			<li>The worst part was, it broke the classic.</li>
-		</ul>
-	</body>
-	</section>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Home | Kyle Dhillon</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="css/freelancer.css" rel="stylesheet" type="text/css">
+
+    <!-- Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+    <!-- IE8 support for HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="page-top" class="index">
+
+    <!-- Navigation -->
+   <!--  <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+           <!--  <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#page-top">Welcome</a>
+            </div>-->
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+     <!--        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#portfolio">Projects</a>
+                    </li>
+                   <li class="page-scroll">
+                        <a href="#about">About</a>
+                    </li> 
+                    <li class="page-scroll">
+                        <a href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div> -->
+            <!-- /.navbar-collapse -->
+      <!--  </div>-->
+        <!-- /.container-fluid -->
+  <!--  </nav>
+-->
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!--<img class="img-responsive" src="img/profile.png" alt="Fuck with me"> -->
+                    <div class="intro-text">
+                        <span class="name">Hi, I'm Kyle. I'm a senior CS major at Princeton.</p></span>
+                       <!-- <hr class="star-light">-->
+                        <span class="skills" </p>I've worked at Google and Georgia Tech Research Institute, focusing on Computer Graphics and VR.</p>I've also made a few projects of my own!</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="portfolio">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Projects</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 portfolio-item">
+                    <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <i class="fa fa-search-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="img/portfolio/besiege.png" class="img-responsive" alt="" />
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                    <a href="#portfolioModal2" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <i class="fa fa-search-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="img/portfolio/falconvr2.png" class="img-responsive" alt="" />
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                    <a href="#portfolioModal3" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <i class="fa fa-search-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="img/portfolio/wwq.png" class="img-responsive" alt="" />
+                    </a>
+                </div>
+                
+                
+                <div class="col-sm-4 portfolio-item">
+                    <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <i class="fa fa-search-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="img/portfolio/finda.png" class="img-responsive" alt="" />
+                    </a>
+                </div>
+				
+                <div class="col-sm-4 portfolio-item">
+                    <a href="#portfolioModal5" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <i class="fa fa-search-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="img/portfolio/dankjank.png" class="img-responsive" alt="" />
+                    </a>
+                </div>
+               
+                <div class="col-sm-4 portfolio-item">
+                    <a href="#portfolioModal6" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <i class="fa fa-search-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="img/portfolio/chuanr4crop.png" class="img-responsive" alt="" />
+                    </a>
+                </div>
+               
+            </div>
+        </div>
+    </section>
+ <!--
+    <section class="success" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>About</h2>
+                    <hr class="star-light">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-lg-offset-2">
+                    <p>I'm interested in systems and security</p>
+                </div>
+                <div class="col-lg-4">
+                    <p>I have programming experience in  C, C++, Java, Python, and Javascript.</p>
+                </div>
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <a href="#" class="btn btn-lg btn-outline">
+                        <i class="fa fa-download"></i> See my resume
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+ <!--
+    <section id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Contact Me</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <form role="form">
+                        <div class="row">
+                            <div class="form-group col-xs-12 floating-label-form-group">
+                                <label for="name">Name</label>
+                                <input class="form-control" type="text" name="name" placeholder="Name">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-xs-12 floating-label-form-group">
+                                <label for="email">Email Address</label>
+                                <input class="form-control" type="email" name="email" placeholder="Email Address">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-xs-12 floating-label-form-group">
+                                <label for="message">Message</label>
+                                <textarea placeholder="Message" class="form-control" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="form-group col-xs-12">
+                                <button type="submit" class="btn btn-lg btn-success">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+ -->
+    <footer class="text-center">
+      <!--  <div class="footer-above">
+            <div class="container">
+                <div class="row">
+                    <div class="footer-col col-md-4">
+                        <h3>Email</h3>
+                        <p><br></p>
+                    </div>
+                    <div class="footer-col col-md-4">
+                        <h3>Around the Web</h3>
+                        <ul class="list-inline">
+                            <li><a href="http://facebook.com/kyledhillon/" class="btn-social btn-outline"><i class="fa fa-fw fa-facebook"></i></a>
+                            </li>
+                            <li><a href="https://www.linkedin.com/pub/kyle-dhillon/56/404/263" class="btn-social btn-outline"><i class="fa fa-fw fa-linkedin"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="footer-col col-md-4">
+                        <h3>Hit me up</h3>
+                        <p>Resume</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="footer-below">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        Copyright &copy; 2014 - Kyle Dhillon
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <div class="scroll-top page-scroll visible-xs visble-sm">
+        <a class="btn btn-primary" href="#page-top">
+            <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+
+    <!-- Portfolio Modals -->
+    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>Besiege</h2>
+                            <hr class="star-primary">
+                            <img src="img/portfolio/besiege.png" class="img-responsive img-centered" alt="">
+                            <p><strong>Besiege</strong> is a real-time, single-player strategy game I developed for Android and desktop. It uses a procedurally generated map and a modified visibility graph for efficient, guaranteed shortest-path pathfinding. It was written in Java, and is still in alpha development. The source code and an updated timeline of my progress can be found <strong><a href="https://github.com/kdhillon/besiege-game/">here</a></strong>. If you're feeling adventurous, play the demo version <strong><a href="http://princeton.edu/~kdhillon/besiege/">here</a></strong>.</p>
+                            <ul class="list-inline item-details">
+                                <li>Date: <strong>June 2013 - present</a></strong>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>FindA</h2>
+                            <hr class="star-primary">
+                            <img src="img/portfolio/finda.png" class="img-responsive img-centered" alt="">
+                            <p><strong><a href="http://princeton-finda.com">FindA</a></strong> is an iPhone application I developed with three of my classmates to instantly locate any student's dorm room, professor's office, classroom, printer, or bathroom on campus. I specialized in writing Python scripts to organize and clean data scraped from six different websites and compile it into a SQLite database, as well as managing our Apache server. You can see a detailed timeline of our progress <a href="http://princeton-finda.com/timeline/"><strong>here</strong></a>, or check out our main site <a href="http://princeton-finda.com"><strong>here</strong></a>.</p>
+                            <ul class="list-inline item-details">
+                                <li>Date: <strong>January - May 2014</strong>
+                                </li>
+                                <li>Team: <strong>Curtis Belmonte '16, Emily Hsu '16, Lucas Mayer '16</strong> 
+                                </li>
+                                <br>
+                                <li>Class: <strong>Advanced Programming Techniques</strong> with <strong>Professor Brian Kernighan</strong>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>World War Q</h2>
+                            <hr class="star-primary">
+                            <img src="img/portfolio/wwq.png" class="img-responsive img-centered" alt="">
+                            <p><strong>World War Q</strong> is a 3D flight combat simulator I developed with my roommate. The game features realistic physics, an intelligent AI, and a variety of aircraft and environments. It is written in C++ and was almost entirely pair-programmed. Click <strong><a href="http://www.princeton.edu/~kdhillon/graphics/final/">here</a></strong> to see gameplay footage, or view the source code <strong><a href="https://github.com/JasonAltschuler/cos426_final_project">here</a></strong>.</p>
+                            <ul class="list-inline item-details">
+                                <li>Date: <strong>May 2014</strong>
+                                </li>
+                                <li>Partner: <strong>Jason Altschuler '16</strong>
+                                </li>
+                                <br>
+                                <li>Class: <strong>Computer Graphics</strong> with <strong>Professor Thomas Funkhouser</strong>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>Dank or Jank</h2>
+                            <hr class="star-primary">
+                            <img src="img/portfolio/dankjank.png" class="img-responsive img-centered" alt="">
+                            <p><strong><a href="http://dankorjank.appspot.com/">Dank or Jank</a></strong> is an online music player and recommendation application I developed with three classmates for HackPrinceton2013. It uses SoundCloud's API to play and rank over 50,000 new songs. It was written mostly in JavaScript. Check out the source code <strong><a href="http://github.com/lucasjcm/dankjank">here</a></strong>, or try it for yourself <strong><a href="http://dankorjank.appspot.com/">here</a></strong></p>
+                            <ul class="list-inline item-details">
+                                <li>Date: <strong>November 2013</strong>
+                                </li>
+                                <li>Team: <strong>Curtis Belmonte '16, Jeremy Cohen '16, Lucas Mayer '16</strong>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>FalconVR</h2>
+                            <hr class="star-primary">
+                            <img src="img/portfolio/falconvr2.png" class="img-responsive img-centered" alt="">
+                            <p>FalconView is a geospatial mapping program developed by <a href = "http://gtri.gatech.edu/">Georgia Tech Research Institute</a>. While working at GTRI's Information and Communications Lab, I integrated virtual reality capabilities into FalconView with the Oculus Rift, creating a highly immersive way to explore 3D maps.</p>
+                            <ul class="list-inline item-details">
+								<li>Date: <strong>Summer 2014</strong>
+                                </li>
+                                <li>Organization: <strong>GTRI ICL</strong>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>Kebab King</h2>
+                            <hr class="star-primary">
+                            <img src="img/portfolio/chuanr4crop.png" class="img-responsive img-centered" alt="">
+                            <p>Kebab King is a cooking game for Android. It is Peppercorn Games' flagship product, and will be available in the Google Play Store in Fall 2015.</p>
+                            <ul class="list-inline item-details">
+                               <li>Date: <strong>January 2015-Present</strong>
+                                </li>
+                                <li>Company: <strong>Peppercorn Games</strong>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="js/classie.js"></script>
+    <script src="js/cbpAnimatedHeader.js"></script>
+    <script src="js/freelancer.js"></script>
+
+</body>
 
 </html>
