@@ -50,7 +50,7 @@ function genHat() {
 	if (Math.random() < 0.3) hatTime = 2;
 	else if (Math.random() < 0.3) hatTime = 4;
 
-	var londonMode = true;
+	var londonMode = false;
 	if (londonMode) hatTime = 4;
 
 	muteHat = Math.random() < 0.1;
