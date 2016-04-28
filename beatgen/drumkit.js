@@ -37,7 +37,6 @@ var kickObject = new sample('http://www.kyledhillon.com/beatgen/server/kick (2).
 var snareObject = new sample('http://www.kyledhillon.com/beatgen/server/snare (1).WAV');
 
 function initKit() {
-	console.log("generating hat");
 	mainPart = new BeatPart();
 	currentBeatPart = mainPart;
 }
@@ -172,7 +171,6 @@ function mutateKick() {
 	if (Math.random() < 0.1) invert(kick, 9)
 	if (Math.random() < 0.1) invert(kick, 10);
 	currentBeatPart._kick = kick;
-	console.log(currentBeatPart._kick);
 	mutateBass(currentBeatPart);
 }
 
@@ -186,7 +184,6 @@ function invert(array, index) {
 }
 
 function nextPart() {
-	console.log("next part");
 	//var newBeatPart = new BeatPart();
 	if (change) {
 		currentBeatPart._hat = genHat();
