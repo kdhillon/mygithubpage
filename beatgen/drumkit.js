@@ -33,7 +33,7 @@ var mutate = true;
 var currentBeatPart;
 
 var hatObject = new sample('http://kyledhillon.com/beatgen/server/hi hat (1).WAV');
-var kickObject = new sample('http://kyledhillon.com/beatgen/server/kick (2).WAV');
+var kickObject = new sample('http://kyledhillon.com/beatgen/server/kick (2).wav');
 var snareObject = new sample('http://kyledhillon.com/beatgen/server/snare (1).WAV');
 
 function initKit() {
