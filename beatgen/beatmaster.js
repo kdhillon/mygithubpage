@@ -1,5 +1,4 @@
 
-console.log("loaded master");
 var tempo = 140;
 var beatEvery = 60 / tempo;
 var subBeatEvery = beatEvery / 4;

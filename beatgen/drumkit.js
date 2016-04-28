@@ -5,8 +5,6 @@
 //					0, 0, 0, 0, 0, 0, 0, 0]
 // High hat is double the resolution (length 32).
 
-console.log("loaded kit");
-
 var snareRes = 16;
 var kickRes = 16;
 var hatRes = 32;
@@ -18,8 +16,6 @@ var context = new AudioContext();
 // Example: kick = [1, 0, 0, 0, 0, 0, 0, 0
 //					0, 0, 0, 0, 0, 0, 0, 0]
 // High hat is double the resolution (length 32).
-
-console.log("loaded kit");
 
 var snareRes = 16;
 var kickRes = 16;
