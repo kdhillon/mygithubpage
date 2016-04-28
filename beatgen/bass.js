@@ -1,6 +1,7 @@
 var bassObject = new sample('http://kyledhillon.com/beatgen/server/SubBass01.wav');
 
 var semitoneOffset = 100;
+var bassVol = -0.75;
 
 // sub bass hits everytime the kick hits
 function initBass(beatPart) {
@@ -34,7 +35,7 @@ function playBass(beat) {
         var index = beat / 2;
         var note = bass[index];
         if (note > 0) {
-            playSound(bassObject, note);
+            playSound(bassObject, note, bassVol);
         }
     }
 }

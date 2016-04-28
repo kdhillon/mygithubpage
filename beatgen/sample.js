@@ -16,7 +16,7 @@ function loadAudio(object, url) {
     request.send();
 }
 
-function playSound(object, semitones) {
+function playSound(object, semitones, gain) {
     if (object.buffer == null) return;
     if (object.playing) {
         // console.log("stopping");
@@ -25,8 +25,14 @@ function playSound(object, semitones) {
     }
     object.s = context.createBufferSource();
     object.s.buffer = object.buffer;
-    object.s.detune.value = 100 * semitones;
+    object.s.detune.value = 100 * (semitones);
     object.s.connect(context.destination);
+    
+    if (gain != 0) {
+        gainNode.gain.value = gain;
+        object.s.connect(gainNode);
+        gainNode.connect(context.destination);
+    }
 
     object.playing = true;
     // console.log("playing");

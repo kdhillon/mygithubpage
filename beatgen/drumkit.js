@@ -9,6 +9,10 @@ var snareRes = 16;
 var kickRes = 16;
 var hatRes = 32;
 
+var hatVol = 0;
+var snareVol = 0;
+var kickVol = 0;
+
 var context = new AudioContext();
 // This represents the drum pad for playing the drum beat
 // Everything is represented as arrays of binary values (1 or 0).
@@ -92,10 +96,14 @@ function genKick() {
 	}
 	kick = [1, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0];
-
-	if (Math.random() < 0.8) kick[3] = 1;
-	if (Math.random() < 0.8) kick[6] = 1;
-	if (Math.random() < 0.8) kick[13] = 1;
+		
+	muteKick = false;
+	// muteKick = Math.random() < 0.1;	
+	
+	if (Math.random() < 0.2) kick[1] = 1;
+	if (Math.random() < 0.5) kick[3] = 1;
+	if (Math.random() < 0.5) kick[6] = 1;
+	if (Math.random() < 0.5) kick[13] = 1;
 	if (Math.random() < 0.3) {
 		kick[9] = 1;
 		kick[10] = 1;
@@ -103,14 +111,14 @@ function genKick() {
 	return kick;
 }
 
-function mutateHat() {
-	var hat = currentBeatPart._hat;
+function mutateHat(hat) {
+	var ret = [];
+	for (var i = 0; i < hatRes; i++) {
+		ret[i] = hat[i];
+	}
 
 	// if cut out, always cut back in after.
-	if (muteHat == true) {
-		muteHat = false;
-		return;
-	}
+	muteHat = Math.random() < 0.1;
 
 	if (Math.random() < 0.1) {
 		console.log("changing hat situation")
@@ -130,44 +138,53 @@ function mutateHat() {
 		if (Math.random() < 0.3) muteHat = true;
 
 		for (var i = 0; i < hatRes; i++) {
-			hat[i] = 0;
+			ret[i] = 0;
 		}
 
 		for (var i = 0; i < hatRes; i++) {
-			if ((i % (hatTime * 2) == 0 || (Math.random() < 0.1 / hatTime))) hat[i] = 1;
+			if ((i % (hatTime * 2) == 0 || (Math.random() < 0.1 / hatTime))) ret[i] = 1;
 		}
 	}
 
 	for (var i = 0; i < hatRes; i++) {
-		if ((i % (hatTime * 2) != 0 && (Math.random() < 0.1 / hatTime))) hat[i] = !hat[i];
+		if ((i % (hatTime * 2) != 0 && (Math.random() < 0.1 / hatTime))) ret[i] = !ret[i];
 	}
-	currentBeatPart._hat = hat;
+	return ret;
 }
 
-function mutateSnare() {
-	var snare = currentBeatPart._snare;
-
+function mutateSnare(snare) {
+	var ret = [];
+	for (var i = 0; i < snareRes; i++) {
+		ret[i] = snare[i];
+	}
+	
 	muteSnare = Math.random() < 0.1;
 
 	if (Math.random() < 0.1) {
-		snare[7] = !snare[7];
-		snare[9] = !snare[9];
+		ret[7] = !ret[7];
+		ret[9] = !ret[9];
 	}
 	else if (Math.random() < 0.1) {
-		snare[15] = !snare[15];
+		ret[15] = !ret[15];
 	}
-	currentBeatPart._snare = snare;
+	
+	return ret;
 }
 
-function mutateKick() {
-	var kick = currentBeatPart._kick;
-	if (Math.random() < 0.1) invert(kick, 3);
-	if (Math.random() < 0.1) invert(kick, 6);
-	if (Math.random() < 0.1) invert(kick, 13);
-	if (Math.random() < 0.1) invert(kick, 9)
-	if (Math.random() < 0.1) invert(kick, 10);
-	currentBeatPart._kick = kick;
+function mutateKick(kick) {
+	var ret = [];
+	for (var i = 0; i < kickRes; i++) {
+		ret[i] = kick[i];
+	}	
+	
+	if (Math.random() < 0.1) invert(ret, 3);
+	if (Math.random() < 0.1) invert(ret, 6);
+	if (Math.random() < 0.1) invert(ret, 13);
+	if (Math.random() < 0.1) invert(ret, 9)
+	if (Math.random() < 0.1) invert(ret, 10);
 	mutateBass(currentBeatPart);
+	
+	return ret;
 }
 
 function invert(array, index) {
@@ -186,10 +203,11 @@ function nextPart() {
 		currentBeatPart._kick = genKick();
 		currentBeatPart._snare = genSnare();
 	}
-	else if (mutate) {
-		mutateHat();
-		mutateKick();
-		mutateSnare();
+	else if (mutate && measureCounter % 2 == 1) {
+		console.log("mutating");
+		currentBeatPart._hat = mutateHat(currentBeatPart._hat);
+		currentBeatPart._kick = mutateKick(currentBeatPart._kick);
+		currentBeatPart._snare = mutateSnare(currentBeatPart._snare);
 	}
 }
 
@@ -210,18 +228,18 @@ function playBeat(beat) {
 // play all instruments at this resolution
 function playSnare(beat) {
 	if (!muteSnare && currentBeatPart._snare[beat] != 0) {
-		playSound(snareObject, 1);
+		playSound(snareObject, 1, snareVol);
 	}
 }
 
 function playKick(beat) {
-	if (currentBeatPart._kick[beat] != 0) {
-		playSound(kickObject, 1);
+	if (!muteKick && currentBeatPart._kick[beat] != 0) {
+		playSound(kickObject, bass[beat], kickVol);
 	}
 }
 
 function playHat(beat) {
 	if (!muteHat && currentBeatPart._hat[beat] != 0) {
-		playSound(hatObject, 1);
+		playSound(hatObject, 1, hatVol);
 	}
 }
