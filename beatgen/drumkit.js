@@ -12,15 +12,29 @@ var kickRes = 16;
 var hatRes = 32;
 
 var context = new AudioContext();
+// This represents the drum pad for playing the drum beat
+// Everything is represented as arrays of binary values (1 or 0).
+// For example, the snare array is length 16, one for each eigth note in a two measure block.
+// Example: kick = [1, 0, 0, 0, 0, 0, 0, 0
+//					0, 0, 0, 0, 0, 0, 0, 0]
+// High hat is double the resolution (length 32).
+
+console.log("loaded kit");
+
+var snareRes = 16;
+var kickRes = 16;
+var hatRes = 32;
+
+var context = new AudioContext();
 
 var change = false;
 var mutate = true;
 
 var currentBeatPart;
 
-var hatObject = new sample('http://localhost:8000/hi hat (1).wav');
-var kickObject = new sample('http://localhost:8000/kick (2).wav');
-var snareObject = new sample('http://localhost:8000/snare (1).wav');
+var hatObject = new sample('http://www.kyledhillon.com/beatgen/server/hi hat (1).WAV');
+var kickObject = new sample('http://www.kyledhillon.com/beatgen/server/kick (2).WAV');
+var snareObject = new sample('http://www.kyledhillon.com/beatgen/server/snare (1).WAV');
 
 function initKit() {
 	console.log("generating hat");
