@@ -1,6 +1,6 @@
 console.log("loaded bass");
 
-var bassObject = new sample('http://www.kyledhillon.com/beatgen/server/SubBass01.wav');
+var bassObject = new sample('http://kyledhillon.com/beatgen/server/SubBass01.wav');
 
 var semitoneOffset = 100;
 

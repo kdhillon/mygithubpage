@@ -14,7 +14,7 @@ function init() {
 	// start the beat
 	initKit();
 	initBass(currentBeatPart);
-	update32();
+	setTimeout(function(){ update32(); }, 1000);
 }
 
 function update32() {
