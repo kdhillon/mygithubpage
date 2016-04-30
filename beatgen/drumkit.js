@@ -1,10 +1,3 @@
-// This represents the drum pad for playing the drum beat
-// Everything is represented as arrays of binary values (1 or 0).
-// For example, the snare array is length 16, one for each eigth note in a two measure block.
-// Example: kick = [1, 0, 0, 0, 0, 0, 0, 0
-//					0, 0, 0, 0, 0, 0, 0, 0]
-// High hat is double the resolution (length 32).
-
 var snareRes = 16;
 var kickRes = 16;
 var hatRes = 32;
@@ -27,8 +20,8 @@ var hatRes = 32;
 
 var context = new AudioContext();
 
-var change = false;
-var mutate = true;
+var change = false; // generate completely new beat every 2 bars 
+var mutate = true; // mutate previous two bars
 
 var currentBeatPart;
 
@@ -76,7 +69,7 @@ function genSnare() {
 	muteSnare = true;
 
 	snare = [0, 0, 0, 0, 1, 0, 0, 0,
-		0, 0, 0, 0, 1, 0, 0, 0];
+			 0, 0, 0, 0, 1, 0, 0, 0];
 	if (Math.random() < 0.1) {
 		snare[7] = 1;
 	}
@@ -95,7 +88,7 @@ function genKick() {
 		kick[i] = 0;
 	}
 	kick = [1, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0];
+			0, 0, 0, 0, 0, 0, 0, 0];
 		
 	muteKick = false;
 	// muteKick = Math.random() < 0.1;	
@@ -161,11 +154,13 @@ function mutateSnare(snare) {
 	muteSnare = Math.random() < 0.1;
 
 	if (Math.random() < 0.1) {
-		ret[7] = !ret[7];
-		ret[9] = !ret[9];
+		invert(ret, 7);
 	}
-	else if (Math.random() < 0.1) {
-		ret[15] = !ret[15];
+	if (Math.random() < 0.1) {
+		invert(ret, 9);
+	}
+	if (Math.random() < 0.1) {
+		invert(ret, 15);
 	}
 	
 	return ret;
@@ -213,12 +208,9 @@ function nextPart() {
 
 function playBeat(beat) {
 	if (beat % 2 == 0) {
-		quarter = true;
 		playSnare(beat / 2);
-
 	}
 	if (beat % 2 == 0) {
-		eigth = true;
 		playKick(beat / 2);
 	}
 
