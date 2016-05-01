@@ -1,3 +1,6 @@
+
+
+
 function sample(url) {
     this.source = url;
     loadAudio(this, url);

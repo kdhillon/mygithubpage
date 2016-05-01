@@ -10,26 +10,38 @@ var context = new AudioContext();
 var gainNode = context.createGain();
 
 window.onload = init;
-window.addEventListener('touchstart', function() {
 
-	// create empty buffer
-	var buffer = myContext.createBuffer(1, 1, 22050);
-	var source = myContext.createBufferSource();
+var isUnlocked = false;
+
+function unlock() {
+	if(this.unlocked)
+		return;
+
+	// create empty buffer and play it
+	var buffer = context.createBuffer(1, 1, 22050);
+	var source = context.createBufferSource();
 	source.buffer = buffer;
+	source.connect(context.destination);
+	source.start(0);
 
-	// connect to output (your speakers)
-	source.connect(myContext.destination);
+	// by checking the play state after some time, we know if we're really unlocked
+	setTimeout(function() {
+		if((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
+			isUnlocked = true;
+			console.log("isUnlocked: " + isUnlocked);
+		}
+	}, 0);
+	
+	update32();
+}
 
-	// play the file
-	source.noteOn(0);
-
-}, false);
 
 function init() {
 	// start the beat
 	initKit();
 	initBass(currentBeatPart);
-	setTimeout(function(){ update32(); }, 1000);
+	// setTimeout(function(){ ; }, 1000);
+	document.getElementById("b1").addEventListener('click', unlock);
 }
 
 function update32() {
