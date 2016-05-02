@@ -23,14 +23,14 @@ function unlock() {
 	var source = context.createBufferSource();
 	source.buffer = buffer;
 	source.connect(context.destination);
-	// source.start ? source.start(0, 2, 1) : 
 	source.noteOn(0);	
 	
 	// by checking the play state after some time, we know if we're really unlocked
 	setTimeout(function() {
 		if((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
 			isUnlocked = true;
-			console.log("isUnlocked: " + isUnlocked);
+			console.log("")
+			document.getElementById("b1").innerHTML = "isUnlocked: " + isUnlocked;
 			// init();
 			initKit();
 			initBass(currentBeatPart);
@@ -40,7 +40,7 @@ function unlock() {
 }
 
 function onLoad() {
-	document.getElementById("b1").addEventListener('click', init);
+	document.getElementById("b1").addEventListener('click', unlock);
 }
 
 function init() {
