@@ -10,7 +10,9 @@ var context = new AudioContext();
 var gainNode = context.createGain();
 
 window.onload = onLoad;
-
+window.onload = (function(){
+    onLoad();
+});
 
 var isUnlocked = false;
 
@@ -20,7 +22,6 @@ function unlock() {
 	if(this.unlocked)
 		return;
 
-
 	document.getElementById("b1").innerHTML = "creating initial sound";
 
 	// create empty buffer and play it
@@ -28,7 +29,7 @@ function unlock() {
 	var source = context.createBufferSource();
 	source.buffer = buffer;
 	source.connect(context.destination);
-	source.start ? source.start(0, 2, 1) : source.noteOn(0);	
+	source.start ? source.start(0) : source.noteOn(0);	
 	
 	// by checking the play state after some time, we know if we're really unlocked
 	setTimeout(function() {
