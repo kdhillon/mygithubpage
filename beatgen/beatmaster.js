@@ -31,6 +31,8 @@ function unlock() {
 			isUnlocked = true;
 			console.log("isUnlocked: " + isUnlocked);
 			// init();
+			initKit();
+			initBass(currentBeatPart);
 			setTimeout(update32, 1000);
 		}
 	}, 0);
@@ -43,8 +45,8 @@ function onLoad() {
 function init() {
 	// start the beat
 	unlock();
-	initKit();
-	initBass(currentBeatPart);
+	// initKit();
+	// initBass(currentBeatPart);
 }
 
 function update32() {
