@@ -30,10 +30,10 @@ function unlock() {
 		if((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
 			isUnlocked = true;
 			console.log("isUnlocked: " + isUnlocked);
+			// init();
+			setTimeout(update32, 1000);
 		}
 	}, 0);
-	
-	update32();
 }
 
 function onLoad() {
@@ -42,9 +42,9 @@ function onLoad() {
 
 function init() {
 	// start the beat
+	unlock();
 	initKit();
 	initBass(currentBeatPart);
-	setTimeout(update32, 1000);
 }
 
 function update32() {
