@@ -15,6 +15,8 @@ window.onload = onLoad;
 var isUnlocked = false;
 
 function unlock() {
+	document.getElementById("b1").innerHTML = "unlocking";
+
 	if(this.unlocked)
 		return;
 
@@ -44,6 +46,8 @@ function unlock() {
 
 function onLoad() {
 	document.getElementById("b1").addEventListener('click', unlock);
+	document.getElementById("b1").innerHTML = "onLoad";
+
 }
 
 function init() {
