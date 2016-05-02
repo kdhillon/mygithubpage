@@ -9,7 +9,8 @@ var measureCounter = 0;
 var context = new AudioContext();
 var gainNode = context.createGain();
 
-window.onload = init;
+window.onload = onLoad;
+
 
 var isUnlocked = false;
 
@@ -35,13 +36,15 @@ function unlock() {
 	update32();
 }
 
+function onLoad() {
+	document.getElementById("b1").addEventListener('click', init);
+}
 
 function init() {
 	// start the beat
 	initKit();
 	initBass(currentBeatPart);
-	// setTimeout(function(){ ; }, 1000);
-	document.getElementById("b1").addEventListener('click', unlock);
+	setTimeout(update32, 1000);
 }
 
 function update32() {
