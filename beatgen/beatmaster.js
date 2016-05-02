@@ -23,8 +23,8 @@ function unlock() {
 	var source = context.createBufferSource();
 	source.buffer = buffer;
 	source.connect(context.destination);
-	source.start(0);
-
+	source.start ? source.start(0, 2, 1) : source.noteOn(0);	
+	
 	// by checking the play state after some time, we know if we're really unlocked
 	setTimeout(function() {
 		if((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
