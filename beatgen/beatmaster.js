@@ -11,9 +11,9 @@ var gainNode = context.createGain();
 
 // document.body.style.backgroundColor = "yellow"
 // window.onload = onLoad;
-window.addEventListener ? 
-window.addEventListener("load",onLoad,false) : 
-window.attachEvent && window.attachEvent("onload",onLoad);
+// window.addEventListener ? 
+// window.addEventListener("load",onLoad,false) : 
+// window.attachEvent && window.attachEvent("onload",onLoad);
 // onLoad();
 // $(function(){
 // 	onLoad();
