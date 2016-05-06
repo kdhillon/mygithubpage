@@ -11,9 +11,9 @@ var gainNode = context.createGain();
 
 // document.body.style.backgroundColor = "yellow"
 // window.onload = onLoad;
-window.onload = (function(){
-    onLoad();
-});
+window.onload = onLoad;
+window.onresize = onLoad;
+// onLoad();
 // $(function(){
 // 	onLoad();
 // });
@@ -50,6 +50,7 @@ function unlock() {
 }
 
 function onLoad() {
+	document.body.style.backgroundColor = "orange"
 	document.getElementById("b1").textContent = "preOnLoad";
 	document.getElementById("b1").addEventListener('click', unlock);
 	document.getElementById("b1").textContent = "onLoad";
