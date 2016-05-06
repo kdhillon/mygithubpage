@@ -12,6 +12,7 @@ var kickVol = 0;
 // Example: kick = [1, 0, 0, 0, 0, 0, 0, 0
 //					0, 0, 0, 0, 0, 0, 0, 0]
 // High hat is double the resolution (length 32).
+document.body.style.backgroundColor = "magenta"
 
 var change = false; // generate completely new beat every 2 bars 
 var mutate = true; // mutate previous two bars
