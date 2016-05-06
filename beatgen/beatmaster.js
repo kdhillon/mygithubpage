@@ -9,23 +9,24 @@ var measureCounter = 0;
 var context = new AudioContext();
 var gainNode = context.createGain();
 
-window.onload = onLoad;
+// document.body.style.backgroundColor = "yellow"
+// window.onload = onLoad;
 window.onload = (function(){
     onLoad();
 });
-$(function(){
-	onLoad();
-});
+// $(function(){
+// 	onLoad();
+// });
 
 var isUnlocked = false;
 
 function unlock() {
-	document.getElementById("b1").innerHTML = "unlocking";
+	document.getElementById("b1").textContent = "unlocking";
 
 	if(this.unlocked)
 		return;
 
-	document.getElementById("b1").innerHTML = "creating initial sound";
+	document.getElementById("b1").textContent = "creating initial sound";
 
 	// create empty buffer and play it
 	var buffer = context.createBuffer(1, 1, 22050);
@@ -39,7 +40,7 @@ function unlock() {
 		if((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
 			isUnlocked = true;
 			console.log("")
-			document.getElementById("b1").innerHTML = "isUnlocked: " + isUnlocked;
+			document.getElementById("b1").textContent = "isUnlocked: " + isUnlocked;
 			// init();
 			initKit();
 			initBass(currentBeatPart);
@@ -49,9 +50,10 @@ function unlock() {
 }
 
 function onLoad() {
-	document.getElementById("b1").innerHTML = "preOnLoad";
+	document.getElementById("b1").textContent = "preOnLoad";
 	document.getElementById("b1").addEventListener('click', unlock);
-	document.getElementById("b1").innerHTML = "onLoad";
+	document.getElementById("b1").textContent = "onLoad";
+	document.body.style.backgroundColor = "yellow"
 }
 
 // function init() {
@@ -62,6 +64,7 @@ function onLoad() {
 // }
 
 function update32() {
+	document.body.style.backgroundColor = "green"
 	playBeat(stepCounter);
 	playBass(stepCounter);
 	
