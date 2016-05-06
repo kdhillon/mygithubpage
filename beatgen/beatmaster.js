@@ -13,6 +13,9 @@ window.onload = onLoad;
 window.onload = (function(){
     onLoad();
 });
+$(function(){
+	onLoad();
+});
 
 var isUnlocked = false;
 
@@ -46,17 +49,17 @@ function unlock() {
 }
 
 function onLoad() {
+	document.getElementById("b1").innerHTML = "preOnLoad";
 	document.getElementById("b1").addEventListener('click', unlock);
 	document.getElementById("b1").innerHTML = "onLoad";
-
 }
 
-function init() {
-	// start the beat
-	unlock();
-	// initKit();
-	// initBass(currentBeatPart);
-}
+// function init() {
+// 	// start the beat
+// 	unlock();
+// 	// initKit();
+// 	// initBass(currentBeatPart);
+// }
 
 function update32() {
 	playBeat(stepCounter);
