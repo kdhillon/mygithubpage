@@ -25,7 +25,7 @@ function playSound(object, semitones, gain) {
     }
     object.s = context.createBufferSource();
     object.s.buffer = object.buffer;
-    object.s.detune.value = 100 * (semitones);
+    // object.s.detune.value = 100 * (semitones);
     object.s.connect(context.destination);
     
     if (gain != 0) {
