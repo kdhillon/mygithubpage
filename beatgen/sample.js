@@ -17,7 +17,10 @@ function loadAudio(object, url) {
 }
 
 function playSound(object, semitones, gain) {
-    if (object.s == null) return;
+    if (object.s == null) {
+        console.log("object.s is null");   
+        return;
+    }
     if (object.s.buffer == null) return;
     if (object.playing) {
         // console.log("stopping");
