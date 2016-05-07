@@ -1,9 +1,3 @@
-
-
-window.addEventListener ? 
-window.addEventListener("load",onLoad,false) : 
-window.attachEvent && window.attachEvent("onload",onLoad);
-
 function sample(url) {
     this.source = url;
     loadAudio(this, url);

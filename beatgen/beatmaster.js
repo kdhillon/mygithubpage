@@ -6,14 +6,28 @@ var subBeatEvery = beatEvery / 4;
 var stepCounter = 0;
 var measureCounter = 0;
 
-var context = new AudioContext();
+var context;
+
+try {
+    // Fix up for prefixing
+    window.AudioContext = window.AudioContext||window.webkitAudioContext;
+    context = new AudioContext();
+  }
+  catch(e) {
+    alert('Web Audio API is not supported in this browser');
+  }
+  
 var gainNode = context.createGain();
 
-// document.body.style.backgroundColor = "yellow"
-// window.onload = onLoad;
+
 window.addEventListener ? 
 window.addEventListener("load",onLoad,false) : 
 window.attachEvent && window.attachEvent("onload",onLoad);
+
+
+// document.body.style.backgroundColor = "yellow"
+// window.onload = onLoad;
+
 // onLoad();
 // $(function(){
 // 	onLoad();
