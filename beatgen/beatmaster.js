@@ -56,7 +56,7 @@ function unlock() {
 
 function onLoad() {
 	// document.getElementById("b1").addEventListener('click', unlock);
-	window.addEventListener('click', unlock);
+	document.getElementById("text").addEventListener('click', unlock);
 }
 
 function update32() {
