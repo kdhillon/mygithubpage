@@ -1,4 +1,8 @@
-var tempo = 140;
+var tempoMin = 135;
+var tempoMax = 155;
+
+var tempo = Math.floor(Math.random() * (tempoMax - tempoMin) + tempoMin);
+console.log("Tempo: " + tempo);
 var beatEvery = 60 / tempo;
 var subBeatEvery = beatEvery / 4;
 
@@ -25,8 +29,10 @@ window.attachEvent && window.attachEvent("onload",onLoad);
 var isUnlocked = false;
 
 function unlock() {
-	if(this.unlocked)
+	if (isUnlocked) {
+		console.log("Already unlocked");
 		return;
+	}
 
 	// create empty buffer and play it
 	var buffer = context.createBuffer(1, 1, 22050);
@@ -42,17 +48,18 @@ function unlock() {
 			initKit();
 			initBass(currentBeatPart);
 			setTimeout(update32, 1000);
+			document.body.style.backgroundColor = "green"
+			document.getElementById("text").textContent = "PLAYING";
 		}
 	}, 0);
 }
 
 function onLoad() {
-	document.getElementById("b1").addEventListener('click', unlock);
-	document.body.style.backgroundColor = "yellow"
+	// document.getElementById("b1").addEventListener('click', unlock);
+	window.addEventListener('click', unlock);
 }
 
 function update32() {
-	document.body.style.backgroundColor = "green"
 	playBeat(stepCounter);
 	playBass(stepCounter);
 	

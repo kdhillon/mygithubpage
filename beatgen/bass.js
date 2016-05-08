@@ -5,6 +5,10 @@ var bassObject = new sample('http://kyledhillon.com/beatgen/server/SubBass01.wav
 var semitoneOffset = 100;
 var bassVol = -0.5;
 
+// 0 is F
+var key = Math.floor(Math.random() * 12);
+console.log("Key: " + getNoteName(key));
+
 // sub bass hits everytime the kick hits
 function initBass(beatPart) {
     bass = [];
@@ -15,6 +19,21 @@ function initBass(beatPart) {
             else if (Math.random() < 0.3) bass[i] = 3;
         }
     }
+}
+
+function getNoteName(semitonesFromF) {
+    if (semitonesFromF == 0) return "F";
+    if (semitonesFromF == 1) return "F#";
+    if (semitonesFromF == 2) return "G";
+    if (semitonesFromF == 3) return "G#";
+    if (semitonesFromF == 4) return "A";
+    if (semitonesFromF == 5) return "A#";
+    if (semitonesFromF == 6) return "B";
+    if (semitonesFromF == 7) return "C";
+    if (semitonesFromF == 8) return "C#";
+    if (semitonesFromF == 9) return "D";
+    if (semitonesFromF == 10) return "D#";
+    if (semitonesFromF == 11) return "E";
 }
 
 // mutate based on new kick
@@ -38,7 +57,7 @@ function playBass(beat) {
         var index = beat / 2;
         var note = bass[index];
         if (note > 0) {
-            playSound(bassObject, note, bassVol);
+            playSound(bassObject, note + key, bassVol);
             // playSound(bassObject2, note + 12, bassVol);
          }
     }
