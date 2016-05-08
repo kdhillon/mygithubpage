@@ -1,4 +1,3 @@
-
 var tempo = 140;
 var beatEvery = 60 / tempo;
 var subBeatEvery = beatEvery / 4;
@@ -19,29 +18,15 @@ try {
   
 var gainNode = context.createGain();
 
-
 window.addEventListener ? 
 window.addEventListener("load",onLoad,false) : 
 window.attachEvent && window.attachEvent("onload",onLoad);
 
-
-// document.body.style.backgroundColor = "yellow"
-// window.onload = onLoad;
-
-// onLoad();
-// $(function(){
-// 	onLoad();
-// });
-
 var isUnlocked = false;
 
 function unlock() {
-	document.getElementById("b1").textContent = "unlocking";
-
 	if(this.unlocked)
 		return;
-
-	document.getElementById("b1").textContent = "creating initial sound";
 
 	// create empty buffer and play it
 	var buffer = context.createBuffer(1, 1, 22050);
@@ -54,9 +39,6 @@ function unlock() {
 	setTimeout(function() {
 		if((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
 			isUnlocked = true;
-			console.log("")
-			document.getElementById("b1").textContent = "isUnlocked: " + isUnlocked;
-			// init();
 			initKit();
 			initBass(currentBeatPart);
 			setTimeout(update32, 1000);
@@ -65,19 +47,9 @@ function unlock() {
 }
 
 function onLoad() {
-	document.body.style.backgroundColor = "orange"
-	document.getElementById("b1").textContent = "preOnLoad";
 	document.getElementById("b1").addEventListener('click', unlock);
-	document.getElementById("b1").textContent = "onLoad";
 	document.body.style.backgroundColor = "yellow"
 }
-
-// function init() {
-// 	// start the beat
-// 	unlock();
-// 	// initKit();
-// 	// initBass(currentBeatPart);
-// }
 
 function update32() {
 	document.body.style.backgroundColor = "green"

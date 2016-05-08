@@ -1,6 +1,3 @@
-
-// document.body.style.backgroundColor = "orange"
-
 var bassObject = new sample('http://kyledhillon.com/beatgen/server/SubBass01.wav');
 // var bassObject2 = new sample('http://kyledhillon.com/beatgen/server/SubBass01.wav');
 
