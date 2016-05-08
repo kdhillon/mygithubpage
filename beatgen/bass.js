@@ -1,4 +1,7 @@
-var bassObject = new sample('http://kyledhillon.com/beatgen/server/SubBass01.wav');
+
+var bassChoice = "SubBass02.wav";
+
+var bassObject = new sample('http://kyledhillon.com/beatgen/server/' + bassChoice);
 // var bassObject2 = new sample('http://kyledhillon.com/beatgen/server/SubBass01.wav');
 
 // semitone 0 for subbass is F
@@ -15,7 +18,7 @@ function initBass(beatPart) {
     for (var i = 0; i < kickRes; i++) {
         bass[i] = beatPart._kick[i];
         if (i > 0 && bass[i] == 1) {
-            if (Math.random() < 0.4) bass[i] = 5;
+            if (Math.random() < 0.5) bass[i] = 5;
             else if (Math.random() < 0.3) bass[i] = 3;
         }
     }
@@ -42,8 +45,7 @@ function mutateBass(beatPart) {
         if (beatPart._kick[i] != 0 && bass[i] == 0) {
             bass[i] = 1;
             if (Math.random() < 0.4) bass[i] = 5;
-            else if (Math.random() < 0.3) bass[i] = 3;
-            else if (Math.random() < 0.3) bass[i] = -2;
+            else if (Math.random() < 0.4) bass[i] = 3;
         }
         else if (beatPart._kick[i] == 0 && bass[i] != 0) {
            bass[i] = 0;
