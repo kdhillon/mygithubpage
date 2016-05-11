@@ -1,15 +1,20 @@
 
-var bassChoice = "SubBass02.wav";
+var bassChoice = "SubBass01.wav";
 
 var bassObject = new sample('http://kyledhillon.com/beatgen/server/' + bassChoice);
-// var bassObject2 = new sample('http://kyledhillon.com/beatgen/server/SubBass01.wav');
+var bassObject2 = new sample('http://kyledhillon.com/beatgen/server/SubBass03.WAV');
 
-// semitone 0 for subbass is F
+// 0 if 1,2,3 (Start on G), but -3 if SubBass01
+var bassChoiceOffsetFromG = -3;
+
 var semitoneOffset = 100;
 var bassVol = -0.5;
 
-// 0 is F
-var key = Math.floor(Math.random() * 12);
+var muteBass;
+
+// 0 is G
+var key = Math.floor(Math.random() * 12 - 4);
+// var key = 0;
 console.log("Key: " + getNoteName(key));
 
 // sub bass hits everytime the kick hits
@@ -22,9 +27,22 @@ function initBass(beatPart) {
             else if (Math.random() < 0.3) bass[i] = 3;
         }
     }
+    scheduleBass(bass);
 }
 
-function getNoteName(semitonesFromF) {
+function scheduleBass(bass) {
+    for (var i = 0; i < bars; i++) {
+		for (var j = 0; j < kickRes; j++) {
+			if (bass[j] > 0) {
+				playBass(j + i * 32);
+			}
+		}
+    }
+}
+
+function getNoteName(semitonesFromG) {
+    var semitonesFromF = semitonesFromG + 2;
+    if (semitonesFromF < 0) semitonesFromF += 12;
     if (semitonesFromF == 0) return "F";
     if (semitonesFromF == 1) return "F#";
     if (semitonesFromF == 2) return "G";
@@ -37,30 +55,37 @@ function getNoteName(semitonesFromF) {
     if (semitonesFromF == 9) return "D";
     if (semitonesFromF == 10) return "D#";
     if (semitonesFromF == 11) return "E";
+    return "messed up";
 }
 
 // mutate based on new kick
-function mutateBass(beatPart) {
+function mutateBass(kick) {
+    if (Math.random() < 0.1) muteBass = true;
+    else muteBass = false;
+    
      for (var i = 0; i < kickRes; i++) {
-        if (beatPart._kick[i] != 0 && bass[i] == 0) {
+        if (kick[i] != 0 && bass[i] == 0) {
             bass[i] = 1;
             if (Math.random() < 0.4) bass[i] = 5;
             else if (Math.random() < 0.4) bass[i] = 3;
         }
-        else if (beatPart._kick[i] == 0 && bass[i] != 0) {
+        else if (kick[i] == 0 && bass[i] != 0) {
            bass[i] = 0;
         }
     }
-    console.log(bass);
+    // console.log(kick);
+    // console.log(bass);
+    scheduleBass(bass);
 }
 
 function playBass(beat) {
+    if (muteKick) return;
     if (beat % 2 == 0) {
-        var index = beat / 2;
+        var index = beat / 2 % kickRes;
         var note = bass[index];
         if (note > 0) {
-            playSound(bassObject, note + key, bassVol);
-            // playSound(bassObject2, note + 12, bassVol);
+            playSound(bassObject, note + key, bassVol, time + beat * subBeatEvery);
+            // playSound(bassObject2, note + 12, bassVol, time + beat * subBeatEvery);
          }
     }
 }

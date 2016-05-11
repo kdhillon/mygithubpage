@@ -1,3 +1,6 @@
+// Fun variables
+var londonMode = false;
+
 var snareRes = 16;
 var kickRes = 16;
 var hatRes = 32;
@@ -16,6 +19,7 @@ var kickVol = 0;
 
 var change = false; // generate completely new beat every 2 bars 
 var mutate = true; // mutate previous two bars
+var bars = 2;
 
 var currentBeatPart;
 
@@ -26,6 +30,34 @@ var snareObject = new sample('http://kyledhillon.com/beatgen/server/snare (1).WA
 function initKit() {
 	mainPart = new BeatPart();
 	currentBeatPart = mainPart;
+	scheduleBeatPart(currentBeatPart);
+}
+
+// schedule this beat part to be played for x bars
+function scheduleBeatPart(beatPart) {
+	console.log("scheduling");
+	for (var i = 0; i < bars; i++) {
+		// schedule hat
+		for (var j = 0; j < hatRes; j++) {
+			if (beatPart._hat[j] > 0) {
+				playHat(j + i * 32);
+			}
+		}
+		
+		// schedule kick
+		for (var j = 0; j < kickRes; j++) {
+			if (beatPart._kick[j] == 1) {
+				playKick(j * 2 + i * 32);
+			}
+		}
+		
+		// schedule snare
+		for (var j = 0; j < snareRes; j++) {
+			if (beatPart._snare[j] == 1) {
+				playSnare(j * 2 + i * 32);
+			}
+		}
+	}
 }
 
 function BeatPart() {
@@ -34,14 +66,16 @@ function BeatPart() {
 	this._hat = genHat();
 }
 
+// [1] is regular beat
+// [2] is half time triplet
+// [3] is triplet
 function genHat() {
 	var hat = [];
 	hatTime = 1;
 
 	if (Math.random() < 0.3) hatTime = 2;
-	else if (Math.random() < 0.3) hatTime = 4;
+	else if (Math.random() < 0.5) hatTime = 4;
 
-	var londonMode = false;
 	if (londonMode) hatTime = 4;
 
 	muteHat = Math.random() < 0.1;
@@ -52,8 +86,34 @@ function genHat() {
 
 	for (var i = 0; i < hatRes; i++) {
 		if ((i % (hatTime * 2) == 0 || (Math.random() < 0.1 / hatTime))) hat[i] = 1;
+		
+		if (hat[i] == 1 && Math.random() < 0.1) {
+			// addTriplets(hat, i);
+		}
 	}
+
+	console.log(hat);
 	return hat;
+}
+
+function addTriplets(hat, index) {
+	if (hatTime == 4) {
+		hat[i] = 2; // triplet
+		hat[(i + 1) % hatRes] = 0; // make the next one 0	
+		hat[(i + 2) % hatRes] = 0; // make the next one 0			
+		hat[(i + 3) % hatRes] = 0; // make the next one 0			
+		hat[(i + 4) % hatRes] = 0; // make the next one 1
+		hat[(i + 5) % hatRes] = 0; // make the next one 1
+		hat[(i + 6) % hatRes] = 0; // make the next one 1
+		hat[(i + 7) % hatRes] = 1; // make the next one 1
+	}
+	if (hatTime == 1 || hatTime == 2) {
+		hat[i] = 3;
+		hat[(i + 1) % hatRes] = 0; // make the next one 0			
+		hat[(i + 2) % hatRes] = 0; // make the next one 0			
+		hat[(i + 3) % hatRes] = 0; // make the next one 0			
+		hat[(i + 4) % hatRes] = 1; // make the next one 1			
+	}
 }
 
 function genSnare() {
@@ -130,12 +190,18 @@ function mutateHat(hat) {
 
 		for (var i = 0; i < hatRes; i++) {
 			if ((i % (hatTime * 2) == 0 || (Math.random() < 0.1 / hatTime))) ret[i] = 1;
+			
+			if (hat[i] == 1 && Math.random() < 0.1) {
+				// addTriplets(hat, i);
+			}	
 		}
 	}
 
 	for (var i = 0; i < hatRes; i++) {
-		if ((i % (hatTime * 2) != 0 && (Math.random() < 0.1 / hatTime))) ret[i] = !ret[i];
+		if ((i % (hatTime * 2) != 0 && (Math.random() < 0.1 / hatTime))) invert(ret, i);
 	}
+	
+	console.log(ret);
 	return ret;
 }
 
@@ -171,7 +237,7 @@ function mutateKick(kick) {
 	if (Math.random() < 0.1) invert(ret, 13);
 	if (Math.random() < 0.1) invert(ret, 9)
 	if (Math.random() < 0.1) invert(ret, 10);
-	mutateBass(currentBeatPart);
+	mutateBass(ret);
 	
 	return ret;
 }
@@ -192,11 +258,12 @@ function nextPart() {
 		currentBeatPart._kick = genKick();
 		currentBeatPart._snare = genSnare();
 	}
-	else if (mutate && measureCounter % 2 == 1) {
+	else if (mutate && measureCounter % 2 == 0) {
 		console.log("mutating");
 		currentBeatPart._hat = mutateHat(currentBeatPart._hat);
 		currentBeatPart._kick = mutateKick(currentBeatPart._kick);
 		currentBeatPart._snare = mutateSnare(currentBeatPart._snare);
+		scheduleBeatPart(currentBeatPart);
 	}
 }
 
@@ -211,21 +278,35 @@ function playBeat(beat) {
 	playHat(beat);
 }
 
-// play all instruments at this resolution
+// schedule instruments to be played on the given beat
 function playSnare(beat) {
-	if (!muteSnare && currentBeatPart._snare[beat] != 0) {
-		playSound(snareObject, 1, snareVol);
+	if (!muteSnare) {
+		// console.log("queueing snare: " + (time + beat * subBeatEvery));
+		playSound(snareObject, 1, snareVol, time + beat * subBeatEvery);
 	}
 }
 
 function playKick(beat) {
-	if (!muteKick && currentBeatPart._kick[beat] != 0) {
-		playSound(kickObject, bass[beat], kickVol);
+	if (!muteKick) {
+		// console.log("queueing kick: " + (time + beat * subBeatEvery));
+		playSound(kickObject, 1, kickVol, time + beat * subBeatEvery);
 	}
 }
 
 function playHat(beat) {
-	if (!muteHat && currentBeatPart._hat[beat] != 0) {
-		playSound(hatObject, 1, hatVol);
+	if (!muteHat) {
+		// console.log("queueing hat: " + (time + beat * subBeatEvery));
+		playSound(hatObject, 1, hatVol, time + beat * subBeatEvery);
+		
+		// play the next two notes in triplet
+		if (currentBeatPart._hat[beat % 32] == 2) {
+			playSound(hatObject, 1, hatVol, time + (beat + 2.66) * subBeatEvery);			
+			playSound(hatObject, 1, hatVol, time + (beat + 5.33) * subBeatEvery);			
+		}
+		// play next two notes in triplet
+		if (currentBeatPart._hat[beat % 32] == 3) {
+			playSound(hatObject, 1, hatVol, time + (beat + 1.33) * subBeatEvery);			
+			playSound(hatObject, 1, hatVol, time + (beat + 2.66) * subBeatEvery);			
+		}
 	}
 }

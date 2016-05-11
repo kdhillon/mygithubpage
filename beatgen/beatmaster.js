@@ -1,15 +1,19 @@
 var tempoMin = 135;
-var tempoMax = 155;
+var tempoMax = 150;
 
 var tempo = Math.floor(Math.random() * (tempoMax - tempoMin) + tempoMin);
 console.log("Tempo: " + tempo);
 var beatEvery = 60 / tempo;
+var measureEvery = beatEvery * 4;
 var subBeatEvery = beatEvery / 4;
 
-var stepCounter = 0;
+var stepCounter = 32;
 var measureCounter = 0;
 
 var context;
+
+var startTime = 0;
+var time = 0;
 
 try {
     // Fix up for prefixing
@@ -45,9 +49,11 @@ function unlock() {
 	setTimeout(function() {
 		if((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
 			isUnlocked = true;
+			startTime = context.currentTime;
+			time = startTime;
 			initKit();
 			initBass(currentBeatPart);
-			setTimeout(update32, 1000);
+			setTimeout(updateMeasure, 1000);
 			document.body.style.backgroundColor = "green"
 			document.getElementById("text").textContent = "PLAYING";
 		}
@@ -59,17 +65,28 @@ function onLoad() {
 	document.getElementById("text").addEventListener('click', unlock);
 }
 
-function update32() {
-	playBeat(stepCounter);
-	playBass(stepCounter);
+// function update32() {
+// 	// playBeat(stepCounter);
+// 	// playBass(stepCounter);
+
+// 	stepCounter++;
+// 	if (stepCounter >= 32) {
+// 		stepCounter = 0;
+// 		nextPart();	
+// 		measureCounter++;
+// 	}
 	
-	stepCounter++;
-	if (stepCounter >= 32) {
-		stepCounter = 0;
-		nextPart();	
-		measureCounter++;
-		console.log("measure: " + measureCounter);
-	}
-	
-	setTimeout(update32, subBeatEvery * 1000); // msecs
+// 	setTimeout(update32, subBeatEvery * 1000); // msecs
+// }
+
+function updateMeasure() {
+	time = startTime + measureCounter * measureEvery * 2;
+
+// if (measureCounter >= 2) return;
+
+	if (measureCounter > 0) nextPart();	
+	console.log("measure: " + measureCounter);
+
+	setTimeout(updateMeasure, measureEvery * 1000);
+	measureCounter += 1;
 }

@@ -16,12 +16,12 @@ function loadAudio(object, url) {
     request.send();
 }
 
-function playSound(object, semitones, gain) {
+function playSound(object, semitones, gain, time) {
     if (object.buffer == null) return;
-    if (object.playing) {
-        object.s.stop();
-        object.playing = false;
-    }
+    // if (object.playing && object == bassObject) {
+    //     object.s
+    //     object.playing = false;
+    // }
     object.s = context.createBufferSource();
     object.s.buffer = object.buffer;
     if (object.s.detune != null)
@@ -34,6 +34,5 @@ function playSound(object, semitones, gain) {
         gainNode.connect(context.destination);
     }
 
-    object.playing = true;
-    object.s.start(0);
+    object.s.start(time);
 }
