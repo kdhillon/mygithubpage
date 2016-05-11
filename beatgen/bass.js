@@ -1,8 +1,5 @@
-
-var bassChoice = "SubBass01.wav";
-
-var bassObject = new sample('http://kyledhillon.com/beatgen/server/' + bassChoice);
-var bassObject2 = new sample('http://kyledhillon.com/beatgen/server/SubBass03.WAV');
+var bassObject = new sample(getFileName("bass", 3));
+var bassObject2 = new sample(getFileName("bass", 3));
 
 // 0 if 1,2,3 (Start on G), but -3 if SubBass01
 var bassChoiceOffsetFromG = -3;
@@ -60,11 +57,11 @@ function getNoteName(semitonesFromG) {
 
 // mutate based on new kick
 function mutateBass(kick) {
-    if (Math.random() < 0.1) muteBass = true;
-    else muteBass = false;
+    // if (Math.random() < 0.1) muteBass = true;
+    // else muteBass = false;
     
      for (var i = 0; i < kickRes; i++) {
-        if (kick[i] != 0 && bass[i] == 0) {
+        if (kick[i] != 0) {
             bass[i] = 1;
             if (Math.random() < 0.4) bass[i] = 5;
             else if (Math.random() < 0.4) bass[i] = 3;
@@ -73,8 +70,8 @@ function mutateBass(kick) {
            bass[i] = 0;
         }
     }
-    // console.log(kick);
-    // console.log(bass);
+    console.log(kick);
+    console.log(bass);
     scheduleBass(bass);
 }
 

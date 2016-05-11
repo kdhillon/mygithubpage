@@ -54,15 +54,17 @@ function unlock() {
 			initKit();
 			initBass(currentBeatPart);
 			setTimeout(updateMeasure, 1000);
-			document.body.style.backgroundColor = "green"
-			document.getElementById("text").textContent = "PLAYING";
-		}
+			// document.getElementById("text").innerText = "&nbsp;";
+			document.getElementById("img").src = "img/2.jpg";
+		}			
+
 	}, 0);
 }
 
 function onLoad() {
 	// document.getElementById("b1").addEventListener('click', unlock);
 	document.getElementById("text").addEventListener('click', unlock);
+	document.getElementById("img").addEventListener('click', unlock);
 }
 
 // function update32() {

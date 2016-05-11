@@ -36,3 +36,9 @@ function playSound(object, semitones, gain, time) {
 
     object.s.start(time);
 }
+
+
+function getFileName(prefix, count) {
+	var random = Math.floor(Math.random() * 3);
+	return "http://kyledhillon.com/beatgen/server/" + prefix + "/" + random + ".WAV";
+}

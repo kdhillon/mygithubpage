@@ -23,9 +23,9 @@ var bars = 2;
 
 var currentBeatPart;
 
-var hatObject = new sample('http://kyledhillon.com/beatgen/server/hi hat (1).WAV');
-var kickObject = new sample('http://kyledhillon.com/beatgen/server/kick (2).wav');
-var snareObject = new sample('http://kyledhillon.com/beatgen/server/snare (1).WAV');
+var hatObject = new sample(getFileName("hat", 3));
+var kickObject = new sample(getFileName("kick", 3));
+var snareObject = new sample(getFileName("snare", 3));
 
 function initKit() {
 	mainPart = new BeatPart();
@@ -119,7 +119,7 @@ function addTriplets(hat, index) {
 function genSnare() {
 	var snare = [];
 
-	muteSnare = Math.random() < 0.1;
+	muteSnare = Math.random() < 0.1 || (muteKick && Math.random() < 0.3);
 	muteSnare = true;
 
 	snare = [0, 0, 0, 0, 1, 0, 0, 0,
@@ -145,7 +145,7 @@ function genKick() {
 			0, 0, 0, 0, 0, 0, 0, 0];
 		
 	muteKick = false;
-	// muteKick = Math.random() < 0.1;	
+	muteKick = Math.random() < 0.3;	
 	
 	if (Math.random() < 0.2) kick[1] = 1;
 	if (Math.random() < 0.5) kick[3] = 1;
@@ -201,7 +201,7 @@ function mutateHat(hat) {
 		if ((i % (hatTime * 2) != 0 && (Math.random() < 0.1 / hatTime))) invert(ret, i);
 	}
 	
-	console.log(ret);
+	// console.log(ret);
 	return ret;
 }
 
@@ -231,6 +231,8 @@ function mutateKick(kick) {
 	for (var i = 0; i < kickRes; i++) {
 		ret[i] = kick[i];
 	}	
+	
+	muteKick = Math.random() < 0.1;	
 	
 	if (Math.random() < 0.1) invert(ret, 3);
 	if (Math.random() < 0.1) invert(ret, 6);
