@@ -5,7 +5,7 @@ var bassObject2 = new sample(getFileName("bass", 3));
 var bassChoiceOffsetFromG = -3;
 
 var semitoneOffset = 100;
-var bassVol = -0.5;
+var bassVol = -0.0;
 
 var muteBass;
 
@@ -30,8 +30,8 @@ function initBass(beatPart) {
 function scheduleBass(bass) {
     for (var i = 0; i < bars; i++) {
 		for (var j = 0; j < kickRes; j++) {
-			if (bass[j] > 0) {
-				playBass(j + i * 32);
+			if (bass[j] != 0) {
+				playBass(j + i * kickRes);
 			}
 		}
     }
@@ -61,12 +61,13 @@ function mutateBass(kick) {
     // else muteBass = false;
     
      for (var i = 0; i < kickRes; i++) {
-        if (kick[i] != 0) {
+        if (kick[i] != 0 || Math.random() < .3) {
             bass[i] = 1;
-            if (Math.random() < 0.4) bass[i] = 5;
-            else if (Math.random() < 0.4) bass[i] = 3;
-        }
-        else if (kick[i] == 0 && bass[i] != 0) {
+            if (Math.random() < 0.1) bass[i] = 5;
+            else if (Math.random() < 0.1) bass[i] = 3;
+            else if (Math.random() < 0.1) bass[i] = -2;
+         }
+        else {
            bass[i] = 0;
         }
     }
@@ -77,12 +78,11 @@ function mutateBass(kick) {
 
 function playBass(beat) {
     if (muteKick) return;
-    if (beat % 2 == 0) {
-        var index = beat / 2 % kickRes;
-        var note = bass[index];
-        if (note > 0) {
-            playSound(bassObject, note + key, bassVol, time + beat * subBeatEvery);
+
+    var index = beat;
+    var note = bass[index % kickRes];
+    if (note != 0) {
+        playSound(bassObject, note + key, bassVol, time + beat * 2 * subBeatEvery);
             // playSound(bassObject2, note + 12, bassVol, time + beat * subBeatEvery);
-         }
     }
 }

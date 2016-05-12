@@ -1,4 +1,4 @@
-var tempoMin = 135;
+var tempoMin = 125;
 var tempoMax = 150;
 
 var tempo = Math.floor(Math.random() * (tempoMax - tempoMin) + tempoMin);
@@ -14,6 +14,8 @@ var context;
 
 var startTime = 0;
 var time = 0;
+
+var nextUpdate;
 
 try {
     // Fix up for prefixing
@@ -53,7 +55,7 @@ function unlock() {
 			time = startTime;
 			initKit();
 			initBass(currentBeatPart);
-			setTimeout(updateMeasure, 1000);
+			setTimeout(updateMeasure, 0);
 			// document.getElementById("text").innerText = "&nbsp;";
 			document.getElementById("img").src = "img/2.jpg";
 		}			
@@ -89,6 +91,7 @@ function updateMeasure() {
 	if (measureCounter > 0) nextPart();	
 	console.log("measure: " + measureCounter);
 
-	setTimeout(updateMeasure, measureEvery * 1000);
+	// setTimeout(updateMeasure, measureEvery *2* 1000 - 200);
+	setTimeout(updateMeasure, 60/144 * 8  * 1000 - 100);
 	measureCounter += 1;
 }

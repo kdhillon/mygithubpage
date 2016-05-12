@@ -23,7 +23,7 @@ var bars = 2;
 
 var currentBeatPart;
 
-var hatObject = new sample(getFileName("hat", 10));
+var hatObject = new sample(getFileName("hat", 12));
 var kickObject = new sample(getFileName("kick", 3));
 var snareObject = new sample(getFileName("snare", 3));
 
@@ -71,28 +71,28 @@ function BeatPart() {
 // [3] is triplet
 function genHat() {
 	var hat = [];
+	
 	hatTime = 1;
 
 	if (Math.random() < 0.3) hatTime = 2;
 	else if (Math.random() < 0.5) hatTime = 4;
-
 	if (londonMode) hatTime = 4;
 
-	muteHat = Math.random() < 0.1;
+	// muteHat = Math.random() < 0.1;
 
-	for (var i = 0; i < hatRes; i++) {
-		hat[i] = 0;
-	}
+	// for (var i = 0; i < hatRes; i++) {
+	// 	hat[i] = 0;
+	// }
 
-	for (var i = 0; i < hatRes; i++) {
-		if ((i % (hatTime * 2) == 0 || (Math.random() < 0.1 / hatTime))) hat[i] = 1;
+	// for (var i = 0; i < hatRes; i++) {
+	// 	if ((i % (hatTime * 2) == 0 || (Math.random() < 0.1 / hatTime))) hat[i] = 1;
 		
-		if (hat[i] == 1 && Math.random() < 0.1) {
-			// addTriplets(hat, i);
-		}
-	}
+	// 	if (hat[i] == 1 && Math.random() < 0.1) {
+	// 		// addTriplets(hat, i);
+	// 	}
+	// }
 
-	console.log(hat);
+	// console.log(hat);
 	return hat;
 }
 
@@ -170,15 +170,15 @@ function mutateHat(hat) {
 	if (Math.random() < 0.1) {
 		console.log("changing hat situation")
 		if (hatTime == 1) {
-			if (Math.random() < 0.5) hatTime = 2;
+			if (Math.random() < 0.2) hatTime = 2;
 			else hatTime = 4;
 		}
 		else if (hatTime == 2) {
-			if (Math.random() < 0.5) hatTime = 1;
+			if (Math.random() < 0.2) hatTime = 1;
 			else hatTime = 4;
 		}
 		else if (hatTime == 4) {
-			if (Math.random() < 0.5) hatTime = 1;
+			if (Math.random() < 0.2) hatTime = 1;
 			else hatTime = 2;
 		}
 
@@ -290,8 +290,7 @@ function playSnare(beat) {
 
 function playKick(beat) {
 	if (!muteKick) {
-		// console.log("queueing kick: " + (time + beat * subBeatEvery));
-		playSound(kickObject, 1, kickVol, time + beat * subBeatEvery);
+		// playSound(kickObject, 1, kickVol, time + beat * subBeatEvery);
 	}
 }
 
