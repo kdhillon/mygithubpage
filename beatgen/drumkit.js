@@ -70,7 +70,7 @@ function BeatPart() {
 // [2] is half time triplet
 // [3] is triplet
 function genHat() {
-	var hat = [];
+	var hat = [hatRes];
 	
 	hatTime = 1;
 
@@ -78,21 +78,9 @@ function genHat() {
 	else if (Math.random() < 0.5) hatTime = 4;
 	if (londonMode) hatTime = 4;
 
-	// muteHat = Math.random() < 0.1;
-
-	// for (var i = 0; i < hatRes; i++) {
-	// 	hat[i] = 0;
-	// }
-
-	// for (var i = 0; i < hatRes; i++) {
-	// 	if ((i % (hatTime * 2) == 0 || (Math.random() < 0.1 / hatTime))) hat[i] = 1;
-		
-	// 	if (hat[i] == 1 && Math.random() < 0.1) {
-	// 		// addTriplets(hat, i);
-	// 	}
-	// }
-
-	// console.log(hat);
+	muteHat = Math.random() < 0.1;
+	hat  = mutateHat(hat);
+	
 	return hat;
 }
 
@@ -124,37 +112,18 @@ function genSnare() {
 
 	snare = [0, 0, 0, 0, 1, 0, 0, 0,
 			 0, 0, 0, 0, 1, 0, 0, 0];
-	if (Math.random() < 0.1) {
-		snare[7] = 1;
-	}
-	else if (Math.random() < 0.1) {
-		snare[9] = 1;
-	}
-	else if (Math.random() < 0.2) {
-		snare[15] = 1;
-	}
+	
+	snare = mutateSnare(snare);
 	return snare;
 }
 
 function genKick() {
-	var kick = [];
-	for (var i = 0; i < kickRes; i++) {
-		kick[i] = 0;
-	}
-	kick = [1, 0, 0, 0, 0, 0, 0, 0,
+	var kick = [1, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0];
 		
 	muteKick = false;
 	muteKick = Math.random() < 0.3;	
-	
-	if (Math.random() < 0.2) kick[1] = 1;
-	if (Math.random() < 0.5) kick[3] = 1;
-	if (Math.random() < 0.5) kick[6] = 1;
-	if (Math.random() < 0.5) kick[13] = 1;
-	if (Math.random() < 0.3) {
-		kick[9] = 1;
-		kick[10] = 1;
-	}
+		
 	return kick;
 }
 
@@ -199,6 +168,7 @@ function mutateHat(hat) {
 
 	for (var i = 0; i < hatRes; i++) {
 		if ((i % (hatTime * 2) != 0 && (Math.random() < 0.1 / hatTime))) invert(ret, i);
+		if (i % (hatTime * 2) == 0) ret[i] = 1; 
 	}
 	
 	// console.log(ret);

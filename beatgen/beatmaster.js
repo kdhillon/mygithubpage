@@ -34,7 +34,7 @@ window.attachEvent && window.attachEvent("onload",onLoad);
 
 var isUnlocked = false;
 
-function unlock() {
+function onTouch() {
 	if (isUnlocked) {
 		console.log("Already unlocked");
 		return;
@@ -50,48 +50,36 @@ function unlock() {
 	// by checking the play state after some time, we know if we're really unlocked
 	setTimeout(function() {
 		if((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
-			isUnlocked = true;
-			startTime = context.currentTime;
-			time = startTime;
-			initKit();
-			initBass(currentBeatPart);
-			setTimeout(updateMeasure, 0);
-			// document.getElementById("text").innerText = "&nbsp;";
-			document.getElementById("img").src = "img/2.jpg";
+			unlock();
 		}			
 
 	}, 0);
 }
 
-function onLoad() {
-	// document.getElementById("b1").addEventListener('click', unlock);
-	document.getElementById("text").addEventListener('click', unlock);
-	document.getElementById("img").addEventListener('click', unlock);
+function unlock() {
+	isUnlocked = true;
+	startTime = context.currentTime;
+		time = startTime;
+		initKit();
+		initBass(currentBeatPart);
+		setTimeout(updateMeasure, 0);
+		// document.getElementById("text").innerText = "&nbsp;";
+		document.getElementById("img").src = "img/2.jpg";
 }
 
-// function update32() {
-// 	// playBeat(stepCounter);
-// 	// playBass(stepCounter);
-
-// 	stepCounter++;
-// 	if (stepCounter >= 32) {
-// 		stepCounter = 0;
-// 		nextPart();	
-// 		measureCounter++;
-// 	}
-	
-// 	setTimeout(update32, subBeatEvery * 1000); // msecs
-// }
+function onLoad() {
+	// document.getElementById("b1").addEventListener('click', unlock);
+	document.getElementById("text").addEventListener('click', onTouch);
+	document.getElementById("img").addEventListener('click', onTouch);
+}
 
 function updateMeasure() {
 	time = startTime + measureCounter * measureEvery * 2;
 
-// if (measureCounter >= 2) return;
-
 	if (measureCounter > 0) nextPart();	
 	console.log("measure: " + measureCounter);
 
-	// setTimeout(updateMeasure, measureEvery *2* 1000 - 200);
-	setTimeout(updateMeasure, 60/144 * 8  * 1000 - 100);
+	var margin = 100;
+	setTimeout(updateMeasure, 60/144 * 8  * 1000 - margin);
 	measureCounter += 1;
 }
