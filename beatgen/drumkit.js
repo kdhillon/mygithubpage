@@ -70,7 +70,7 @@ function BeatPart() {
 // [2] is half time triplet
 // [3] is triplet
 function genHat() {
-	var hat = [hatRes];
+	var hat = new Array(hatRes).fill(0);;
 	
 	hatTime = 1;
 
@@ -123,7 +123,8 @@ function genKick() {
 		
 	muteKick = false;
 	muteKick = Math.random() < 0.3;	
-		
+	kick = mutateKick(kick);
+	
 	return kick;
 }
 
@@ -209,6 +210,7 @@ function mutateKick(kick) {
 	if (Math.random() < 0.1) invert(ret, 13);
 	if (Math.random() < 0.1) invert(ret, 9)
 	if (Math.random() < 0.1) invert(ret, 10);
+	
 	mutateBass(ret);
 	
 	return ret;
@@ -279,5 +281,21 @@ function playHat(beat) {
 			playSound(hatObject, 1, hatVol, time + (beat + 1.33) * subBeatEvery);			
 			playSound(hatObject, 1, hatVol, time + (beat + 2.66) * subBeatEvery);			
 		}
+	}
+}
+
+// will mute if not already muted
+function tryToMute(array) {
+	if (array == currentBeatPart._kick) {
+		if (muteSnare && muteHat) return;
+		muteKick = true;
+	}
+	else if (array == currentBeatPart._snare) {
+		if (muteKick && muteHat) return;
+		muteSnare = true;
+	}
+	else if (array == currentBeatPart._hat) {
+		if (muteSnare && muteKick) return;
+		muteHat = true;
 	}
 }

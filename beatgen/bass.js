@@ -9,6 +9,10 @@ var bassVol = -0.0;
 
 var muteBass;
 
+var octave = 0;
+
+var bass;
+
 // 0 is G
 var key = Math.floor(Math.random() * 12 - 4);
 // var key = 0;
@@ -16,7 +20,10 @@ console.log("Key: " + getNoteName(key));
 
 // sub bass hits everytime the kick hits
 function initBass(beatPart) {
-    bass = [kickRes];
+    bass = new Array(kickRes).fill(0);
+    bass[0] = 1;
+
+    console.log("FUCK" + bass);
 
     mutateBass(beatPart._kick)
     scheduleBass(bass);
@@ -52,6 +59,13 @@ function getNoteName(semitonesFromG) {
 
 // mutate based on new kick
 function mutateBass(kick) {
+    if (bass == null) {
+        bass = new Array(kickRes).fill(0);
+    }
+    kick[0] = 1;
+    bass[0] = 1;
+
+    console.log("hey " +  bass);
      for (var i = 1; i < kickRes; i++) {
         if (kick[i] != 0 && Math.random() < .3) {
             bass[i] = 1;
@@ -75,7 +89,7 @@ function playBass(beat) {
     var note = bass[index % kickRes];
     if (note != 0) {
         console.log(bass);
-        playSound(bassObject, note + key, bassVol, time + beat * 2 * subBeatEvery);
+        playSound(bassObject, note + key + 12 * octave, bassVol, time + beat * 2 * subBeatEvery);
             // playSound(bassObject2, note + 12, bassVol, time + beat * subBeatEvery);
     }
 }
