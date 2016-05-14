@@ -41,6 +41,7 @@ function playSound(object, semitones, gain, time) {
 
 
 function getFileName(prefix, count) {
+    var count = count - 1;
 	var random = Math.ceil(Math.random() * count) + 1;
     console.log(prefix + ": " + random);
 	return "http://kyledhillon.com/beatgen/server/" + prefix + "/" + random + ".WAV";
