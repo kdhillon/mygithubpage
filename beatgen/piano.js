@@ -12,11 +12,11 @@ var pianoVol = -0.5;
 function initMelody() {
     for (var i = 0; i < melody.length; i++) {
         melody[i] = 0;
-        if (Math.random() < 0.1 && (i % 2 == 0 || Math.random() < 0.2)) melody[i] = 1
-        if (Math.random() < 0.05 && (i % 2 == 0 || Math.random() < 0.2)) melody[i] = 3;
-        if (Math.random() < 0.05 && (i % 2 == 0 || Math.random() < 0.2)) melody[i] = 5;
-        if (Math.random() < 0.05 && (i % 2 == 0 || Math.random() < 0.2)) melody[i] = 7;
-        if (Math.random() < 0.05 && (i % 2 == 0 || Math.random() < 0.2)) melody[i] = -2;
+        if (Math.random() < 0.3 && (i % 2 == 0 || Math.random() < 0.2)) melody[i] = 1
+        else if (Math.random() < 0.05 && (i % 2 == 0 || Math.random() < 0.2)) melody[i] = 3;
+        else if (Math.random() < 0.05 && (i % 2 == 0 || Math.random() < 0.2)) melody[i] = 5;
+        else if (Math.random() < 0.05 && (i % 2 == 0 || Math.random() < 0.2)) melody[i] = 7;
+        else if (Math.random() < 0.05 && (i % 2 == 0 || Math.random() < 0.2)) melody[i] = -2;
     }
 }
 
