@@ -2,7 +2,7 @@ var bassObject = new sample(getFileName("bass", 3));
 var bassObject2 = new sample(getFileName("bass", 3));
 
 // 0 if 1,2,3 (Start on G), but -3 if SubBass01
-var bassChoiceOffsetFromG = -3;
+var bassChoiceOffsetFromG = 1;
 
 var semitoneOffset = 100;
 var bassVol = -0.0;
@@ -13,6 +13,8 @@ var octave = 0;
 
 var bass;
 
+var repeatEvery = 4; // how many bars should we repeat after
+
 // 0 is G
 var key = Math.floor(Math.random() * 12 - 4);
 // var key = 0;
@@ -22,8 +24,6 @@ console.log("Key: " + getNoteName(key));
 function initBass(beatPart) {
     bass = new Array(kickRes).fill(0);
     bass[0] = 1;
-
-    console.log("FUCK" + bass);
 
     mutateBass(beatPart._kick)
     scheduleBass(bass);
@@ -65,7 +65,6 @@ function mutateBass(kick) {
     kick[0] = 1;
     bass[0] = 1;
 
-    console.log("hey " +  bass);
      for (var i = 1; i < kickRes; i++) {
         if (kick[i] != 0 && Math.random() < .3) {
             bass[i] = 1;

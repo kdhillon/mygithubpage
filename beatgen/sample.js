@@ -18,8 +18,9 @@ function loadAudio(object, url) {
 
 function playSound(object, semitones, gain, time) {
     if (object.buffer == null) return;
-    // if (object.playing && object == bassObject) {
-    //     object.s
+    
+    // if (object.playing) {
+    //     object.s.stop();
     //     object.playing = false;
     // }
     object.s = context.createBufferSource();
@@ -35,6 +36,14 @@ function playSound(object, semitones, gain, time) {
     }
 
     object.s.start(time);
+    // object.playing = true;
+}
+
+
+function getFileName(prefix, count) {
+	var random = Math.ceil(Math.random() * 3);
+    console.log(prefix + ": " + random);
+	return "http://kyledhillon.com/beatgen/server/" + prefix + "/" + random + ".WAV";
 }
 
 

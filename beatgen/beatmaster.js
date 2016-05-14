@@ -62,6 +62,7 @@ function unlock() {
 		time = startTime;
 		initKit();
 		initBass(currentBeatPart);
+		initMelody();
 		setTimeout(updateMeasure, 0);
 		// document.getElementById("text").innerText = "&nbsp;";
 		document.getElementById("img").src = "img/2.jpg";

@@ -9,6 +9,8 @@ var hatVol = 0;
 var snareVol = 0;
 var kickVol = 0;
 
+var kickProbs = []
+
 // This represents the drum pad for playing the drum beat
 // Everything is represented as arrays of binary values (1 or 0).
 // For example, the snare array is length 16, one for each eigth note in a two measure block.
@@ -184,15 +186,9 @@ function mutateSnare(snare) {
 	
 	muteSnare = Math.random() < 0.1;
 
-	if (Math.random() < 0.1) {
-		invert(ret, 7);
-	}
-	if (Math.random() < 0.1) {
-		invert(ret, 9);
-	}
-	if (Math.random() < 0.1) {
-		invert(ret, 15);
-	}
+	if (Math.random() < 0.1) invert(ret, 7);
+	if (Math.random() < 0.1) invert(ret, 9);
+	if (Math.random() < 0.1) invert(ret, 15);
 	
 	return ret;
 }
@@ -227,6 +223,7 @@ function invert(array, index) {
 
 function nextPart() {
 	//var newBeatPart = new BeatPart();
+	
 	if (change) {
 		currentBeatPart._hat = genHat();
 		currentBeatPart._kick = genKick();
@@ -239,6 +236,7 @@ function nextPart() {
 		currentBeatPart._snare = mutateSnare(currentBeatPart._snare);
 		scheduleBeatPart(currentBeatPart);
 	}
+	scheduleMelody();
 }
 
 function playBeat(beat) {
