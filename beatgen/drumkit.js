@@ -25,7 +25,7 @@ var bars = 2;
 
 var currentBeatPart;
 
-var hatObject = new sample(getFileName("hat", 11));
+var hatObject = new sample(getFileName("hat", 10));
 var kickObject = new sample(getFileName("kick", 3));
 var snareObject = new sample(getFileName("snare", 3));
 
@@ -235,8 +235,9 @@ function nextPart() {
 		currentBeatPart._kick = mutateKick(currentBeatPart._kick);
 		currentBeatPart._snare = mutateSnare(currentBeatPart._snare);
 		scheduleBeatPart(currentBeatPart);
+		mutateMelody();
+		scheduleMelody();
 	}
-	scheduleMelody();
 }
 
 function playBeat(beat) {
