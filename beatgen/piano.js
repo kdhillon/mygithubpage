@@ -41,10 +41,10 @@ function mutateMelody() {
     melody[0] = 1;
     for (var i = 2; i < melody.length; i += 2) {
         if (melody[i] != 0 && Math.random() < 0.6) continue;
-        if (Math.random() < 0.2) {
-            melody[i] = 0;
-            break;
-        }
+        // if (Math.random() < 0.2) {
+        //     melody[i] = 0;
+        //     break;
+        // }
         var rand = Math.random();
         var sum = 0;
         var index = -1;
@@ -55,7 +55,8 @@ function mutateMelody() {
                 break;
             }
         }
-        melody[i] = currentNotes[j];
+        if (melody[i-2] != currentNotes[j])
+            melody[i] = currentNotes[j];
     }
 
     melody[0] = 1;
