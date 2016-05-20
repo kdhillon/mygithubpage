@@ -75,6 +75,7 @@ function mutateMelody() {
     //     if (Math.random() < 0.5) melody[melody.length - 2] = 3;
     // }
     console.log("melody: " + melody);
+    document.getElementById("text").textContent = melody;
 }
 
 // move to different file eventually
@@ -93,7 +94,7 @@ function playMelody(beat) {
     // if (muteKick) return;
     var note = melody[beat % melody.length];
     if (note != 0) {
-        // playSound(melodyObject, note - 1 + melodyOffFromG + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
+        playSound(melodyObject, note - 1 + melodyOffFromG + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
         // playSound(melodyObject1, note - 1 + melodyOffFromG + key + 4 + 12 * melodyOctave, melodyVol - 0.2, time + beat * 2 * subBeatEvery);
         // playSound(melodyObject2, note - 1 + melodyOffFromG + key + 7 + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
     }
