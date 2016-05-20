@@ -262,7 +262,7 @@ function playSnare(beat) {
 
 function playKick(beat) {
 	if (!muteKick) {
-		// playSound(kickObject, 1, kickVol, time + beat * subBeatEvery);
+		playSound(kickObject, 1, kickVol, time + beat * subBeatEvery);
 	}
 }
 
