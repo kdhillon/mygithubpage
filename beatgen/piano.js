@@ -1,13 +1,17 @@
 var melodyOffsetFromG
 var melodyOffFromG = 2; // A.
 
-var melodyObject = new sample(getFileName("melody", 8));
+var melodyObject = new sample(getFileName("melody", 1));
+var melodyObject1 = new sample(getFileName("melody", 1));
+var melodyObject2 = new sample(getFileName("melody", 1));
 
 var melody = [0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,0]
 var melodyInit = false;
 var melodyOctave = 0;
 var melodyVol = -.5;
 
+// these should be subtracted by one
+var diatonicScale = [1, 3, 5, 6, 8, 10, 12, 13];
 
 function initMelody() {
     for (var i = 0; i < melody.length; i++) {
@@ -29,7 +33,7 @@ function mutateMelody() {
              if (Math.random() < 0.05) melody[i] = 3;
              else if (Math.random() < 0.05) melody[i] = 5;
              else if (Math.random() < 0.05) melody[i] = 8;
-             else if (Math.random() < 0.05) melody[i] = -2;
+             else if (Math.random() < 0.05) melody[i] = -1;
              else if (Math.random() < 0.05) melody[i] = 0;
          }    
          if (i % 2 == 1 && Math.random() < 0.05) {
@@ -69,10 +73,8 @@ function playMelody(beat) {
     // if (muteKick) return;
     var note = melody[beat % melody.length];
     if (note != 0) {
-        var vol = 0;
-        // if (currentBeatPart._kick[beat] == 0) 
-        playSound(melodyObject, note + melodyOffFromG + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
-        // playSound(melodyObject1, note + melodyOffFromG + key + 5 + 12 * melodyOctave, pianoVol - 0.2, time + beat * 2 * subBeatEvery);
-        // playSound(melodyObject2, note + melodyOffFromG + key + 9 + 12 * melodyOctave, pianoVol, time + beat * 2 * subBeatEvery);
+        playSound(melodyObject, note - 1 + melodyOffFromG + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
+        playSound(melodyObject1, note - 1 + melodyOffFromG + key + 5 + 12 * melodyOctave, melodyVol - 0.2, time + beat * 2 * subBeatEvery);
+        playSound(melodyObject2, note - 1 + melodyOffFromG + key + 8 + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
     }
 }

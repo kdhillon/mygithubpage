@@ -88,7 +88,7 @@ function playBass(beat) {
     var note = bass[index % kickRes];
     if (note != 0) {
         // console.log(bass);
-        playSound(bassObject, note + key + 12 * octave, bassVol, time + beat * 2 * subBeatEvery);
+        // playSound(bassObject, note + key + 12 * octave, bassVol, time + beat * 2 * subBeatEvery);
         // playSound(bassObject2, note + 12, bassVol, time + beat * subBeatEvery);
     }
 }
