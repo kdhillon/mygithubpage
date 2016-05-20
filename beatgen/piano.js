@@ -1,14 +1,12 @@
 var melodyOffsetFromG
 var melodyOffFromG = 2; // A.
 
-var melodyObject = new sample(getFileName("synth", 7));
-var melodyObject1 = new sample(getFileName("piano", 1));
-var melodyObject2 = new sample(getFileName("piano", 1));
+var melodyObject = new sample(getFileName("melody", 8));
 
 var melody = [0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,0]
 
 var melodyOctave = 0;
-var pianoVol = -.5;
+var melodyVol = -.5;
 
 
 function initMelody() {
@@ -43,8 +41,11 @@ function mutateMelody() {
     for (var i = 0; i < melody.length; i += 2) {
         if (melody[i] == 0) melody[i] = 1;        
     }
-    if (melody[melody.length - 4] == 1 && Math.random() < 0.8) melody[melody.length-2] = 3;
-    console.log("piano: " + melody);   
+    if (melody[melody.length - 4] == 1 && Math.random() < 0.5) {
+        melody[melody.length-2] = 2;
+        if (Math.random() < 0.5) melody[melody.length - 2] = 3;
+    }
+    console.log("melody: " + melody);   
 }
 
 // move to different file eventually
@@ -52,20 +53,20 @@ function scheduleMelody() {
       for (var i = 0; i < bars; i++) {
 		for (var j = 0; j < melody.length; j++) {
 			if (melody[j] != 0) {
-				playPiano(j + i * melody.length);
+				playMelody(j + i * melody.length);
 			}
 		}
     }
 }
 
 
-function playPiano(beat) {
+function playMelody(beat) {
     // if (muteKick) return;
     var note = melody[beat % melody.length];
     if (note != 0) {
         var vol = 0;
         // if (currentBeatPart._kick[beat] == 0) 
-        playSound(melodyObject, note + melodyOffFromG + key + 12 * melodyOctave, pianoVol, time + beat * 2 * subBeatEvery);
+        playSound(melodyObject, note + melodyOffFromG + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
         // playSound(melodyObject1, note + melodyOffFromG + key + 5 + 12 * melodyOctave, pianoVol - 0.2, time + beat * 2 * subBeatEvery);
         // playSound(melodyObject2, note + melodyOffFromG + key + 9 + 12 * melodyOctave, pianoVol, time + beat * 2 * subBeatEvery);
     }
