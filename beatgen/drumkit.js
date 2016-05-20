@@ -80,7 +80,7 @@ function genHat() {
 	else if (Math.random() < 0.5) hatTime = 4;
 	if (londonMode) hatTime = 4;
 
-	muteHat = Math.random() < 0.1;
+	muteHat = Math.random() < 0.7;
 	hat  = mutateHat(hat);
 	
 	return hat;
@@ -109,13 +109,13 @@ function addTriplets(hat, index) {
 function genSnare() {
 	var snare = [];
 
-	muteSnare = Math.random() < 0.1 || (muteKick && Math.random() < 0.3);
-	muteSnare = true;
-
 	snare = [0, 0, 0, 0, 1, 0, 0, 0,
 			 0, 0, 0, 0, 1, 0, 0, 0];
 	
 	snare = mutateSnare(snare);
+	muteSnare = Math.random() < 0.1 || (muteKick && Math.random() < 0.3);
+	muteSnare = true;
+	
 	return snare;
 }
 
@@ -123,9 +123,10 @@ function genKick() {
 	var kick = [1, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0];
 		
-	muteKick = false;
-	muteKick = Math.random() < 0.3;	
+	
 	kick = mutateKick(kick);
+	muteKick = false;
+	muteKick = Math.random() < 0.7;	
 	
 	return kick;
 }

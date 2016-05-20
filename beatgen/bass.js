@@ -5,7 +5,7 @@ var bassObject2 = new sample(getFileName("bass", 3));
 var bassChoiceOffsetFromG = 1;
 
 var semitoneOffset = 100;
-var bassVol = -0.0;
+var bassVol = +0.5;
 
 var muteBass;
 
