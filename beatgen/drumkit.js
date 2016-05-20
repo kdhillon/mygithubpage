@@ -27,7 +27,7 @@ var currentBeatPart;
 
 var hatObject = new sample(getFileName("hat", 10));
 var kickObject = new sample(getFileName("kick", 3));
-var snareObject = new sample(getFileName("snare", 3));
+var snareObject = new sample(getFileName("snare", 8));
 
 function initKit() {
 	mainPart = new BeatPart();

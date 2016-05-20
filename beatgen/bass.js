@@ -66,7 +66,7 @@ function mutateBass(kick) {
     bass[0] = 1;
 
      for (var i = 1; i < kickRes; i++) {
-        if (kick[i] != 0 && Math.random() < .3) {
+        if (kick[i] != 0 && Math.random() < 1) {
             bass[i] = 1;
             if (Math.random() < 0.1) bass[i] = 5;
             else if (Math.random() < 0.1) bass[i] = 3;

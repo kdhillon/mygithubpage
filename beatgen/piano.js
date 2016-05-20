@@ -4,7 +4,7 @@ var melodyOffFromG = 2; // A.
 var melodyObject = new sample(getFileName("melody", 8));
 
 var melody = [0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,0]
-
+var melodyInit = false;
 var melodyOctave = 0;
 var melodyVol = -.5;
 
@@ -22,6 +22,8 @@ function initMelody() {
 }
 
 function mutateMelody() {
+    if (Math.random() < 0.5 && melodyInit) return;
+    melodyInit = true;
      for (var i = 0; i < melody.length; i++) {
          if (i % 2 == 0 && Math.random() < 0.9) {
              if (Math.random() < 0.05) melody[i] = 3;
@@ -35,11 +37,14 @@ function mutateMelody() {
              if (Math.random() < 0.5) melody[i] = 1;
          }
      }
+     if (Math.random() < 0.5) {
      for (var i = melody.length / 2; i < melody.length; i++) {
-        melody[i - melody.length/2] = melody[i];
+         melody[i - melody.length/2] = melody[i];
     }
+     }
     for (var i = 0; i < melody.length; i += 2) {
-        if (melody[i] == 0) melody[i] = 1;        
+        if (melody[i] == 0 && Math.random() < 0.5) melody[i] = 1;
+        else if (melody[i] > 1 && Math.random() < 0.2) melody[i] = 0;        
     }
     if (melody[melody.length - 4] == 1 && Math.random() < 0.5) {
         melody[melody.length-2] = 2;
