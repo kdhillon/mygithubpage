@@ -5,7 +5,7 @@ var bassObject2 = new sample(getFileName("bass", 3));
 var bassChoiceOffsetFromG = 1;
 
 var semitoneOffset = 100;
-var bassVol = +0.5;
+var bassVol = 2;
 
 var muteBass;
 
@@ -89,6 +89,6 @@ function playBass(beat) {
     if (note != 0) {
         // console.log(bass);
         playSound(bassObject, note + key + 12 * octave, bassVol, time + beat * 2 * subBeatEvery);
-            // playSound(bassObject2, note + 12, bassVol, time + beat * subBeatEvery);
+        // playSound(bassObject2, note + 12, bassVol, time + beat * subBeatEvery);
     }
 }

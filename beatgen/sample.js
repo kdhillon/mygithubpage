@@ -11,6 +11,7 @@ function loadAudio(object, url) {
     request.onload = function () {
         context.decodeAudioData(request.response, function (buffer) {
             object.buffer = buffer;
+            object.gainNode = context.createGain();
         });
     }
     request.send();
@@ -29,11 +30,11 @@ function playSound(object, semitones, gain, time) {
         object.s.detune.value = 100 * (semitones);
     object.s.connect(context.destination);
     
-    if (gain != 0) {
-        gainNode.gain.value = gain;
-        object.s.connect(gainNode);
-        gainNode.connect(context.destination);
-    }
+    // if (gain != 0) {
+        object.gainNode.gain.value = gain;
+        object.s.connect(object.gainNode);
+        object.gainNode.connect(context.destination);
+    // }
 
     object.s.start(time);
     // object.playing = true;

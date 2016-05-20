@@ -26,8 +26,6 @@ try {
     alert('Web Audio API is not supported in this browser');
   }
   
-var gainNode = context.createGain();
-
 window.addEventListener ? 
 window.addEventListener("load",onLoad,false) : 
 window.attachEvent && window.attachEvent("onload",onLoad);
