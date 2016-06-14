@@ -26,6 +26,8 @@ function playSound(object, semitones, gain, time) {
     // }
     object.s = context.createBufferSource();
     object.s.buffer = object.buffer;
+    
+    // note: detune parameter is new and only supported by chrome
     if (object.s.detune != null)
         object.s.detune.value = 100 * (semitones);
     object.s.connect(context.destination);

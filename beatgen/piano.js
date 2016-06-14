@@ -8,7 +8,7 @@ var melodyObject = new sample(getFileName("melody", 8));
 var melody = [0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,0]
 var melodyInit = false;
 var melodyOctave = 0;
-var melodyVol = -.5;
+var melodyVol = -.9;
 
 // these should be subtracted by one
 var majorScale = [1, 3, 5, 6, 8, 10, 12, 13];
@@ -35,6 +35,20 @@ function initMelody() {
     // }
 }
 
+function getWeightedNote() {
+     var rand = Math.random();
+        var sum = 0;
+        var index = -1;
+        for (var j = 0; j < currentProb.length; j++) {
+            sum += currentProb[j];
+            if (rand < sum) {
+                index = j; 
+                break;
+            }
+        }
+        return currentNotes[j];
+}
+
 function mutateMelody() {
     if (Math.random() < 0.7 && melodyInit) return;
     melodyInit = true;
@@ -45,23 +59,14 @@ function mutateMelody() {
         //     melody[i] = 0;
         //     break;
         // }
-        var rand = Math.random();
-        var sum = 0;
-        var index = -1;
-        for (var j = 0; j < currentProb.length; j++) {
-            sum += currentProb[j];
-            if (rand < sum) {
-                index = j; 
-                break;
-            }
-        }
-        if (melody[i-2] != currentNotes[j])
-            melody[i] = currentNotes[j];
+       var note = getWeightedNote();
+        if (melody[i-2] != note)
+            melody[i] = note;
     }
 
     melody[0] = 1;
     // should we duplicate the second half?
-    if (Math.random() < 1) {
+    if (Math.random() < 0.5) {
         for (var i = melody.length / 2; i < melody.length; i++) {
             melody[i] = melody[i - melody.length / 2];
         }
