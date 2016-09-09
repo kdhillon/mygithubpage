@@ -1,5 +1,5 @@
-var bassObject = new sample(getFileName("bass", 3));
-var bassObject2 = new sample(getFileName("bass", 3));
+var bassObject = new sample(getFileName("bass", 0));
+var bassObject2 = new sample(getFileName("bass", 0));
 
 // 0 if 1,2,3 (Start on G), but -3 if SubBass01
 var bassChoiceOffsetFromG = 1;

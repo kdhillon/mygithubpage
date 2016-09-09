@@ -22,6 +22,6 @@ function scheduleLS() {
 function playLS(beat) {
     var note = longSynth[beat];
     if (note != 0) {
-        playSound(longSynthObject, note, 0, time + beat * 8 * subBeatEvery)
+    //    playSound(longSynthObject, note, 0, time + beat * 8 * subBeatEvery)
     }
 }
