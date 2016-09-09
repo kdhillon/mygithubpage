@@ -5,7 +5,7 @@ var snareRes = 16;
 var kickRes = 16;
 var hatRes = 32;
 
-var hatVol = 0;
+var hatVol = -0.5;
 var snareVol = 0;
 var kickVol = 0;
 
