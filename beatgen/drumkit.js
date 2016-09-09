@@ -247,6 +247,7 @@ function playBeat(beat) {
 	}
 	if (beat % 2 == 0) {
 		playKick(beat / 2);
+		playBass(beat / 2);
 	}
 
 	playHat(beat);

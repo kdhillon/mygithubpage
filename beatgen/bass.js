@@ -1,5 +1,5 @@
 var bassObject = new sample(getFileName("bass", 0));
-var bassObject2 = new sample(getFileName("bass", 0));
+//var bassObject2 = new sample(getFileName("bass", 0));
 
 // 0 if 1,2,3 (Start on G), but -3 if SubBass01
 var bassChoiceOffsetFromG = 1;
@@ -87,7 +87,7 @@ function playBass(beat) {
     var index = beat;
     var note = bass[index % kickRes];
     if (note != 0) {
-        // console.log(bass);
+        //console.log(bass);
         playSound(bassObject, note + key + 12 * octave, bassVol, time + beat * 2 * subBeatEvery);
         // playSound(bassObject2, note + 12, bassVol, time + beat * subBeatEvery);
     }
