@@ -17,9 +17,11 @@ function loadAudio(object, url) {
     request.send();
 }
 
-function playSound(object, semitones, gain, time) {
-    if (object.buffer == null) return;
-    
+function stopSound(object, semitones, gain, time) {
+    if (object.buffer == null) {
+        console.log(("buffer is null"));
+        return;
+    }
     // if (object.playing) {
     //     object.s.stop();
     //     object.playing = false;
@@ -40,6 +42,13 @@ function playSound(object, semitones, gain, time) {
 
     object.s.start(time);
     // object.playing = true;
+}
+
+function cut(object, time) {
+    if (object.s == null) return;
+
+    object.s.stop(time);
+    // object.s.
 }
 
 

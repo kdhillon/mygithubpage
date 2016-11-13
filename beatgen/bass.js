@@ -16,8 +16,8 @@ var bass;
 var repeatEvery = 4; // how many bars should we repeat after
 
 // 0 is G
-var key = Math.floor(Math.random() * 12 - 4);
-// var key = 0;
+// var key = Math.floor(Math.random() * 12 - 4);
+var key = 0;
 console.log("Key: " + getNoteName(key));
 
 // sub bass hits everytime the kick hits
@@ -66,7 +66,7 @@ function mutateBass(kick) {
     bass[0] = 1;
 
      for (var i = 1; i < kickRes; i++) {
-        if (kick[i] != 0 && Math.random() < 1) {
+        if (kick[i] != 0 || Math.random() < .1) {
             bass[i] = 1;
             if (Math.random() < 0.1) bass[i] = 5;
             else if (Math.random() < 0.1) bass[i] = 3;
@@ -76,8 +76,8 @@ function mutateBass(kick) {
            bass[i] = 0;
         }
     }
-    // console.log(kick);
-    // console.log(bass);
+    console.log(kick);
+    console.log(bass);
     scheduleBass(bass);
 }
 
@@ -87,7 +87,7 @@ function playBass(beat) {
     var index = beat;
     var note = bass[index % kickRes];
     if (note != 0) {
-        //console.log(bass);
+        stopSound(bassObject, time + beat * 2 * subBeatEvery);
         playSound(bassObject, note + key + 12 * octave, bassVol, time + beat * 2 * subBeatEvery);
         // playSound(bassObject2, note + 12, bassVol, time + beat * subBeatEvery);
     }

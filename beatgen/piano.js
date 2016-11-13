@@ -79,7 +79,7 @@ function mutateMelody() {
     //     melody[melody.length - 2] = 2;
     //     if (Math.random() < 0.5) melody[melody.length - 2] = 3;
     // }
-    console.log("melody: " + melody);
+    // console.log("melody: " + melody);
     document.getElementById("text").textContent = melody;
 }
 
