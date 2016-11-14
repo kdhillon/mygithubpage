@@ -1,7 +1,20 @@
+var reader = new FileReader();
+
+
 function sample(url) {
     this.source = url;
     loadAudio(this, url);
 }
+
+function loadLocalAudio(object, localFileName) {
+    var file = document.getElementById('file').files[0];
+    var buffer = reader.readAsArrayBuffer(file);
+    context.decodeAudioData(request.response, function (buffer) {
+        object.buffer = buffer;
+        object.gainNode = context.createGain();
+    })
+}
+
 
 function loadAudio(object, url) {
     var request = new XMLHttpRequest();
@@ -22,6 +35,9 @@ function playSound(object, semitones, gain, time) {
         console.log(("buffer is null"));
         return;
     }
+
+    semitones -= 1;
+
     // if (object.playing) {
     //     object.s.stop();
     //     object.playing = false;

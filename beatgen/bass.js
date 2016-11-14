@@ -5,33 +5,22 @@ var bassObject = new sample(getFileName("bass", 1));
 var bassChoiceOffsetFromG = 1;
 
 var semitoneOffset = 100;
-var bassVol = .25;
+var bassVol = .05;
 
-var muteBass;
+// var muteBass;
 
 var octave = 0;
-
-var repeatEvery = 4; // how many bars should we repeat after
 
 // 0 is G
 // var key = Math.floor(Math.random() * 12 - 4);
 var key = 0;
 console.log("Key: " + getNoteName(key));
 
-// sub bass hits everytime the kick hits
-function initBass(beatPart) {
-    bass = new Array(kickRes).fill(0);
-    bass[0] = 1;
-
-    console.log("initializing bass")
-    // mutateBass(beatPart._kick)
-}
-
 function scheduleBass(bass) {
     for (var i = 0; i < measures; i++) {
 		for (var j = 0; j < kickRes; j++) {
 			if (bass[j] != 0) {
-				playBass(j + i * kickRes);
+				playBass(bass, j + i * kickRes);
 			}
 		}
     }
@@ -57,10 +46,8 @@ function getNoteName(semitonesFromG) {
 
 // mutate based on new kick
 function generateBass(kick) {
-    bass = new Array(kickRes).fill(0);
+    var bass = new Array(kickRes).fill(0);
     
-    // bass[0] = 1;
-
      for (var i = 0; i < kickRes; i++) {
         if (kick[i] != 0 || Math.random() < .1) {
             bass[i] = 1;
@@ -72,13 +59,28 @@ function generateBass(kick) {
            bass[i] = 0;
         }
     }
-    console.log(kick);
-    console.log(bass);
+
     return bass;
     // scheduleBass(bass);
 }
 
-function playBass(beat) {
+function mutateBass(bass) {
+var newBass = bass.slice(0);
+
+     for (var i = 1; i < kickRes; i++) {
+        if (Math.random() < .1) {
+            if (bass[i] != 0) {
+                if (Math.random() < .1) newBass[i] = 0;
+            }
+            if (Math.random() < 0.1) newBass[i] = 5;
+            else if (Math.random() < 0.1) newBass[i] = 3;
+            else if (Math.random() < 0.1) newBass[i] = -2;
+         }
+    }
+    return newBass;
+}
+
+function playBass(bass, beat) {
     if (muteKick) return;
 
     var index = beat;

@@ -15,9 +15,7 @@ var context;
 var startTime = 0;
 var time = 0;
 
-var nextUpdate;
-
-var currentBeatPart;
+var song = new Song();
 
 try {
     // Fix up for prefixing
@@ -59,14 +57,11 @@ function onTouch() {
 function unlock() {
 	isUnlocked = true;
 	startTime = context.currentTime;
-		time = startTime;
-		initKit();
-		initBass();
-		initMelody();
-		initLongSynth();
-		setTimeout(updateMeasure, 0);
+	time = startTime;
+	
+	setTimeout(updateMeasure, 0);
 		// document.getElementById("text").innerText = "&nbsp;";
-		document.getElementById("img").src = "img/1.jpg";
+	document.getElementById("img").src = "img/1.jpg";
 }
 
 function onLoad() {
@@ -80,17 +75,8 @@ function updateMeasure() {
 
 	// if (measureCounter > 0) nextPart();	
 	console.log("measure: " + measureCounter);
-	if (measureCounter == 0) {
-		currentBeatPart = new BeatPart();
-	}
-	if (measureCounter % 2 == 0) {
-		currentBeatPart.scheduleFirstHalf();
-		console.log("scheduling 1");
-	}
-	else {
-		currentBeatPart.scheduleSecondHalf();
-		console.log("scheduling 2");
-	}
+	song.playMeasure(measureCounter);
+
 	var margin = 100;
 	setTimeout(updateMeasure, 60/144 * 8  * 1000 - margin);
 	measureCounter += 1;

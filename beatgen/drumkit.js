@@ -29,48 +29,51 @@ var hatObject = new sample(getFileName("hat", 1));
 var kickObject = new sample(getFileName("kick", 1));
 var snareObject = new sample(getFileName("snare", 1));
 
-
 // this will be owned by BeatPart
-function KitPart() {
-	this._kick = genKick();
-	this._snare = genSnare();
-	this._hat = genHat();
-}
-
-function initKit() {
-	// scheduleKitPart(currentKitPart);
+function KitPart(fresh) {
+	if (fresh) {
+		this._kick = genKick();
+		this._snare = genSnare();
+		this._hat = genHat();
+	}
 }
 
 // schedule this beat part to be played for x measures
-function scheduleKitPart(kitPart) {
+function scheduleKitPart(kitPart, muteKick, muteHat, muteSnare) {
 	// console.log("scheduling");
 	for (var i = 0; i < measures; i++) {
 		// schedule hat
+		if (!muteHat) {
 		for (var j = 0; j < hatRes; j++) {
 			if (kitPart._hat[j] > 0) {
 				playHat(j + i * 32);
 			}
 		}
+		}
 		
+		if (!muteKick) {
 		// schedule kick
 		for (var j = 0; j < kickRes; j++) {
 			if (kitPart._kick[j] == 1) {
 				playKick(j * 2 + i * 32);
 			}
 		}
+		}
 		
+		if (!muteSnare) {
 		// schedule snare
 		for (var j = 0; j < snareRes; j++) {
 			if (kitPart._snare[j] == 1) {
 				playSnare(j * 2 + i * 32);
 			}
 		}
+		}
 	}
 }
 
 
 function generateNewDrums() {
-	var newKitPart = new KitPart();
+	var newKitPart = new KitPart(true);
 	return newKitPart;
 }
 
@@ -86,8 +89,10 @@ function genHat() {
 	else if (Math.random() < 0.5) hatTime = 4;
 	if (londonMode) hatTime = 4;
 
-	muteHat = Math.random() < 0.7;
-	hat  = mutateHat(hat, true);
+	console.log("hat time: " + hatTime)
+
+	// muteHat = Math.random() < 0.7;
+	hat  = mutateHat(hat, false);
 	
 	return hat;
 }
@@ -138,7 +143,7 @@ function genKick() {
 }
 
 function mutateKit(oldKit) {
-	var newKitPart = new KitPart();
+	var newKitPart = new KitPart(false);
 	
 	newKitPart._hat = mutateHat(oldKit._hat, false);
 	newKitPart._kick = mutateKick(oldKit._kick);
@@ -167,10 +172,8 @@ function mutateKit(oldKit) {
 // }
 
 function mutateHat(hat, canChangeSituation) {
-	var ret = [];
-	for (var i = 0; i < hatRes; i++) {
-		ret[i] = hat[i];
-	}
+	var ret = hat.slice(0);
+	
 	muteHat = Math.random() < 0.1;
 
 	// if cut out, always cut back in after.
