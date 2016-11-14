@@ -17,60 +17,66 @@ var kickProbs = []
 // Example: kick = [1, 0, 0, 0, 0, 0, 0, 0
 //					0, 0, 0, 0, 0, 0, 0, 0]
 // High hat is double the resolution (length 32).
-// document.body.style.backgroundColor = "magenta"
 
 var change = false; // generate completely new beat every 2 bars 
 var mutate = true; // mutate previous two bars
-var bars = 2;
 
-var currentBeatPart;
+var measures = 1; // actuall should be called measures?
+
+// var currentKitPart;
 
 var hatObject = new sample(getFileName("hat", 1));
 var kickObject = new sample(getFileName("kick", 1));
 var snareObject = new sample(getFileName("snare", 1));
 
-function initKit() {
-	mainPart = new BeatPart();
-	currentBeatPart = mainPart;
-	scheduleBeatPart(currentBeatPart);
+
+// this will be owned by BeatPart
+function KitPart() {
+	this._kick = genKick();
+	this._snare = genSnare();
+	this._hat = genHat();
 }
 
-// schedule this beat part to be played for x bars
-function scheduleBeatPart(beatPart) {
-	console.log("scheduling");
-	for (var i = 0; i < bars; i++) {
+function initKit() {
+	// scheduleKitPart(currentKitPart);
+}
+
+// schedule this beat part to be played for x measures
+function scheduleKitPart(kitPart) {
+	// console.log("scheduling");
+	for (var i = 0; i < measures; i++) {
 		// schedule hat
 		for (var j = 0; j < hatRes; j++) {
-			if (beatPart._hat[j] > 0) {
+			if (kitPart._hat[j] > 0) {
 				playHat(j + i * 32);
 			}
 		}
 		
 		// schedule kick
 		for (var j = 0; j < kickRes; j++) {
-			if (beatPart._kick[j] == 1) {
+			if (kitPart._kick[j] == 1) {
 				playKick(j * 2 + i * 32);
 			}
 		}
 		
 		// schedule snare
 		for (var j = 0; j < snareRes; j++) {
-			if (beatPart._snare[j] == 1) {
+			if (kitPart._snare[j] == 1) {
 				playSnare(j * 2 + i * 32);
 			}
 		}
 	}
 }
 
-function BeatPart() {
-	this._kick = genKick();
-	this._snare = genSnare();
-	this._hat = genHat();
+
+function generateNewDrums() {
+	var newKitPart = new KitPart();
+	return newKitPart;
 }
 
 // [1] is regular beat
 // [2] is half time triplet
-// [3] is triplet
+// [3] is triplet 
 function genHat() {
 	var hat = new Array(hatRes).fill(0);;
 	
@@ -81,7 +87,7 @@ function genHat() {
 	if (londonMode) hatTime = 4;
 
 	muteHat = Math.random() < 0.7;
-	hat  = mutateHat(hat);
+	hat  = mutateHat(hat, true);
 	
 	return hat;
 }
@@ -131,16 +137,46 @@ function genKick() {
 	return kick;
 }
 
-function mutateHat(hat) {
+function mutateKit(oldKit) {
+	var newKitPart = new KitPart();
+	
+	newKitPart._hat = mutateHat(oldKit._hat, false);
+	newKitPart._kick = mutateKick(oldKit._kick);
+	newKitPart._snare = mutateSnare(oldKit._snare);	
+	
+	return newKitPart;
+}
+
+// function nextPart() {
+// 	//var newkitPart = new kitPart();
+	
+// 	if (change) {
+// 		currentKitPart._hat = genHat();
+// 		currentKitPart._kick = genKick();
+// 		currentKitPart._snare = genSnare();
+// 	}
+// 	else if (mutate && measureCounter % 2 == 0) {
+// 		console.log("mutating");
+// 		currentKitPart._hat = mutateHat(currentKitPart._hat);
+// 		currentKitPart._kick = mutateKick(currentKitPart._kick);
+// 		currentKitPart._snare = mutateSnare(currentKitPart._snare);
+// 		scheduleKitPart(currentKitPart);
+// 		mutateMelody();
+// 		scheduleMelody();
+// 	}
+// }
+
+function mutateHat(hat, canChangeSituation) {
 	var ret = [];
 	for (var i = 0; i < hatRes; i++) {
 		ret[i] = hat[i];
 	}
-
-	// if cut out, always cut back in after.
 	muteHat = Math.random() < 0.1;
 
-	if (Math.random() < 0.1) {
+	// if cut out, always cut back in after.
+
+	if (canChangeSituation && Math.random() < 0.1) {
+
 		console.log("changing hat situation")
 		if (hatTime == 1) {
 			if (Math.random() < 0.2) hatTime = 2;
@@ -208,7 +244,7 @@ function mutateKick(kick) {
 	if (Math.random() < 0.1) invert(ret, 9)
 	if (Math.random() < 0.1) invert(ret, 10);
 	
-	mutateBass(ret);
+	// mutateBass(ret);
 	
 	return ret;
 }
@@ -222,24 +258,6 @@ function invert(array, index) {
 	}
 }
 
-function nextPart() {
-	//var newBeatPart = new BeatPart();
-	
-	if (change) {
-		currentBeatPart._hat = genHat();
-		currentBeatPart._kick = genKick();
-		currentBeatPart._snare = genSnare();
-	}
-	else if (mutate && measureCounter % 2 == 0) {
-		console.log("mutating");
-		currentBeatPart._hat = mutateHat(currentBeatPart._hat);
-		currentBeatPart._kick = mutateKick(currentBeatPart._kick);
-		currentBeatPart._snare = mutateSnare(currentBeatPart._snare);
-		scheduleBeatPart(currentBeatPart);
-		mutateMelody();
-		scheduleMelody();
-	}
-}
 
 function playBeat(beat) {
 	if (beat % 2 == 0) {
@@ -247,7 +265,7 @@ function playBeat(beat) {
 	}
 	if (beat % 2 == 0) {
 		playKick(beat / 2);
-		playBass(beat / 2);
+		// playBass(beat / 2);
 	}
 
 	playHat(beat);
@@ -272,31 +290,31 @@ function playHat(beat) {
 		// console.log("queueing hat: " + (time + beat * subBeatEvery));
 		playSound(hatObject, 1, hatVol, time + beat * subBeatEvery);
 		
-		// play the next two notes in triplet
-		if (currentBeatPart._hat[beat % 32] == 2) {
-			playSound(hatObject, 1, hatVol, time + (beat + 2.66) * subBeatEvery);			
-			playSound(hatObject, 1, hatVol, time + (beat + 5.33) * subBeatEvery);			
-		}
-		// play next two notes in triplet
-		if (currentBeatPart._hat[beat % 32] == 3) {
-			playSound(hatObject, 1, hatVol, time + (beat + 1.33) * subBeatEvery);			
-			playSound(hatObject, 1, hatVol, time + (beat + 2.66) * subBeatEvery);			
-		}
+		// // play the next two notes in triplet
+		// if (currentKitPart._hat[beat % 32] == 2) {
+		// 	playSound(hatObject, 1, hatVol, time + (beat + 2.66) * subBeatEvery);			
+		// 	playSound(hatObject, 1, hatVol, time + (beat + 5.33) * subBeatEvery);			
+		// }
+		// // play next two notes in triplet
+		// if (currentKitPart._hat[beat % 32] == 3) {
+		// 	playSound(hatObject, 1, hatVol, time + (beat + 1.33) * subBeatEvery);			
+		// 	playSound(hatObject, 1, hatVol, time + (beat + 2.66) * subBeatEvery);			
+		// }
 	}
 }
 
 // will mute if not already muted
-function tryToMute(array) {
-	if (array == currentBeatPart._kick) {
-		if (muteSnare && muteHat) return;
-		muteKick = true;
-	}
-	else if (array == currentBeatPart._snare) {
-		if (muteKick && muteHat) return;
-		muteSnare = true;
-	}
-	else if (array == currentBeatPart._hat) {
-		if (muteSnare && muteKick) return;
-		muteHat = true;
-	}
-}
+// function tryToMute(array) {
+// 	if (array == currentKitPart._kick) {
+// 		if (muteSnare && muteHat) return;
+// 		muteKick = true;
+// 	}
+// 	else if (array == currentKitPart._snare) {
+// 		if (muteKick && muteHat) return;
+// 		muteSnare = true;
+// 	}
+// 	else if (array == currentKitPart._hat) {
+// 		if (muteSnare && muteKick) return;
+// 		muteHat = true;
+// 	}
+// }

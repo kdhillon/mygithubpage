@@ -17,6 +17,8 @@ var time = 0;
 
 var nextUpdate;
 
+var currentBeatPart;
+
 try {
     // Fix up for prefixing
     window.AudioContext = window.AudioContext||window.webkitAudioContext;
@@ -59,7 +61,7 @@ function unlock() {
 	startTime = context.currentTime;
 		time = startTime;
 		initKit();
-		initBass(currentBeatPart);
+		initBass();
 		initMelody();
 		initLongSynth();
 		setTimeout(updateMeasure, 0);
@@ -76,9 +78,19 @@ function onLoad() {
 function updateMeasure() {
 	time = startTime + measureCounter * measureEvery * 2;
 
-	if (measureCounter > 0) nextPart();	
+	// if (measureCounter > 0) nextPart();	
 	console.log("measure: " + measureCounter);
-
+	if (measureCounter == 0) {
+		currentBeatPart = new BeatPart();
+	}
+	if (measureCounter % 2 == 0) {
+		currentBeatPart.scheduleFirstHalf();
+		console.log("scheduling 1");
+	}
+	else {
+		currentBeatPart.scheduleSecondHalf();
+		console.log("scheduling 2");
+	}
 	var margin = 100;
 	setTimeout(updateMeasure, 60/144 * 8  * 1000 - margin);
 	measureCounter += 1;

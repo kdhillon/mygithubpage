@@ -86,7 +86,7 @@ function mutateMelody() {
 // move to different file eventually
 function scheduleMelody() {
     
-      for (var i = 0; i < bars; i++) {
+      for (var i = 0; i < measures; i++) {
 		for (var j = 0; j < melody.length; j++) {
 			if (melody[j] != 0) {
 	//			playMelody(j + i * melody.length);

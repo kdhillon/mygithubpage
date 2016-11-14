@@ -1,17 +1,15 @@
-var bassObject = new sample(getFileName("bass", 0));
+var bassObject = new sample(getFileName("bass", 1));
 //var bassObject2 = new sample(getFileName("bass", 0));
 
 // 0 if 1,2,3 (Start on G), but -3 if SubBass01
 var bassChoiceOffsetFromG = 1;
 
 var semitoneOffset = 100;
-var bassVol = 2;
+var bassVol = .25;
 
 var muteBass;
 
 var octave = 0;
-
-var bass;
 
 var repeatEvery = 4; // how many bars should we repeat after
 
@@ -25,12 +23,12 @@ function initBass(beatPart) {
     bass = new Array(kickRes).fill(0);
     bass[0] = 1;
 
-    mutateBass(beatPart._kick)
-    scheduleBass(bass);
+    console.log("initializing bass")
+    // mutateBass(beatPart._kick)
 }
 
 function scheduleBass(bass) {
-    for (var i = 0; i < bars; i++) {
+    for (var i = 0; i < measures; i++) {
 		for (var j = 0; j < kickRes; j++) {
 			if (bass[j] != 0) {
 				playBass(j + i * kickRes);
@@ -58,14 +56,12 @@ function getNoteName(semitonesFromG) {
 }
 
 // mutate based on new kick
-function mutateBass(kick) {
-    if (bass == null) {
-        bass = new Array(kickRes).fill(0);
-    }
-    kick[0] = 1;
-    bass[0] = 1;
+function generateBass(kick) {
+    bass = new Array(kickRes).fill(0);
+    
+    // bass[0] = 1;
 
-     for (var i = 1; i < kickRes; i++) {
+     for (var i = 0; i < kickRes; i++) {
         if (kick[i] != 0 || Math.random() < .1) {
             bass[i] = 1;
             if (Math.random() < 0.1) bass[i] = 5;
@@ -78,7 +74,8 @@ function mutateBass(kick) {
     }
     console.log(kick);
     console.log(bass);
-    scheduleBass(bass);
+    return bass;
+    // scheduleBass(bass);
 }
 
 function playBass(beat) {
@@ -87,7 +84,7 @@ function playBass(beat) {
     var index = beat;
     var note = bass[index % kickRes];
     if (note != 0) {
-        stopSound(bassObject, time + beat * 2 * subBeatEvery);
+        stopSound(bassObject, time + beat * 2 * subBeatEvery - 0.001);
         playSound(bassObject, note + key + 12 * octave, bassVol, time + beat * 2 * subBeatEvery);
         // playSound(bassObject2, note + 12, bassVol, time + beat * subBeatEvery);
     }
