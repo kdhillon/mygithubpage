@@ -72,5 +72,5 @@ function getFileName(prefix, count) {
     var count = count - 1;
 	var random = Math.ceil(Math.random() * count) + 1;
     console.log(prefix + ": " + random);
-	return "http://kyledhillon.com/beatgen/server/" + prefix + "/" + random + ".WAV";
+	return "http://127.0.0.1:8887/" + prefix + "/" + random + ".WAV";
 }

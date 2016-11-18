@@ -6,38 +6,64 @@
 
 var currentBeatPart;
 
+// 1-4 A
+// 5-12 B
+// 13-16 A
+// 17-24 B
 
+// x % (A + B) gives you cu
 function Song() {
+	if (Math.random() < 0.5) 
+		this.introLength = 4;
+	else this.introLength = 2;
     this.aLength = 4;
-    this.aSection = new BeatPart();
+    this.aSection = new BeatPart(true);
+    this.bSection = mutateBeatPart(this.aSection)
 
-    this.bLength = 4;
-    // this.bSection = mutateBeatPart(aSection);
-    // initialize song
-    currentBeatPart = new BeatPart()
+    this.bLength = 8;
+	
+	var loopLength = this.aLength + this.bLength;
+	
+	this.dirtyMelody = generateMelody();
 
     this.playMeasure = function(measure) {
-
-        console.log("playing measure");
-          if (measure % 2 == 0) {
-            if ((measure + 2) % 8 == 0) {
-                currentBeatPart.schedule(true, true);
-                console.log("scheduling 1 special");
-            }
-            else {
-                currentBeatPart.schedule(true, false);
-                console.log("scheduling 1");
-            }
+		// play intro
+		if (measure < this.introLength) {
+			console.log("playing intro");
+			this.aSection.schedule(measure % 2 == 0, true);
+		}
+		else {
+			var playHarmony = false;
+			if (measure >= this.introLength + 4)
+				playHarmony = true;
+			
+		var baseMeasure = (measure - this.introLength) % loopLength;
+		var currentSection = this.aSection;
+		var selectionLength = this.aLength;
+		var elapsedParts = 0;
+		// section A
+		if (baseMeasure >= this.aLength) {
+            console.log("scheduling b");
+			currentSection = this.bSection;
+			selectionLength = this.bLength;
+			elapsedParts = this.aLength;
+		}
+		
+        if (baseMeasure % 2 == 0) {
+        	currentSection.schedule(true, false, playHarmony);
         }
         else {
-            if ((measure + 1) % 8 == 0) {
-                currentBeatPart.schedule(false, true);
-                console.log("scheduling 2 special");
+            if ((baseMeasure + 1 - elapsedParts) % selectionLength == 0) {
+				console.log("special");
+                currentSection.schedule(false, true, playHarmony);
             }
             else {
-                currentBeatPart.schedule(false, false);
-                console.log("scheduling 2");
+                currentSection.schedule(false, false, playHarmony);
             }
         }
+		
+		scheduleMelody(this.dirtyMelody, false)
+		this.dirtyMelody = mutateMelody(this.dirtyMelody, false);
+	}
     };
 }

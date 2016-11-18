@@ -1,6 +1,10 @@
 // Fun variables
 var londonMode = false;
 
+// if using triplets, don't allow weird beats to be scheduled
+var triplets = Math.random() < 0.5;
+console.log("triplets: " + triplets);
+
 var snareRes = 16;
 var kickRes = 16;
 var hatRes = 32;
@@ -17,9 +21,6 @@ var kickProbs = []
 // Example: kick = [1, 0, 0, 0, 0, 0, 0, 0
 //					0, 0, 0, 0, 0, 0, 0, 0]
 // High hat is double the resolution (length 32).
-
-var change = false; // generate completely new beat every 2 bars 
-var mutate = true; // mutate previous two bars
 
 var measures = 1; // actuall should be called measures?
 
@@ -40,13 +41,26 @@ function KitPart(fresh) {
 
 // schedule this beat part to be played for x measures
 function scheduleKitPart(kitPart, muteKick, muteHat, muteSnare) {
-	// console.log("scheduling");
+	console.log(kitPart._hat);
 	for (var i = 0; i < measures; i++) {
 		// schedule hat
 		if (!muteHat) {
 		for (var j = 0; j < hatRes; j++) {
 			if (kitPart._hat[j] > 0) {
 				playHat(j + i * 32);
+				
+				if (kitPart._hat[j] == 2) {
+					playHat(j + i * 32 + 1.33);		
+					playHat(j + i * 32 + 2.66);		
+				}
+				if (kitPart._hat[j] == 3) {
+					playHat(j + i * 32 + 2.66);		
+					playHat(j + i * 32 + 5.33);
+				}
+				if (kitPart._hat[j] == 4) {
+					playHat(j + i * 32 + 0.33);		
+					playHat(j + i * 32 + 0.66);
+				}
 			}
 		}
 		}
@@ -71,7 +85,6 @@ function scheduleKitPart(kitPart, muteKick, muteHat, muteSnare) {
 	}
 }
 
-
 function generateNewDrums() {
 	var newKitPart = new KitPart(true);
 	return newKitPart;
@@ -88,33 +101,47 @@ function genHat() {
 	if (Math.random() < 0.3) hatTime = 2;
 	else if (Math.random() < 0.5) hatTime = 4;
 	if (londonMode) hatTime = 4;
-
-	console.log("hat time: " + hatTime)
-
+	
 	// muteHat = Math.random() < 0.7;
 	hat  = mutateHat(hat, false);
 	
 	return hat;
 }
 
-function addTriplets(hat, index) {
-	if (hatTime == 4) {
+function addTriplets(hat, i) {
+	// super fast triplet
+	if (Math.random() < .3) {
+		hat[i] = 4;
+		// if ( == 0) invert(hat, (i+1)%hatRes); // make the next one 1 (THIS IS FucKing stuff up)
+		if (Math.random() < 0.5) hat[(i+1)%hatRes] = 4;
+	}
+	else if (Math.random() < .5) {
 		hat[i] = 2; // triplet
-		hat[(i + 1) % hatRes] = 0; // make the next one 0	
-		hat[(i + 2) % hatRes] = 0; // make the next one 0			
-		hat[(i + 3) % hatRes] = 0; // make the next one 0			
-		hat[(i + 4) % hatRes] = 0; // make the next one 1
-		hat[(i + 5) % hatRes] = 0; // make the next one 1
-		hat[(i + 6) % hatRes] = 0; // make the next one 1
-		hat[(i + 7) % hatRes] = 1; // make the next one 1
-	}
-	if (hatTime == 1 || hatTime == 2) {
+		hat[(i + 1) % hatRes] = -1; // make the next one 0	
+		hat[(i + 2) % hatRes] = -1; // make the next one 0			
+		hat[(i + 3) % hatRes] = -1; // make the next one 0		
+		if (hat[(i+4)%hatRes] == 0) invert(hat, (i+4)%hatRes); // make the next one 1 (THIS IS FucKing stuff up)
+		
+		// make sure the one after the triplet is off, so it doesn't sound weird. This may be buggy.
+// 		hat[(i + 6) % hatRes] = 0; // make the next one 1
+// 		hat[(i + 7) % hatRes] = 1; // make the next one 1
+	} else {
 		hat[i] = 3;
-		hat[(i + 1) % hatRes] = 0; // make the next one 0			
-		hat[(i + 2) % hatRes] = 0; // make the next one 0			
-		hat[(i + 3) % hatRes] = 0; // make the next one 0			
-		hat[(i + 4) % hatRes] = 1; // make the next one 1			
+		hat[(i + 1) % hatRes] = -1; // make the next one 0	
+		hat[(i + 2) % hatRes] = -1; // make the next one 0			
+		hat[(i + 3) % hatRes] = -1; // make the next one 0	
+		hat[(i + 4) % hatRes] = -1; // make the next one 0	
+		hat[(i + 5) % hatRes] = -1; // make the next one 0			
+		hat[(i + 6) % hatRes] = -1; // make the next one 0	
+		if (hat[(i+7)%hatRes] == 0) invert(hat, (i+7)%hatRes); // make the next one 1 (THIS IS FucKing stuff up)
 	}
+ //	if (hatTime == 1 || hatTime == 2) {
+ // 		hat[i] = 3;
+ // 		hat[(i + 1) % hatRes] = 0; // make the next one 0
+ // 		hat[(i + 2) % hatRes] = 0; // make the next one 0
+ // 		hat[(i + 3) % hatRes] = 0; // make the next one 0
+ // 		hat[(i + 4) % hatRes] = 1; // make the next one 1
+ // 	}
 }
 
 function genSnare() {
@@ -152,69 +179,54 @@ function mutateKit(oldKit) {
 	return newKitPart;
 }
 
-// function nextPart() {
-// 	//var newkitPart = new kitPart();
-	
-// 	if (change) {
-// 		currentKitPart._hat = genHat();
-// 		currentKitPart._kick = genKick();
-// 		currentKitPart._snare = genSnare();
-// 	}
-// 	else if (mutate && measureCounter % 2 == 0) {
-// 		console.log("mutating");
-// 		currentKitPart._hat = mutateHat(currentKitPart._hat);
-// 		currentKitPart._kick = mutateKick(currentKitPart._kick);
-// 		currentKitPart._snare = mutateSnare(currentKitPart._snare);
-// 		scheduleKitPart(currentKitPart);
-// 		mutateMelody();
-// 		scheduleMelody();
-// 	}
-// }
-
 function mutateHat(hat, canChangeSituation) {
 	var ret = hat.slice(0);
 	
-	muteHat = Math.random() < 0.1;
-
-	// if cut out, always cut back in after.
+	// muteHat = Math.random() < 0.1;
 
 	if (canChangeSituation && Math.random() < 0.1) {
-
 		console.log("changing hat situation")
 		if (hatTime == 1) {
-			if (Math.random() < 0.2) hatTime = 2;
+			if (Math.random() < 0.5) hatTime = 2;
 			else hatTime = 4;
 		}
 		else if (hatTime == 2) {
-			if (Math.random() < 0.2) hatTime = 1;
+			if (Math.random() < 0.5) hatTime = 1;
 			else hatTime = 4;
 		}
 		else if (hatTime == 4) {
-			if (Math.random() < 0.2) hatTime = 1;
+			if (Math.random() < 0.5) hatTime = 1;
 			else hatTime = 2;
 		}
-
-		if (Math.random() < 0.3) muteHat = true;
-
+				
 		for (var i = 0; i < hatRes; i++) {
 			ret[i] = 0;
-		}
-
-		for (var i = 0; i < hatRes; i++) {
-			if ((i % (hatTime * 2) == 0 || (Math.random() < 0.1 / hatTime))) ret[i] = 1;
-			
-			if (hat[i] == 1 && Math.random() < 0.1) {
-				// addTriplets(hat, i);
-			}	
 		}
 	}
 
 	for (var i = 0; i < hatRes; i++) {
+		// triplet blocked out
+		if (ret[i] < 0) continue;
+		
 		if ((i % (hatTime * 2) != 0 && (Math.random() < 0.1 / hatTime))) invert(ret, i);
-		if (i % (hatTime * 2) == 0) ret[i] = 1; 
+		if (i % (hatTime * 2) == 0) {
+			if (ret[i] == 2 || ret[i] == 3) {
+				invert(ret, i); 
+				invert(ret, i); // invert again to make 1
+			}
+			else if (ret[i] == 0)
+				invert(ret, i); 
+		}
+		
+		if (triplets && (i % 2) != 0 && (ret[i] > 0 && ret[i] != 4)) {
+			invert(ret, i);
+		}
+		
+		if (triplets && ret[i] == 1 && Math.random() < 0.3 && i % 4 == 0) {
+			addTriplets(ret, i);
+		}	
 	}
 	
-	// console.log(ret);
 	return ret;
 }
 
@@ -256,42 +268,46 @@ function invert(array, index) {
 	if (array[index] == 0) {
 		array[index] = 1;
 	}
+	else if (array[index] == 2 || array[index] == 3) {
+		// no longer a triplet, so free up the next few blocks
+			var j = index + 1;
+			while (array[j] < 0) {
+				array[j] = 0;
+				j++;
+			}
+			array[index] = 0;
+	}
 	else {
 		array[index] = 0;
 	}
 }
 
-
-function playBeat(beat) {
-	if (beat % 2 == 0) {
-		playSnare(beat / 2);
-	}
-	if (beat % 2 == 0) {
-		playKick(beat / 2);
-		// playBass(beat / 2);
-	}
-
-	playHat(beat);
-}
+//
+// function playBeat(beat) {
+// 	if (beat % 2 == 0) {
+// 		playSnare(beat / 2);
+// 	}
+// 	if (beat % 2 == 0) {
+// 		playKick(beat / 2);
+// 		// playBass(beat / 2);
+// 	}
+//
+// 	playHat(beat);
+// }
 
 // schedule instruments to be played on the given beat
 function playSnare(beat) {
-	if (!muteSnare) {
-		// console.log("queueing snare: " + (time + beat * subBeatEvery));
-		playSound(snareObject, 1, snareVol, time + beat * subBeatEvery);
-	}
+	// console.log("queueing snare: " + (time + beat * subBeatEvery));
+	playSound(snareObject, 1, snareVol, time + beat * subBeatEvery);
 }
 
 function playKick(beat) {
-	if (!muteKick) {
-		playSound(kickObject, 1, kickVol, time + beat * subBeatEvery);
-	}
+	playSound(kickObject, 1, kickVol, time + beat * subBeatEvery);
 }
 
 function playHat(beat) {
-	if (!muteHat) {
 		// console.log("queueing hat: " + (time + beat * subBeatEvery));
-		playSound(hatObject, 1, hatVol, time + beat * subBeatEvery);
+	playSound(hatObject, 1, hatVol, time + beat * subBeatEvery);
 		
 		// // play the next two notes in triplet
 		// if (currentKitPart._hat[beat % 32] == 2) {
@@ -303,7 +319,6 @@ function playHat(beat) {
 		// 	playSound(hatObject, 1, hatVol, time + (beat + 1.33) * subBeatEvery);			
 		// 	playSound(hatObject, 1, hatVol, time + (beat + 2.66) * subBeatEvery);			
 		// }
-	}
 }
 
 // will mute if not already muted

@@ -12,8 +12,8 @@ var bassVol = .05;
 var octave = 0;
 
 // 0 is G
-// var key = Math.floor(Math.random() * 12 - 4);
-var key = 0;
+var key = Math.floor(Math.random() * 12 - 4);
+// var key = 0;
 console.log("Key: " + getNoteName(key));
 
 function scheduleBass(bass) {
@@ -44,45 +44,50 @@ function getNoteName(semitonesFromG) {
     return "messed up";
 }
 
+function getEmptyBass() {
+    return new Array(kickRes).fill(0);
+}
+
 // mutate based on new kick
 function generateBass(kick) {
-    var bass = new Array(kickRes).fill(0);
+    var bass = getEmptyBass();
     
-     for (var i = 0; i < kickRes; i++) {
-        if (kick[i] != 0 || Math.random() < .1) {
-            bass[i] = 1;
-            if (Math.random() < 0.1) bass[i] = 5;
-            else if (Math.random() < 0.1) bass[i] = 3;
-            else if (Math.random() < 0.1) bass[i] = -2;
-         }
-        else {
-           bass[i] = 0;
-        }
-    }
+     // for (var i = 0; i < kickRes; i++) {
+ //        if (kick[i] != 0 || Math.random() < .1) {
+ //            bass[i] = 1;
+ //            if (Math.random() < 0.1) bass[i] = 5;
+ //            else if (Math.random() < 0.1) bass[i] = 3;
+ //            else if (Math.random() < 0.1) bass[i] = -2;
+ //         }
+ //        else {
+ //           bass[i] = 0;
+ //        }
+ //    }
 
-    return bass;
+    return mutateBass(bass, kick);
     // scheduleBass(bass);
 }
 
-function mutateBass(bass) {
-var newBass = bass.slice(0);
-
+function mutateBass(bass, kick) {
+	var newBass = bass.slice(0);
+	
+	newBass[0] = 1; // this could be removed below, which is cool sometimes
      for (var i = 1; i < kickRes; i++) {
-        if (Math.random() < .1) {
+        if (kick[i] != 0 || Math.random() < .1) {
             if (bass[i] != 0) {
                 if (Math.random() < .1) newBass[i] = 0;
             }
-            if (Math.random() < 0.1) newBass[i] = 5;
+            if (Math.random() < 0.3) newBass[i] = 1;
+            else if (Math.random() < 0.1) newBass[i] = 5;
             else if (Math.random() < 0.1) newBass[i] = 3;
             else if (Math.random() < 0.1) newBass[i] = -2;
          }
     }
+	
     return newBass;
 }
 
 function playBass(bass, beat) {
-    if (muteKick) return;
-
     var index = beat;
     var note = bass[index % kickRes];
     if (note != 0) {
