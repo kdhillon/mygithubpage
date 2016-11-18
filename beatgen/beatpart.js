@@ -41,7 +41,7 @@ function BeatPart(fresh) {
             drums = this.drumsA;
             bass = this.bassA;
             console.log(this.bassA);
-			// scheduleMelody(this.melodyA, false);
+			scheduleMelody(this.melodyA, false);
 			
 			if (playHarmony) 
 				scheduleMelody(this.harmonyA, true);		
@@ -50,7 +50,7 @@ function BeatPart(fresh) {
             drums = this.drumsB;
             bass = this.bassB;
             console.log(this.bassB);
-			// scheduleMelody(this.melodyB, false);
+			scheduleMelody(this.melodyB, false);
 			
 			if (playHarmony) 
 				scheduleMelody(this.harmonyB, true);

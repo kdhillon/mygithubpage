@@ -24,7 +24,7 @@ function Song() {
 	
 	var loopLength = this.aLength + this.bLength;
 	
-	this.dirtyMelody = generateMelody();
+	// this.dirtyMelody = generateMelody();
 
     this.playMeasure = function(measure) {
 		// play intro
@@ -62,8 +62,8 @@ function Song() {
             }
         }
 		
-		scheduleMelody(this.dirtyMelody, false)
-		this.dirtyMelody = mutateMelody(this.dirtyMelody, false);
+		// scheduleMelody(this.dirtyMelody, false)
+		// this.dirtyMelody = mutateMelody(this.dirtyMelody, false);
 	}
     };
 }
