@@ -1,5 +1,6 @@
 var reader = new FileReader();
 
+var offlineMode = false;
 
 function sample(url) {
     this.source = url;
