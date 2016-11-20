@@ -71,21 +71,34 @@ function getWeightedNote(previous) {
         return currentNotes[j];
 }
 
+function mutateHarmony(melody) {
+
+}
+
 function mutateMelody(input, harmony) {
 	var melody = input.slice(0);
 	var resolution = RES;
-	if (harmony) resolution = 4;
+	if (harmony) {
+        resolution = 4;
+        // melody = [0,0,0,0,0,0,0,0,0,0,0,0,0]
+    }
 	else resolution = 1;
 	
     for (var i = 0; i < melody.length; i += resolution) {
-        if (melody[i] != 0 && Math.random() < 0.6) continue;
+        if ((melody[i] != 0) && Math.random() < 0.6) continue;
+        else if (!harmony && melody[i] == 0 && Math.random() < 0.3) continue;
         // if (Math.random() < 0.2) {
         //     melody[i] = 0;
         //     break;
         // }
        var note = getWeightedNote(i - resolution);
-        if (melody[i-resolution] != note)
+        // if (harmony) {
+        //     note = input[i] + 5;
+        // }
+        
+        if (melody[i-resolution] != note) {
             melody[i] = note;
+        }
     }
 
 //    melody[0] = 1;
@@ -103,7 +116,12 @@ function mutateMelody(input, harmony) {
     //     melody[melody.length - 2] = 2;
     //     if (Math.random() < 0.5) melody[melody.length - 2] = 3;
     // }
-    console.log("melody: " + melody);
+    if (harmony) {
+        console.log("harmony: " + melody);
+    }
+    else 
+        console.log("melody: " + melody);
+
     // document.getElementById("text").textContent = melody;
 	return melody;
 }

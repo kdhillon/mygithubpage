@@ -70,14 +70,22 @@ function onLoad() {
 	document.getElementById("img").addEventListener('click', onTouch);
 }
 
+var measuresToLoad = 16;
 function updateMeasure() {
+	if (measureCounter > measuresToLoad) {
+		setTimeout(updateMeasure, 45 * 1000);
+		measuresToLoad += 16;
+		return;
+	}
 	time = startTime + measureCounter * measureEvery * 2;
 
 	// if (measureCounter > 0) nextPart();	
 	console.log("measure: " + measureCounter);
 	song.playMeasure(measureCounter);
 
-	var margin = 100;
-	setTimeout(updateMeasure, 60/144 * 8  * 1000 - margin);
+	var margin = 1000;
+	// setTimeout(updateMeasure, 60/144 * 8  * 1000 - margin);
+	setTimeout(updateMeasure, 100);
+
 	measureCounter += 1;
 }

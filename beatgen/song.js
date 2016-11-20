@@ -29,13 +29,13 @@ function Song() {
     this.playMeasure = function(measure) {
 		// play intro
 		if (measure < this.introLength) {
-			console.log("playing intro");
+			// console.log("playing intro");
 			this.aSection.schedule(measure % 2 == 0, true);
 		}
 		else {
-			var playHarmony = false;
-			if (measure >= this.introLength + 4)
-				playHarmony = true;
+			// var playHarmony = false;
+			// if (measure >= this.introLength + 4)
+				var playHarmony = true;
 			
 		var baseMeasure = (measure - this.introLength) % loopLength;
 		var currentSection = this.aSection;
@@ -43,7 +43,7 @@ function Song() {
 		var elapsedParts = 0;
 		// section A
 		if (baseMeasure >= this.aLength) {
-            console.log("scheduling b");
+            // console.log("scheduling b");
 			currentSection = this.bSection;
 			selectionLength = this.bLength;
 			elapsedParts = this.aLength;
@@ -54,7 +54,7 @@ function Song() {
         }
         else {
             if ((baseMeasure + 1 - elapsedParts) % selectionLength == 0) {
-				console.log("special");
+				// console.log("special");
                 currentSection.schedule(false, true, playHarmony);
             }
             else {

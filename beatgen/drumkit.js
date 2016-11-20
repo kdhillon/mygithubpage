@@ -41,7 +41,7 @@ function KitPart(fresh) {
 
 // schedule this beat part to be played for x measures
 function scheduleKitPart(kitPart, muteKick, muteHat, muteSnare) {
-	console.log(kitPart._hat);
+	// console.log(kitPart._hat);
 	for (var i = 0; i < measures; i++) {
 		// schedule hat
 		if (!muteHat) {
@@ -185,7 +185,7 @@ function mutateHat(hat, canChangeSituation) {
 	// muteHat = Math.random() < 0.1;
 
 	if (canChangeSituation && Math.random() < 0.1) {
-		console.log("changing hat situation")
+		// console.log("changing hat situation")
 		if (hatTime == 1) {
 			if (Math.random() < 0.5) hatTime = 2;
 			else hatTime = 4;
