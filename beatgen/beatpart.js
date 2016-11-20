@@ -43,8 +43,8 @@ function BeatPart(fresh) {
             // console.log(this.bassA);
 			scheduleMelody(this.melodyA, false);
 			
-			if (playHarmony) 
-				scheduleMelody(this.harmonyA, true);		
+			// if (playHarmony) 
+			// 	scheduleMelody(this.harmonyA, true);		
         }
         else {
             drums = this.drumsB;

@@ -1,6 +1,8 @@
 var tempoMin = 125;
 var tempoMax = 150;
 
+var offlineMode = false;
+
 var tempo = Math.floor(Math.random() * (tempoMax - tempoMin) + tempoMin);
 console.log("Tempo: " + tempo);
 var beatEvery = 60 / tempo;
