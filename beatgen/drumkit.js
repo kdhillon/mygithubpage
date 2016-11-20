@@ -28,7 +28,7 @@ var measures = 1; // actuall should be called measures?
 
 var hatObject = new sample(getFileName("hat", 1));
 var kickObject = new sample(getFileName("kick", 1));
-var snareObject = new sample(getFileName("snare", 1));
+var snareObject = new sample(getFileName("snare", 2));
 
 // this will be owned by BeatPart
 function KitPart(fresh) {
