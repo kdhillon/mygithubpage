@@ -28,10 +28,7 @@ function Song() {
     this.aSection = new BeatPart(true);
     this.bSection = mutateBeatPart(this.aSection)
 
-	// // change kitflow
-	// if (Math.random() < 0.5) {
-	// 	kitFlow[kitFlow.length / 2] = 0;
-	// }
+	
 	// if (Math.random() < 0.3) {
 	// 	kitFlow[0] = 0;
 	// }
@@ -49,11 +46,18 @@ function Song() {
 	if (Math.random() < 0.0) {
 		melodyFlow[0] = 0;
 	}
-	else if (Math.random() < 0.5) {
+	else if (Math.random() < 0.2) {
 		melodyFlow[kitFlow.length / 2] = 0;
 		// melodyFlow[kitFlow.length / 2 + 1] = 0;
 	}
 	
+	// // change kitflow
+	if (Math.random() < 0.5) {
+		kitFlow[kitFlow.length / 2] = 0;
+	}
+	if (kitFlow[0] == 1 && Math.random() < 0.3) {
+		kitFlow[1] = 0;
+	}
 	// // change bassFlow
 	// if (melodyFlow[0] != 0 && Math.random() < 0.5) {
 	// 	bassFlow[2] = 0;

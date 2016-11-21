@@ -1,7 +1,8 @@
 var melodyOffFromG = 8; // definitely 8 for some reason?
 
-var melodyObject = new sample(getFileName("piano", 1));
-var harmonyObject = new sample(getFileName("pad", 1));
+var filename = getFileName("pad", 2)
+var melodyObject = new sample(filename);
+var harmonyObject = new sample(filename);
 // var melodyObject1 = new sample(getFileName("piano", 1));
 // var melodyObject2 = new sample(getFileName("piano", 1));
 
@@ -21,8 +22,8 @@ console.log("octave: " + melodyOctave);
 if (harmonyOctave == 2) harmonyOctave = 1;
 // harmonyOctave = 1;
 
-var melodyVol = -.7;
-var harmonyVol = -.7;
+var melodyVol = -.9;
+var harmonyVol = -.9;
 
  if (melodyOctave == -2) {
      melodyVol += 0.4;
@@ -47,6 +48,18 @@ var minorChord = [1, 4, 8, 13];
 var chordProb = [0.25, 0.25, 0.25, 0.25];
 
 var currentNotes = minorScale;
+if (Math.random() < 0.3) currentNotes = majorScale;
+
+if (currentNotes == minorScale || currentNotes == minorChord) {
+    console.log("Key: " + getNoteName(key) + " minor");
+}
+else if (currentNotes == majorScale || currentNotes == majorScale) {
+    console.log("Key: " + getNoteName(key) + " major");
+}
+else {
+     console.log("Key: " + getNoteName(key));
+}
+
 var currentProb = scaleProb;
 
 var RES = 1;
@@ -78,12 +91,15 @@ function getWeightedNote(previous, harmony) {
         return currentNotes[currentNotes.length - 1];
     }
 
-	if (Math.random() < 0.5) {
-		var note = 0;
-		if (Math.random() < 0.5) note = currentNotes[(previous + 1) % currentNotes.length];
-		else note = currentNotes[(previous - 1) % currentNotes.length];		
-		if (note == null) return 0;
-	}
+	// if (Math.random() < 0.5) {
+	// 	var note = 0;
+	// 	if (Math.random() < 0.5) note = currentNotes[(previous + 1) % currentNotes.length];
+	// 	else note = currentNotes[(previous - 1) % currentNotes.length];		
+	// 	if (note == null) {
+            
+    //        return ;
+    //     }
+	// }
 	
      var rand = Math.random();
         var sum = 0;
@@ -119,26 +135,24 @@ function mutateMelody(input, harmony) {
         // melody = [0,0,0,0,0,0,0,0,0,0,0,0,0]
     }
 
-    if (!harmony) console.log("resolution: " + resolution)
+    console.log("resolution: " + resolution)
 
     melody[0] = 1;
     if (Math.random() < 0.5) melody[0] = 13;
 	
     for (var i = resolution; i < melody.length; i += resolution) {
         if ((melody[i] != 0) && Math.random() < 0.8) continue;
-        else if (melody[i] == 0 && Math.random() < 0.1) continue;
+        else if (melody[i] == 0 && Math.random() < 0.4) continue;
         // if (Math.random() < 0.2) {
         //     melody[i] = 0;
         //     break;
         // }
        var note = getWeightedNote(i - resolution, harmony);
-        // if (harmony) {
-        //     note = input[i] + 5;
-        // }
-        
-        if (melody[i-resolution] != note) {
-            melody[i] = note;
+        while (melody[i-resolution] == note) {
+            note = getWeightedNote(i - resolution, harmony);
         }
+        if (note == 0) return;
+        melody[i] = note;        
     }
 
 //    melody[0] = 1;
@@ -198,7 +212,8 @@ function playMelody(melody, beat) {
     
     
     if (note != 0) {
-        playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
+        //    stopSound(melodyObject, time + beat * 2 * subBeatEvery - 0.001);
+          playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
         // if (Math.random() < 0.5) playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);   
         // if (Math.random() < 0.5) playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave + 6, harmonyVol, time + beat * 2 * subBeatEvery);   
    }
