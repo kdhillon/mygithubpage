@@ -1,7 +1,7 @@
 var melodyOffFromG = 8; // definitely 8 for some reason?
 
 var melodyObject = new sample(getFileName("piano", 1));
-var harmonyObject = new sample(getFileName("piano", 1));
+var harmonyObject = new sample(getFileName("pad", 1));
 // var melodyObject1 = new sample(getFileName("piano", 1));
 // var melodyObject2 = new sample(getFileName("piano", 1));
 
@@ -210,7 +210,7 @@ function playHarmony(melody, harmony, beat) {
         note = 12 + 8;
     }
     if (note != 0) {
-        //  stopSound(harmonyObject, time + beat * 2 * subBeatEvery - 0.001);
+         stopSound(harmonyObject, time + beat * 2 * subBeatEvery - 0.001);
 
         if (harmony[beat] != 0) playSound(harmonyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
         // playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * harmonyOctave + 7, harmonyVol, time + beat * 2 * subBeatEvery);
