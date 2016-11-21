@@ -1,13 +1,12 @@
 var bassObject = new sample(getFileName("bass", 1));
 //var bassObject2 = new sample(getFileName("bass", 0));
 
-// 0 if 1,2,3 (Start on G), but -3 if SubBass01
-var bassChoiceOffsetFromG = 1;
+// BASS IS G
 
 var semitoneOffset = 100;
-var bassVol = .05;
+var bassVol = -0.2;
 
-// var muteBass;
+var trapStyle = false;
 
 var octave = 0;
 
@@ -27,7 +26,7 @@ function scheduleBass(bass) {
 }
 
 function getNoteName(semitonesFromG) {
-    var semitonesFromF = semitonesFromG + 2;
+    var semitonesFromF = semitonesFromG - 5;
     if (semitonesFromF < 0) semitonesFromF += 12;
     if (semitonesFromF == 0) return "F";
     if (semitonesFromF == 1) return "F#";
@@ -72,16 +71,37 @@ function mutateBass(bass, kick) {
 	var newBass = bass.slice(0);
 	
 	newBass[0] = 1; // this could be removed below, which is cool sometimes
-     for (var i = 1; i < kickRes; i++) {
-        if (kick[i] != 0 || Math.random() < .1) {
+     for (var i = 0; i < kickRes; i++) {
+        if (kick[i] != 0 || Math.random() < .125) {
             if (bass[i] != 0) {
-                if (Math.random() < .1) newBass[i] = 0;
+                if (Math.random() < .1) { 
+                    newBass[i] = 0;
+                    return;
+                }
             }
-            if (Math.random() < 0.3) newBass[i] = 1;
+            if (Math.random() < 0.5) newBass[i] = 1;
             else if (Math.random() < 0.1) newBass[i] = 5;
             else if (Math.random() < 0.1) newBass[i] = 3;
             else if (Math.random() < 0.1) newBass[i] = -2;
          }
+    }
+
+    if (trapStyle && Math.random() < 0.2) {
+        newBass = [0, 0, 0, 0, 0, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+        newBass[0] = 0;
+        newBass[1] = 0;
+        newBass[2] = 0;
+        newBass[3] = 0;
+        newBass[4] = 0;
+
+        if (Math.random() < 0.5)
+          newBass[5] = 3;
+        else if (Math.random() < 0.5) 
+          newBass[5] = 5;
+        else newBass[5] = 1;
+
+        newBass[6] = 1;
     }
 	
     return newBass;

@@ -1,4 +1,4 @@
-var tempoMin = 125;
+var tempoMin = 120;
 var tempoMax = 150;
 
 var tempo = Math.floor(Math.random() * (tempoMax - tempoMin) + tempoMin);
@@ -72,20 +72,20 @@ function onLoad() {
 
 var measuresToLoad = 16;
 function updateMeasure() {
-	if (measureCounter > measuresToLoad) {
-		setTimeout(updateMeasure, 45 * 1000);
-		measuresToLoad += 16;
-		return;
-	}
+	// if (measureCounter > measuresToLoad) {
+	// 	setTimeout(updateMeasure, 45 * 1000);
+	// 	measuresToLoad += 16;
+	// 	return;
+	// }
 	time = startTime + measureCounter * measureEvery * 2;
 
 	// if (measureCounter > 0) nextPart();	
 	console.log("measure: " + measureCounter);
 	song.playMeasure(measureCounter);
 
-	var margin = 1000;
-	// setTimeout(updateMeasure, 60/144 * 8  * 1000 - margin);
-	setTimeout(updateMeasure, 100);
+	var margin = 200;
+	setTimeout(updateMeasure, 60/144 * 8  * 1000 - margin);
+	// setTimeout(updateMeasure, 100);
 
 	measureCounter += 1;
 }

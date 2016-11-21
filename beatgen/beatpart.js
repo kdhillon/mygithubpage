@@ -1,11 +1,13 @@
 
-var specialMuteHat = Math.random() < 0.8;
-var specialMuteKick = Math.random() < 0.8;
-var specialMuteSnare = Math.random() < 0.8;
+var specialMuteHat = Math.random() < 0.95;
+var specialMuteKick = Math.random() < 0.95;
+var specialMuteSnare = Math.random() < 0.95;
+
+
 console.log("mute hat: " + specialMuteHat + " snare: " + specialMuteSnare + " kick: " + specialMuteKick)
 
-var specialMuteBass = Math.random() < 0.5;
-console.log("mute bass: " + specialMuteBass);
+// var specialMuteBass = Math.random() < 0.5;
+// console.log("mute bass: " + specialMuteBass);
 
 // this represents a 4 bar phrase of all instruments.
 // this is created by the 
@@ -18,7 +20,7 @@ function BeatPart(fresh) {
 		this.melodyA = getNewMelody();
 		this.melodyB = getNewMelody();
 		this.harmonyA = getNewHarmony();
-		this.harmonyB = getNewHarmony();
+		// this.harmonyB = getNewHarmony();
     }
     else {
         // these functions will be in drumkit file
@@ -32,31 +34,34 @@ function BeatPart(fresh) {
 		// this.melodyB = mutateMelody(this.melodyA);
 		this.melodyB = this.melodyA;
 		this.harmonyA = generateHarmony();
-		this.harmonyB = mutateMelody(this.harmonyA, true);
+		// this.harmonyB = mutateMelody(this.harmonyA, true);
+        if (this.melodyA[0] == 0) specialMuteHat = false;
     }
 
-    this.schedule = function (firstHalf, muteDrums, playHarmony) {
+    this.schedule = function (firstHalf, muteDrums, muteMelody, muteBass, muteHarmony) {
         var drums, bass;
         if (firstHalf) {
             drums = this.drumsA;
             bass = this.bassA;
             // console.log(this.bassA);
-			scheduleMelody(this.melodyA, false);
+            if (!muteMelody)
+			    scheduleMelody(this.melodyA, false);
 			
-			// if (playHarmony) 
-			// 	scheduleMelody(this.harmonyA, true);		
+			if (!muteHarmony) 
+				scheduleHarmony(this.melodyA, this.harmonyA, true);		
         }
         else {
             drums = this.drumsB;
             bass = this.bassB;
             // console.log(this.bassB);
-			scheduleMelody(this.melodyB, false);
+            if (!muteMelody)
+			    scheduleMelody(this.melodyB, false);
 			
-			if (playHarmony) 
-				scheduleMelody(this.harmonyB, true);
+			if (!muteHarmony) 
+				scheduleHarmony(this.melodyB, this.harmonyA, true);
         }
 		
-		if (!(muteDrums && specialMuteBass)) {
+		if (!muteBass) {
 	        scheduleBass(bass);
 		}
 		
@@ -81,7 +86,7 @@ function mutateBeatPart(beatPart) {
 	Object.assign(newBeatPart.melodyB, beatPart.melodyB);
 	
 	Object.assign(newBeatPart.harmonyA, beatPart.harmonyA);
-	Object.assign(newBeatPart.harmonyB, mutateMelody(beatPart.harmonyA, true));
+	// Object.assign(newBeatPart.harmonyB, mutateMelody(beatPart.harmonyA, true));
 
     return newBeatPart;
 }

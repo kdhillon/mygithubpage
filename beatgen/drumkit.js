@@ -2,7 +2,7 @@
 var londonMode = false;
 
 // if using triplets, don't allow weird beats to be scheduled
-var triplets = Math.random() < 0.5;
+var triplets = Math.random() < 0.8;
 console.log("triplets: " + triplets);
 
 var snareRes = 16;
@@ -204,6 +204,15 @@ function mutateHat(hat, canChangeSituation) {
 		}
 	}
 
+	// todo allow hat to go from slow to fast early on in the beat.
+	if (hatTime == 4) {
+		if (Math.random() < 0.5) {
+			hatTime = 1;
+		}
+	}
+
+	console.log("hat time: " + hatTime)
+
 	for (var i = 0; i < hatRes; i++) {
 		// triplet blocked out
 		if (ret[i] < 0) continue;
@@ -218,7 +227,8 @@ function mutateHat(hat, canChangeSituation) {
 				invert(ret, i); 
 		}
 		
-		if (triplets && (i % 2) != 0 && (ret[i] > 0 && ret[i] != 4)) {
+		// this prevents triplets from sounding weird with a beat right after?
+		if (triplets && (i % 2) != 0 && (ret[i] > 0 && ret[i] != 4) && !(ret[(i-1)%ret.length] == 1 && ret[(i+1)%ret.length] == 1)) {
 			invert(ret, i);
 		}
 		
@@ -226,7 +236,7 @@ function mutateHat(hat, canChangeSituation) {
 			addTriplets(ret, i);
 		}	
 	}
-	
+	console.log("hat: " + ret)
 	return ret;
 }
 

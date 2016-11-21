@@ -70,8 +70,8 @@ function stopSound(object, time) {
 
 
 function getFileName(prefix, count) {
-    var count = count - 1;
-	var random = Math.ceil(Math.random() * count) + 1;
+    var count = count;
+	var random = Math.ceil(Math.random() * count);
     console.log(prefix + ": " + random);
     if (offlineMode) 
 	    return "http://127.0.0.1:8887/" + prefix + "/" + random + ".WAV";
