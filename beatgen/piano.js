@@ -22,8 +22,8 @@ console.log("octave: " + melodyOctave);
 if (harmonyOctave == 2) harmonyOctave = 1;
 // harmonyOctave = 1;
 
-var melodyVol = -.9;
-var harmonyVol = -.9;
+var melodyVol = -.7;
+var harmonyVol = -.7;
 
  if (melodyOctave == -2) {
      melodyVol += 0.4;

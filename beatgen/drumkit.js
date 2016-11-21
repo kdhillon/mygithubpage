@@ -246,10 +246,8 @@ function mutateSnare(snare) {
 		ret[i] = snare[i];
 	}
 	
-	muteSnare = Math.random() < 0.1;
-
-	if (Math.random() < 0.1) invert(ret, 7);
-	if (Math.random() < 0.1) invert(ret, 9);
+	if (Math.random() < 0.15) invert(ret, 7);
+	if (Math.random() < 0.1 || (ret[7] == 1 && Math.random() < 0.5)) invert(ret, 9);
 	if (Math.random() < 0.1) invert(ret, 15);
 	
 	return ret;
@@ -260,9 +258,7 @@ function mutateKick(kick) {
 	for (var i = 0; i < kickRes; i++) {
 		ret[i] = kick[i];
 	}	
-	
-	muteKick = Math.random() < 0.1;	
-	
+		
 	if (Math.random() < 0.1) invert(ret, 3);
 	if (Math.random() < 0.1) invert(ret, 6);
 	if (Math.random() < 0.1) invert(ret, 13);

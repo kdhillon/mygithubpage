@@ -1,5 +1,5 @@
 
-var specialMuteHat = Math.random() < 0.95;
+var specialMuteHat = Math.random() < 0.7;
 var specialMuteKick = Math.random() < 0.95;
 var specialMuteSnare = Math.random() < 0.95;
 

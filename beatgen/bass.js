@@ -13,7 +13,6 @@ var octave = 0;
 // 0 is G
 var key = Math.floor(Math.random() * 12 - 4);
 // var key = 0;
-console.log("Key: " + getNoteName(key));
 
 function scheduleBass(bass) {
     for (var i = 0; i < measures; i++) {
@@ -79,7 +78,7 @@ function mutateBass(bass, kick) {
                     continue;
                 }
             }
-            if (Math.random() < 0.5) newBass[i] = 1;
+            if (Math.random() < 0.4) newBass[i] = 1;
             else if (Math.random() < 0.1) newBass[i] = 5;
             else if (Math.random() < 0.1) newBass[i] = 3;
             else if (Math.random() < 0.1) newBass[i] = -2;
