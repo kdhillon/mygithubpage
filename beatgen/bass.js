@@ -76,7 +76,7 @@ function mutateBass(bass, kick) {
             if (bass[i] != 0) {
                 if (Math.random() < .1) { 
                     newBass[i] = 0;
-                    return;
+                    continue;
                 }
             }
             if (Math.random() < 0.5) newBass[i] = 1;

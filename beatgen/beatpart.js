@@ -57,8 +57,8 @@ function BeatPart(fresh) {
             if (!muteMelody)
 			    scheduleMelody(this.melodyB, false);
 			
-			if (!muteHarmony) 
-				scheduleHarmony(this.melodyB, this.harmonyA, true);
+			// if (!muteHarmony) 
+			// 	scheduleHarmony(this.melodyB, this.harmonyA, true);
         }
 		
 		if (!muteBass) {
