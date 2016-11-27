@@ -31,6 +31,19 @@ try {
 
 var isUnlocked = false;
 
+function querySt(ji) {
+    hu = window.location.search.substring(1);
+    gy = hu.split("&");
+
+    for (i=0;i<gy.length;i++) {
+        ft = gy[i].split("=");
+        if (ft[0] == ji) {
+            return ft[1];
+        }
+    }
+}
+
+var seed;
 function onTouch() {
 	if (isUnlocked) {
 		console.log("Already unlocked");
@@ -41,14 +54,14 @@ function onTouch() {
 	document.getElementById("seedinput").disabled = true;
 
 	var element = document.getElementById("seedinput");
-	var seed;
+
 	if (element.value == null || element.value == "") {
 		seed = Math.floor(Math.random() * 10000); 
 		element.value = "" + seed;
 		// must be made into a string.
 		seed = seed + "";
 	}
-	else {
+	else if (seed == null || seed == "") {
 		seed = element.value;
 		seed = seed.toLowerCase();
 	}

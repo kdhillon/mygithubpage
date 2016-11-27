@@ -23,6 +23,7 @@ function Song() {
 	if (Math.random() < 0.5) 
 		this.introLength = 4;
 	else this.introLength = 2;
+	console.log("intro length: " + this.introLength)
 	// this.introLength = 0;
 
     this.aSection = new BeatPart(true);
@@ -88,10 +89,11 @@ function Song() {
     this.playMeasure = function(measure) {
 		// play intro
 		if (measure < this.introLength) {
-			// console.log("playing intro");
+			console.log("playing intro: " + measure);
 			this.aSection.schedule(measure % 2 == 0, true, false, true, true);
 		}
 		else {
+			console.log("playing reg: " + measure);
 			var playHarmony = true;
 
 			var baseMeasure = Math.floor((measure - this.introLength) / 4) % loopLength;

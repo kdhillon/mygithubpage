@@ -3,12 +3,13 @@ var specialMuteHat;
 var specialMuteKick;
 var specialMuteSnare;
 
-console.log("mute hat: " + specialMuteHat + " snare: " + specialMuteSnare + " kick: " + specialMuteKick)
 
 function initBeatPart() {
-    var specialMuteHat = Math.random() < 0.7;
-    var specialMuteKick = Math.random() < 0.95;
-    var specialMuteSnare = Math.random() < 0.95;
+    specialMuteHat = Math.random() < 0.7;
+    specialMuteKick = Math.random() < 0.95;
+    specialMuteSnare = Math.random() < 0.95;
+
+    console.log("mute hat: " + specialMuteHat + " snare: " + specialMuteSnare + " kick: " + specialMuteKick)
 }
 
 // var specialMuteBass = Math.random() < 0.5;

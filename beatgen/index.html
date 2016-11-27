@@ -31,6 +31,11 @@
  	<input id="seedinput" type="text" name="seed"><br>
     <button id="start" type="button" onclick="onTouch()">Start!</button>
 	
+  <script>
+var seed = querySt("seed");
+if (seed != null && seed != "")
+  document.getElementById("seedinput").value = seed;
+</script>
    <!--<center> -->
 	   
 	
