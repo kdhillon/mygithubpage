@@ -1,11 +1,10 @@
 var tempoMin = 120;
 var tempoMax = 150;
 
-var tempo = Math.floor(Math.random() * (tempoMax - tempoMin) + tempoMin);
-console.log("Tempo: " + tempo);
-var beatEvery = 60 / tempo;
-var measureEvery = beatEvery * 4;
-var subBeatEvery = beatEvery / 4;
+var tempo;
+var beatEvery;
+var measureEvery;
+var subBeatEvery;
 
 var stepCounter = 32;
 var measureCounter = 0;
@@ -15,7 +14,7 @@ var context;
 var startTime = 0;
 var time = 0;
 
-var song = new Song();
+var song;
 
 try {
     // Fix up for prefixing
@@ -24,7 +23,7 @@ try {
   }
   catch(e) {
     alert('Web Audio API is not supported in this browser');
-  }
+}
   
 window.addEventListener ? 
 window.addEventListener("load",onLoad,false) : 
@@ -37,6 +36,26 @@ function onTouch() {
 		console.log("Already unlocked");
 		return;
 	}
+	
+	var seed = Math.seedrandom(Math.floor(Math.random() * 1000));
+	console.log("Seed: " + seed);
+	
+	tempo = Math.floor(Math.random() * (tempoMax - tempoMin) + tempoMin);
+	console.log("Tempo: " + tempo);
+	beatEvery = 60 / tempo;
+	measureEvery = beatEvery * 4;
+	subBeatEvery = beatEvery / 4;
+	
+	initPiano();
+		
+	// initKit();
+// 	initBass();
+
+	while(buffersLoaded()) {
+	//wait
+	}
+		
+	song = new Song();
 
 	// create empty buffer and play it
 	var buffer = context.createBuffer(1, 1, 22050);
@@ -52,6 +71,16 @@ function onTouch() {
 		}			
 
 	}, 0);
+}
+
+function buffersLoaded() {
+	if (melodyObject.buffer == null) return false;
+	if (harmonyObject.buffer == null) return false;
+	if (bassObject.buffer == null) return false;
+	if (hatObject.buffer == null) return false;
+	if (kitObject.buffer == null) return false;
+	if (snareObject.buffer == null) return false;
+	return true;
 }
 
 function unlock() {

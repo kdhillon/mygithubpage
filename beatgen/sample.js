@@ -2,11 +2,14 @@ var reader = new FileReader();
 
 var offlineMode = false;
 
+var loaded = true;
+
 function sample(url) {
     this.source = url;
     loadAudio(this, url);
 }
 
+// Doesn't work
 function loadLocalAudio(object, localFileName) {
     var file = document.getElementById('file').files[0];
     var buffer = reader.readAsArrayBuffer(file);
@@ -16,12 +19,12 @@ function loadLocalAudio(object, localFileName) {
     })
 }
 
-
 function loadAudio(object, url) {
     var request = new XMLHttpRequest();
     request.open('GET', url, true);
     request.responseType = 'arraybuffer';
 
+	// we have to make sure to wait for this before anything starts... 
     request.onload = function () {
         context.decodeAudioData(request.response, function (buffer) {
             object.buffer = buffer;

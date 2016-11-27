@@ -1,43 +1,10 @@
 var melodyOffFromG = 8; // definitely 8 for some reason?
-
-var filename = getFileName("pad", 2)
-var melodyObject = new sample(filename);
-var harmonyObject = new sample(filename);
-// var melodyObject1 = new sample(getFileName("piano", 1));
-// var melodyObject2 = new sample(getFileName("piano", 1));
-
 var melodyOctave = -1;
-if (Math.random() < 0.5) melodyOctave = 0;
-// if (Math.random() < 0.4) melodyOctave = -2;
-// else if (Math.random() < 0.3) melodyOctave = 1;
-
-// melodyOctave = ;
-
-console.log("octave: " + melodyOctave);
-
-// var harmonyOctave = melodyOctave + 2;
-// if (Math.random() < 0.5) {
-    var harmonyOctave = melodyOctave + 1;
-// }
-if (harmonyOctave == 2) harmonyOctave = 1;
-// harmonyOctave = 1;
+var harmonyOctave;
 
 var melodyVol = -.7;
 var harmonyVol = -.7;
 
- if (melodyOctave == -2) {
-     melodyVol += 0.4;
-     harmonyVol += 0.4;
-}
-
-// if (melodyOctave == 1) {
-//     melodyVol -= .2;
-// }
-// if (harmonyOctave == 1) {
-//     harmonyVol -= .2;
-// }
-
-// these should be subtracted by one
 var majorScale = [1, 3, 5, 6, 8, 10, 12, 13];
 var minorScale = [1, 3, 4, 6, 8, 9, 11, 13];
 
@@ -48,21 +15,59 @@ var minorChord = [1, 4, 8, 13];
 var chordProb = [0.25, 0.25, 0.25, 0.25];
 
 var currentNotes = minorScale;
-if (Math.random() < 0.3) currentNotes = majorScale;
-
-if (currentNotes == minorScale || currentNotes == minorChord) {
-    console.log("Key: " + getNoteName(key) + " minor");
-}
-else if (currentNotes == majorScale || currentNotes == majorScale) {
-    console.log("Key: " + getNoteName(key) + " major");
-}
-else {
-     console.log("Key: " + getNoteName(key));
-}
-
-var currentProb = scaleProb;
-
 var RES = 1;
+var currentProb;
+
+var melodyObject;
+var harmonyObject;
+
+function initPiano() {
+	var filename = getFileName("pad", 2)
+	melodyObject = new sample(filename);
+	harmonyObject = new sample(filename);
+	// var melodyObject1 = new sample(getFileName("piano", 1));
+	// var melodyObject2 = new sample(getFileName("piano", 1));
+
+	if (Math.random() < 0.5) melodyOctave = 0;
+	// if (Math.random() < 0.4) melodyOctave = -2;
+	// else if (Math.random() < 0.3) melodyOctave = 1;
+
+	// melodyOctave = ;
+	console.log("octave: " + melodyOctave);
+
+	// var harmonyOctave = melodyOctave + 2;
+	// if (Math.random() < 0.5) {
+    harmonyOctave = melodyOctave + 1;
+	// }
+	if (harmonyOctave == 2) harmonyOctave = 1;
+	// harmonyOctave = 1;
+
+	 if (melodyOctave == -2) {
+	     melodyVol += 0.4;
+	     harmonyVol += 0.4;
+	}
+
+	// if (melodyOctave == 1) {
+	//     melodyVol -= .2;
+	// }
+	// if (harmonyOctave == 1) {
+	//     harmonyVol -= .2;
+	// }
+	
+	if (Math.random() < 0.2) currentNotes = majorScale;
+
+	if (currentNotes == minorScale || currentNotes == minorChord) {
+	    console.log("Key: " + getNoteName(key) + " minor");
+	}
+	else if (currentNotes == majorScale || currentNotes == majorScale) {
+	    console.log("Key: " + getNoteName(key) + " major");
+	}
+	else {
+	     console.log("Key: " + getNoteName(key));
+	}
+
+	currentProb = scaleProb;
+}
 
 function getNewMelody() {
 	return [0,0,0,0,0,0,0,0,   0,0,0,0,0,0,0,0];
@@ -83,7 +88,7 @@ function generateHarmony() {
 }
 
 function getWeightedNote(previous, harmony) {
-    
+
     if (harmony) {
         rand = Math.random();
         if (rand < 0.3) return currentNotes[0];
@@ -124,14 +129,14 @@ function mutateMelody(input, harmony) {
     if (Math.random() < 0.1) resolution = RES * 2;
 
 	if (harmony) {
-        if (Math.random() < 0.5)
+        // if (Math.random() < 0.5)
             resolution = 2;
-        else if (Math.random() < 0.5) {
-            resolution = 4;
-        }
-        else {
-            resolution = 8;
-        }
+   //      else if (Math.random() < 0.5) {
+   //          resolution = 4;
+   //      }
+   //      else {
+            // resolution = 8;
+        // }
         // melody = [0,0,0,0,0,0,0,0,0,0,0,0,0]
     }
 
