@@ -25,9 +25,9 @@ try {
     alert('Web Audio API is not supported in this browser');
 }
   
-window.addEventListener ? 
-window.addEventListener("load",onLoad,false) : 
-window.attachEvent && window.attachEvent("onload",onLoad);
+// window.addEventListener ? 
+// window.addEventListener("load",onLoad,false) : 
+// window.attachEvent && window.attachEvent("onload",onLoad);
 
 var isUnlocked = false;
 
@@ -36,9 +36,25 @@ function onTouch() {
 		console.log("Already unlocked");
 		return;
 	}
-	
-	var seed = Math.seedrandom(Math.floor(Math.random() * 1000));
+	document.getElementById("start").textContent = "Loading...";
+	document.getElementById("start").disabled = true;
+	document.getElementById("seedinput").disabled = true;
+
+	var element = document.getElementById("seedinput");
+	var seed;
+	if (element.value == null || element.value == "") {
+		seed = Math.floor(Math.random() * 10000); 
+		element.value = "" + seed;
+		// must be made into a string.
+		seed = seed + "";
+	}
+	else {
+		seed = element.value;
+		seed = seed.toLowerCase();
+	}
+		
 	console.log("Seed: " + seed);
+	Math.seedrandom(seed);
 	
 	tempo = Math.floor(Math.random() * (tempoMax - tempoMin) + tempoMin);
 	console.log("Tempo: " + tempo);
@@ -47,14 +63,12 @@ function onTouch() {
 	subBeatEvery = beatEvery / 4;
 	
 	initPiano();
-		
-	// initKit();
-// 	initBass();
+	initKit();
+	initBass();
+	initBeatPart();
+}
 
-	while(buffersLoaded()) {
-	//wait
-	}
-		
+function initSong() {
 	song = new Song();
 
 	// create empty buffer and play it
@@ -68,18 +82,36 @@ function onTouch() {
 	setTimeout(function() {
 		if((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
 			unlock();
-		}			
-
+			document.getElementById("start").textContent = "Playing!"
+		}
 	}, 0);
 }
 
 function buffersLoaded() {
-	if (melodyObject.buffer == null) return false;
-	if (harmonyObject.buffer == null) return false;
-	if (bassObject.buffer == null) return false;
-	if (hatObject.buffer == null) return false;
-	if (kitObject.buffer == null) return false;
-	if (snareObject.buffer == null) return false;
+	if (melodyObject == null || melodyObject.buffer == null) {
+		console.log("melody null")
+		return false;
+	}
+	if (harmonyObject == null || harmonyObject.buffer == null) {
+		console.log("harmony null")
+		return false;
+	}
+	if (bassObject == null || bassObject.buffer == null) {
+		console.log("bass null")
+		return false;
+	}
+	if (hatObject == null || hatObject.buffer == null) {
+		console.log("hat null")
+		return false;
+	}
+	if (kickObject == null || kickObject.buffer == null) {
+		console.log("kick null")
+		return false;
+	}
+	if (snareObject == null || snareObject.buffer == null) {
+		console.log("snare null")
+		return false;
+	}
 	return true;
 }
 
@@ -90,7 +122,7 @@ function unlock() {
 	
 	setTimeout(updateMeasure, 0);
 		// document.getElementById("text").innerText = "&nbsp;";
-	document.getElementById("img").src = "img/1.jpg";
+	// document.getElementById("img").src = "img/1.jpg";
 }
 
 function onLoad() {

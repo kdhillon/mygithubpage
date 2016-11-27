@@ -2,8 +2,7 @@
 var londonMode = false;
 
 // if using triplets, don't allow weird beats to be scheduled
-var triplets = Math.random() < 0.8;
-console.log("triplets: " + triplets);
+var triplets;
 
 var snareRes = 16;
 var kickRes = 16;
@@ -25,10 +24,20 @@ var kickProbs = []
 var measures = 1; // actuall should be called measures?
 
 // var currentKitPart;
+var hatObject;
+var kickObject;
+var snareObject;
 
-var hatObject = new sample(getFileName("hat", 1));
-var kickObject = new sample(getFileName("kick", 1));
-var snareObject = new sample(getFileName("snare", 2));
+// static
+function initKit() {
+	triplets = Math.random() < 0.8;
+	console.log("triplets: " + triplets);
+
+	hatObject = new sample(getFileName("hat", 1));
+ 	kickObject = new sample(getFileName("kick", 1));
+ 	snareObject = new sample(getFileName("snare", 2));
+}
+
 
 // this will be owned by BeatPart
 function KitPart(fresh) {

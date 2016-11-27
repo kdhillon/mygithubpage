@@ -29,6 +29,9 @@ function loadAudio(object, url) {
         context.decodeAudioData(request.response, function (buffer) {
             object.buffer = buffer;
             object.gainNode = context.createGain();
+            if (buffersLoaded()) {
+                initSong();
+            }
         });
     }
     request.send();

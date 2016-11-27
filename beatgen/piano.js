@@ -28,7 +28,7 @@ function initPiano() {
 	// var melodyObject1 = new sample(getFileName("piano", 1));
 	// var melodyObject2 = new sample(getFileName("piano", 1));
 
-	if (Math.random() < 0.5) melodyOctave = 0;
+	if (Math.random() < 0.3) melodyOctave = 0;
 	// if (Math.random() < 0.4) melodyOctave = -2;
 	// else if (Math.random() < 0.3) melodyOctave = 1;
 

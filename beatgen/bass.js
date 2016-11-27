@@ -11,7 +11,11 @@ var trapStyle = false;
 var octave = 0;
 
 // 0 is G
-var key = Math.floor(Math.random() * 12 - 4);
+var key;
+
+function initBass() {
+    key = Math.floor(Math.random() * 12 - 4);
+} 
 // var key = 0;
 
 function scheduleBass(bass) {
