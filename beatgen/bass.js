@@ -31,18 +31,22 @@ function scheduleBass(bass) {
 function getNoteName(semitonesFromG) {
     var semitonesFromF = semitonesFromG - 5;
     if (semitonesFromF < 0) semitonesFromF += 12;
-    if (semitonesFromF == 0) return "F";
-    if (semitonesFromF == 1) return "F#";
-    if (semitonesFromF == 2) return "G";
-    if (semitonesFromF == 3) return "G#";
-    if (semitonesFromF == 4) return "A";
-    if (semitonesFromF == 5) return "A#";
-    if (semitonesFromF == 6) return "B";
-    if (semitonesFromF == 7) return "C";
-    if (semitonesFromF == 8) return "C#";
-    if (semitonesFromF == 9) return "D";
-    if (semitonesFromF == 10) return "D#";
-    if (semitonesFromF == 11) return "E";
+    if (semitonesFromF < 0) semitonesFromF += 12;
+    if (semitonesFromF > 12) semitonesFromF -= 12;
+    if (semitonesFromF > 12) semitonesFromF -= 12;
+
+    if (semitonesFromF % 12 == 0) return "F";
+    if (semitonesFromF % 12 == 1) return "F#";
+    if (semitonesFromF % 12 == 2) return "G";
+    if (semitonesFromF % 12 == 3) return "G#";
+    if (semitonesFromF % 12 == 4) return "A";
+    if (semitonesFromF % 12 == 5) return "A#";
+    if (semitonesFromF % 12 == 6) return "B";
+    if (semitonesFromF % 12 == 7) return "C";
+    if (semitonesFromF % 12 == 8) return "C#";
+    if (semitonesFromF % 12 == 9) return "D";
+    if (semitonesFromF % 12 == 10) return "D#";
+    if (semitonesFromF % 12 == 11) return "E";
     return "messed up";
 }
 
@@ -83,6 +87,7 @@ function mutateBass(bass, kick) {
                 }
             }
             if (Math.random() < 0.4) newBass[i] = 1;
+            else if (Math.random() < 0.1) newBass[i] = 8;
             else if (Math.random() < 0.1) newBass[i] = 5;
             else if (Math.random() < 0.1) newBass[i] = 3;
             else if (Math.random() < 0.1) newBass[i] = -2;

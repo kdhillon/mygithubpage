@@ -26,7 +26,7 @@ function BeatPart(fresh) {
 		this.melodyA = getNewMelody();
 		this.melodyB = getNewMelody();
 		this.harmonyA = getNewHarmony();
-		// this.harmonyB = getNewHarmony();
+		this.harmonyB = getNewHarmony();
     }
     else {
         // these functions will be in drumkit file
@@ -40,7 +40,7 @@ function BeatPart(fresh) {
 		// this.melodyB = mutateMelody(this.melodyA);
 		this.melodyB = this.melodyA;
 		this.harmonyA = generateHarmony();
-		// this.harmonyB = mutateMelody(this.harmonyA, true);
+		this.harmonyB = generateHarmony();
         if (this.melodyA[0] == 0) specialMuteHat = false;
     }
 
@@ -54,7 +54,7 @@ function BeatPart(fresh) {
 			    scheduleMelody(this.melodyA, false);
 			
 			if (!muteHarmony) 
-				scheduleHarmony(this.melodyA, this.harmonyA, true);		
+				scheduleHarmony(this.harmonyA, true);		
         }
         else {
             drums = this.drumsB;
@@ -63,8 +63,8 @@ function BeatPart(fresh) {
             if (!muteMelody)
 			    scheduleMelody(this.melodyB, false);
 			
-			// if (!muteHarmony) 
-			// 	scheduleHarmony(this.melodyB, this.harmonyA, true);
+			if (!muteHarmony) 
+				scheduleHarmony(this.harmonyA, true);
         }
 		
 		if (!muteBass) {
@@ -92,6 +92,7 @@ function mutateBeatPart(beatPart) {
 	Object.assign(newBeatPart.melodyB, beatPart.melodyB);
 	
 	Object.assign(newBeatPart.harmonyA, beatPart.harmonyA);
+	Object.assign(newBeatPart.harmonyB, beatPart.harmonyB);
 	// Object.assign(newBeatPart.harmonyB, mutateMelody(beatPart.harmonyA, true));
 
     return newBeatPart;

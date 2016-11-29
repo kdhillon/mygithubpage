@@ -9,8 +9,8 @@ var kickRes = 16;
 var hatRes = 32;
 
 var hatVol = -0.5;
-var snareVol = 0;
-var kickVol = 0;
+var snareVol = 0.0;
+var kickVol = 0.0;
 
 var kickProbs = []
 

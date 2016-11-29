@@ -75,9 +75,9 @@ function onTouch() {
 	measureEvery = beatEvery * 4;
 	subBeatEvery = beatEvery / 4;
 	
-	initPiano();
 	initKit();
 	initBass();
+	initPiano();
 	initBeatPart();
 }
 
