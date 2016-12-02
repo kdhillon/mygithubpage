@@ -113,14 +113,12 @@ function Song() {
 			}
 
 			// console.log("section a: " + (currentSection == this.aSection) + " mute kit: " + muteKit + " bass: " + muteBass + " melody: " + muteMelody)
-			if ((measure - this.introLength + 1) % 8 == 0) {
+			if ((measure - this.introLength + 1) % 8 == 0 && Math.random() < 0.3) {
 				muteKit = true;
 				muteBass = true;
 				muteMelody = false;
 				muteHarmony = true;
 			}
-
-
 
 			if (measure % 2 == 0) {
 				currentSection.schedule(true, muteKit, muteMelody, muteBass, muteHarmony);

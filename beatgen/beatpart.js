@@ -50,21 +50,23 @@ function BeatPart(fresh) {
             drums = this.drumsA;
             bass = this.bassA;
             // console.log(this.bassA);
-            if (!muteMelody)
+            if (!muteMelody) {
 			    scheduleMelody(this.melodyA, false);
-			
-			if (!muteHarmony) 
-				scheduleHarmony(this.harmonyA, true);		
+            	scheduleHarmony(this.harmonyA, true);		
+            }
+			// if (!muteHarmony) 
+			// 	scheduleHarmony(this.harmonyA, true);		
         }
         else {
             drums = this.drumsB;
             bass = this.bassB;
             // console.log(this.bassB);
-            if (!muteMelody)
+            if (!muteMelody) {
 			    scheduleMelody(this.melodyB, false);
-			
-			if (!muteHarmony) 
-				scheduleHarmony(this.harmonyA, true);
+				scheduleHarmony(this.harmonyB, true);
+            }
+			// if (!muteHarmony) 
+			// 	scheduleHarmony(this.harmonyB, true);
         }
 		
 		if (!muteBass) {
