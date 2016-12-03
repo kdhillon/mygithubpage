@@ -25,13 +25,13 @@ var RES = 1;
 
 var melodyObject;
 var harmonyObject;
-var longHarmonyObject;
+// var longHarmonyObject;
 
 function initPiano() {
 	var filename = getFileName("pad", 2)
 	melodyObject = new sample(filename);
 	harmonyObject = new sample(filename);
-    longHarmonyObject = new sample(getFileName("long synth", 1));
+    // longHarmonyObject = new sample(getFileName("long synth", 1));
 
 	// var melodyObject1 = new sample(getFileName("piano", 1));
 	// var melodyObject2 = new sample(getFileName("piano", 1));
@@ -126,15 +126,30 @@ function getWeightedNote(previous, harmony) {
         return currentNotes[j];
 }
 
+function generateLongSynth(bass) {
+    var long = [0,0,0,0,0,0,0,0,  0,0,0,0,0,0,0,0]
+
+    var resolution = 8;
+
+    for (var i = 0; i < long.length; i += resolution) {
+       var note;
+       if (bass[i] > 0) note = bass[i]  
+       else note = getWeightedNote(i - resolution, true);
+       long[i] = note;   
+    }
+     
+    return long;
+}
+
 function generateHarmony() {
     var harmony = getNewHarmony();
-	var resolution = 8;
-
+	// var resolution = 8;
+    var resolution = 2;
     // harmony[0] = 1;
     // if (Math.random() < 0.5) melody[0] = 13;
 	
     for (var i = 0; i < harmony.length; i += resolution) {
-    // if (Math.random() < 0.5) continue;
+    if (Math.random() < 0.5) continue;
        var note = getWeightedNote(i - resolution, true);
        harmony[i] = note;        
     }
@@ -258,9 +273,9 @@ function playHarmony(harmony, beat) {
     //     note = 12 + 8;
     // }
     if (note != 0) {
-         stopSound(longHarmonyObject, time + beat * 2 * subBeatEvery - 0.001);
+         stopSound(harmonyObject, time + beat * 2 * subBeatEvery - 0.001);
 
-        playSound(longHarmonyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
+        playSound(harmonyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
         // playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * harmonyOctave + 7, harmonyVol, time + beat * 2 * subBeatEvery);
       }
 }
