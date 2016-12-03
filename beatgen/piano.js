@@ -1,5 +1,5 @@
 var melodyOffFromG = 8; // definitely 8 for some reason?
-var melodyOctave = -1;
+var melodyOctave = 0;
 var harmonyOctave;
 
 var melodyVol = -.8;
@@ -28,7 +28,7 @@ var harmonyObject;
 // var longHarmonyObject;
 
 function initPiano() {
-	var filename = getFileName("pad", 2)
+	var filename = getFileName("pad", 3)
 	melodyObject = new sample(filename);
 	harmonyObject = new sample(filename);
     // longHarmonyObject = new sample(getFileName("long synth", 1));
