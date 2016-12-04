@@ -34,11 +34,13 @@ var longHarmonyObject;
 
 var pianoComplexity;
 
+var melodyChordLevel = 0;
+
 function initPiano() {
 	var filename = getFileName("piano", 4)
 	melodyObject = new sample(filename);
 	var filename2 = getFileName("piano", 4)
-	harmonyObject = new sample(filename);
+	harmonyObject = new sample(filename2);
     longHarmonyObject = new sample(getFileName("long synth", 1));
 
     harmonyChordLevel = Math.floor(Math.random() * 4);
@@ -50,6 +52,11 @@ function initPiano() {
     if (pianoComplexity > 0.8) pianoComplexity = 1;
     if (pianoComplexity < 0.2) pianoComplexity = 0.2;
     console.log("Piano complexity: " + pianoComplexity)
+
+    if (pianoComplexity < 0.3) {
+        melodyChordLevel = Math.floor(Math.random() * 4);
+        console.log("melody chord level: " + melodyChordLevel)
+    }
 
 	// var melodyObject1 = new sample(getFileName("piano", 1));
 	// var melodyObject2 = new sample(getFileName("piano", 1));
@@ -336,7 +343,13 @@ function playMelody(melody, beat) {
           playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
         // if (Math.random() < 0.5) playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);   
         // if (Math.random() < 0.5) playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave + 6, harmonyVol, time + beat * 2 * subBeatEvery);   
-   }
+        if (melodyChordLevel == 1 || melodyChordLevel == 3) {
+            playSound(melodyObject, getFifthOf(note) - 1 - melodyOffFromG + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
+        }
+        if (melodyChordLevel == 2 || melodyChordLevel == 3) {
+          playSound(melodyObject, getThirdOf(note) - 1 - melodyOffFromG + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
+        }
+     }
 }
 
 function getIndexOf(note) {
