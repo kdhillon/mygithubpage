@@ -48,6 +48,7 @@ function initPiano() {
     pianoComplexity = Math.random();
     // boost if high to fill every note
     if (pianoComplexity > 0.8) pianoComplexity = 1;
+    if (pianoComplexity < 0.2) pianoComplexity = 0.2;
     console.log("Piano complexity: " + pianoComplexity)
 
 	// var melodyObject1 = new sample(getFileName("piano", 1));
