@@ -43,7 +43,7 @@ function initPiano() {
 	harmonyObject = new sample(filename2);
     longHarmonyObject = new sample(getFileName("long synth", 1));
 
-    harmonyChordLevel = Math.floor(Math.random() * 4);
+    // harmonyChordLevel = Math.floor(Math.random() * 4);
     console.log("HarmonyChordLevel: " + harmonyChordLevel)
 
     // between 0 and 1
@@ -54,7 +54,7 @@ function initPiano() {
     console.log("Piano complexity: " + pianoComplexity)
 
     if (pianoComplexity == 0.2) {
-        melodyChordLevel = Math.floor(Math.random() * 4);
+        // melodyChordLevel = Math.floor(Math.random() * 4);
         console.log("melody chord level: " + melodyChordLevel)
     }
 
