@@ -5,6 +5,7 @@ var specialMuteSnare;
 
 var playLongSynth;
 
+var muteHarmonyOnB;
 
 function initBeatPart() {
     specialMuteHat = Math.random() < 0.7;
@@ -12,6 +13,9 @@ function initBeatPart() {
     specialMuteSnare = Math.random() < 0.95;
 
     playLongSynth = false;
+
+    muteHarmonyOnB = Math.random() < 0.25;
+    if (muteHarmonyOnB) console.log("Muting harmony on B section");
 
     console.log("mute hat: " + specialMuteHat + " snare: " + specialMuteSnare + " kick: " + specialMuteKick)
 }
@@ -46,10 +50,10 @@ function BeatPart(fresh) {
 		this.melodyA = generateMelody();
 		// this.melodyB = mutateMelody(this.melodyA);
 		this.melodyB = this.melodyA;
-		this.harmonyA = generateHarmony();
+		this.harmonyA = generateHarmony(this.melodyA);
 
         if (Math.random() < 0.5) 
-    		this.harmonyB = generateHarmony();
+    		this.harmonyB = generateHarmony(this.melodyB);
         else 
             this.harmonyB = this.harmonyA;
 
@@ -79,8 +83,9 @@ function BeatPart(fresh) {
             // console.log(this.bassB);
             if (!muteMelody) {
 			    scheduleMelody(this.melodyB);
+                if (playLongSynth) scheduleLongSynth(this.longSynthB);
             }
-			if (!muteHarmony) 
+			if (!muteHarmony && !muteHarmonyOnB) 
 				scheduleHarmony(this.harmonyB);
         }
 		

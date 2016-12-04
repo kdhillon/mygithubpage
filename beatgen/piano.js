@@ -1,5 +1,5 @@
-var melodyOffFromG = 8; // definitely 8 for some reason?
-var melodyOctave = 0;
+var melodyOffFromG = -1; // definitely -1 for some reason? C?
+var melodyOctave = -1;
 var harmonyOctave;
 
 var melodyVol = -.8;
@@ -9,6 +9,9 @@ var majorScale = [1, 3, 5, 6, 8, 10, 12, 13];
 var minorScale = [1, 3, 4, 6, 8, 9, 11, 13];
 var scaleProb = [0.3, 0.05, 0.15, 0.05, 0.15, 0.05, 0.05, 0.2];
 
+var pentatonic = [1, 3, 5, 8, 10, 13];
+var pentatonicProb = [0.2, 0.15, 0.15, 0.15, 0.15, 0.2]
+
 var extMajorScale = [1, 3, 5, 6, 8, 10, 12, 13, 15, 17, 18, 20];
 var extMinorScale = [1, 3, 4, 6, 8, 9, 11, 13, 15, 16, 18, 20];
 var extScaleProb = [0.1, 0.05, 0.15, 0.05, 0.15, 0.05, 0.05, 0.2, 0.05, 0.05, 0.05, 0.05];
@@ -17,21 +20,35 @@ var majorChord = [1, 5, 8, 13];
 var minorChord = [1, 4, 8, 13];
 var chordProb = [0.25, 0.25, 0.25, 0.25];
 
-var currentNotes = minorScale;
-var currentProb = scaleProb;
-var currentMajor = majorScale;
+var currentNotes = pentatonic;
+var currentProb = pentatonicProb;
+
+var harmonyChordLevel = 0; // 0 is no chord, 1 is 5th, 2 is 3rd, 3 is 5th & 3rd
+// var harmonyChordLevel = 1; // 1 is 
 
 var RES = 1;
 
 var melodyObject;
 var harmonyObject;
-// var longHarmonyObject;
+var longHarmonyObject;
+
+var pianoComplexity;
 
 function initPiano() {
-	var filename = getFileName("pad", 3)
+	var filename = getFileName("piano", 1)
 	melodyObject = new sample(filename);
+	var filename2 = getFileName("piano", 1)
 	harmonyObject = new sample(filename);
-    // longHarmonyObject = new sample(getFileName("long synth", 1));
+    longHarmonyObject = new sample(getFileName("long synth", 1));
+
+    harmonyChordLevel = Math.floor(Math.random() * 4);
+    console.log("HarmonyChordLevel: " + harmonyChordLevel)
+
+    // between 0 and 1
+    pianoComplexity = Math.random();
+    // boost if high to fill every note
+    if (pianoComplexity > 0.8) pianoComplexity = 1;
+    console.log("Piano complexity: " + pianoComplexity)
 
 	// var melodyObject1 = new sample(getFileName("piano", 1));
 	// var melodyObject2 = new sample(getFileName("piano", 1));
@@ -45,7 +62,7 @@ function initPiano() {
 
 	// var harmonyOctave = melodyOctave + 2;
 	// if (Math.random() < 0.5) {
-    harmonyOctave = melodyOctave + 1;
+    harmonyOctave = melodyOctave;
 	// }
 	if (harmonyOctave == 2) harmonyOctave = 1;
 	// harmonyOctave = 1;
@@ -62,7 +79,12 @@ function initPiano() {
 	//     harmonyVol -= .2;
 	// }
 	
-	if (Math.random() < 0.2) currentNotes = currentMajor;
+	if (minor) {
+        currentNotes = minorScale;
+    } 
+    else {
+        currentNotes = majorScale;
+    }
 
 	if (currentNotes == minorScale || currentNotes == extMinorScale || currentNotes == minorChord) {
 	    console.log("Key: " + getNoteName(key) + " minor");
@@ -70,9 +92,12 @@ function initPiano() {
 	else if (currentNotes == majorScale || currentNotes == majorScale || currentNotes == extMajorScale) {
 	    console.log("Key: " + getNoteName(key) + " major");
 	}
-	else {
-	     console.log("Key: " + getNoteName(key));
+	else if (currentNotes == pentatonic) {
+	     console.log("Key: " + getNoteName(key) + " pentatonic");
 	}
+    else {
+	     console.log("Key: " + getNoteName(key));        
+    }
 
 }
 
@@ -94,7 +119,28 @@ function generateMelody() {
 // 	return mutateMelody(harmony, true);
 // }
 
-function getWeightedNote(previous, harmony) {
+function getHarmonyNote(melodyNote) {
+    if (melodyNote == 0) return getWeightedNote(-1);
+    // var note;
+    // if (melodyNote != 0) {
+    //     note = melodyNote + 5 - 12;
+    // }
+    // if (note <= 0) note -= 1;
+    var melodyIndex = getIndexOf(melodyNote);
+    if (melodyIndex == -1) return;
+
+    // prevent harmony note from being adjacent to melody note.
+    var note;
+    var harmonyIndex = melodyIndex + 1;
+    while (harmonyIndex == melodyIndex - 1 || harmonyIndex == melodyIndex + 1) {
+        note = getWeightedNote(-1);
+        harmonyIndex = getIndexOf(note);
+    }
+
+    return note;
+}
+
+function getWeightedNote(previous) {
     // if (harmony) {
     //     rand = Math.random();
     //     if (rand < 0.3) return 1;
@@ -109,7 +155,7 @@ function getWeightedNote(previous, harmony) {
 	// 	else note = currentNotes[(previous - 1) % currentNotes.length];		
 	// 	if (note == null) {
             
-    //        return ;
+    //        return note;
     //     }
 	// }
 	
@@ -131,26 +177,44 @@ function generateLongSynth(bass) {
 
     var resolution = 8;
 
-    for (var i = 0; i < long.length; i += resolution) {
-       var note;
-       if (bass[i] > 0) note = bass[i]  
-       else note = getWeightedNote(i - resolution, true);
-       long[i] = note;   
+     for (var i = 0; i < long.length; i += resolution) {
+        var note;
+        // go back to see what bass note is playing
+        for (var j = i; j >= 0; j--) {
+            if (bass[j] != 0) {
+                note = bass[j];
+                if (Math.random() < 0.5) note = getFifthOf(note);
+                while (note != 1 && note == long[(i - resolution) % long.length]) {
+                    note = getWeightedNote(i - resolution);
+                }  
+                break;
+            }
+        }
+        if (note == null) {
+            note = getWeightedNote(i - resolution);
+            while (note != 1 && note == long[(i - resolution) % long.length]) {
+                note = getWeightedNote(i - resolution);
+            }
+        }
+        long[i] = note;
     }
-     
+    console.log("synth: " + long)
     return long;
 }
 
-function generateHarmony() {
+function generateHarmony(melody) {
     var harmony = getNewHarmony();
 	// var resolution = 8;
     var resolution = 2;
+    if (Math.random() < 0.5) resolution = 4;
     // harmony[0] = 1;
     // if (Math.random() < 0.5) melody[0] = 13;
 	
     for (var i = 0; i < harmony.length; i += resolution) {
-    if (Math.random() < 0.5) continue;
-       var note = getWeightedNote(i - resolution, true);
+        // proportional to melody complexity
+    if (Math.random() < 1 - (0.25 + pianoComplexity / 2)) continue;
+    //    var note = getWeightedNote(i - resolution, true);
+       var note = getHarmonyNote(melody[i]);
        harmony[i] = note;        
     }
 
@@ -193,8 +257,8 @@ function mutateMelody(input) {
     if (Math.random() < 0.3) melody[0] = 1;
 	
     for (var i = resolution; i < melody.length; i += resolution) {
-        if ((melody[i] != 0) && Math.random() < 0.8) continue;
-        else if (melody[i] == 0 && Math.random() < 0.4) continue;
+        if ((melody[i] != 0) && Math.random() < 1 - pianoComplexity) continue;
+        else if (melody[i] == 0 && Math.random() < 1 - pianoComplexity) continue;
         // if (Math.random() < 0.2) {
         //     melody[i] = 0;
         //     break;
@@ -254,17 +318,47 @@ function scheduleHarmony(harmony) {
     }
 }
 
+function scheduleLongSynth(harmony) {
+      for (var i = 0; i < measures; i++) {
+		for (var j = 0; j < harmony.length; j++) {
+            if (harmony[j] != 0) {
+			    playLongHarmony(harmony, j + i * harmony.length);
+            }
+		}
+    }
+}
 
 function playMelody(melody, beat) {
     var note = melody[beat % melody.length];
-    
-    
     if (note != 0) {
         //    stopSound(melodyObject, time + beat * 2 * subBeatEvery - 0.001);
           playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
         // if (Math.random() < 0.5) playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);   
         // if (Math.random() < 0.5) playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave + 6, harmonyVol, time + beat * 2 * subBeatEvery);   
    }
+}
+
+function getIndexOf(note) {
+    var index = -1;
+    for (var i = 0; i < currentNotes.length; i++) {
+        if (currentNotes[i] == note) {
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
+
+function getFifthOf(note) {
+    var noteIndex = getIndexOf(note);
+    if (noteIndex < 0) return;
+    return currentNotes[(noteIndex + 4) % currentNotes.length];
+}
+
+function getThirdOf(note) {
+    var noteIndex = getIndexOf(note);
+    if (noteIndex < 0) return;
+    return currentNotes[(noteIndex + 2) % currentNotes.length];
 }
 
 function playHarmony(harmony, beat) {
@@ -276,6 +370,28 @@ function playHarmony(harmony, beat) {
          stopSound(harmonyObject, time + beat * 2 * subBeatEvery - 0.001);
 
         playSound(harmonyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
+        // Play the 5th too.
+        if (harmonyChordLevel == 1 || harmonyChordLevel == 3) {
+            var fifth = getFifthOf(note);
+            if (fifth != null)
+                playSound(harmonyObject, fifth - 1 - melodyOffFromG + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
+         }
+         if (harmonyChordLevel == 2 || harmonyChordLevel == 3) {
+             var third = getThirdOf(note);
+             if (third != null) 
+                playSound(harmonyObject, third - 1 - melodyOffFromG + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
+         }
+       
+        // playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * harmonyOctave + 7, harmonyVol, time + beat * 2 * subBeatEvery);
+      }
+}
+
+function playLongHarmony(harmony, beat) {
+    var note = harmony[beat % harmony.length] + 12;
+    if (note != 0) {
+        stopSound(longHarmonyObject, time + beat * 2 * subBeatEvery - 0.001);
+
+        playSound(longHarmonyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
         // playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * harmonyOctave + 7, harmonyVol, time + beat * 2 * subBeatEvery);
       }
 }

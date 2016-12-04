@@ -51,7 +51,7 @@ function onTouch() {
 	}
 	document.getElementById("start").textContent = "Loading...";
 	document.getElementById("start").disabled = true;
-	document.getElementById("seedinput").disabled = true;
+	document.getElementById("seedinput").readOnly = true;
 
 	var element = document.getElementById("seedinput");
 
@@ -102,15 +102,15 @@ function initSong() {
 
 function buffersLoaded() {
 	if (melodyObject == null || melodyObject.buffer == null) {
-		console.log("melody null")
+		// console.log("melody null")
 		return false;
 	}
 	if (harmonyObject == null || harmonyObject.buffer == null) {
-		console.log("harmony null")
+		// console.log("harmony null")
 		return false;
 	}
 	if (bassObject == null || bassObject.buffer == null) {
-		console.log("bass null")
+		// console.log("bass null")
 		return false;
 	}
 	if (hatObject == null || hatObject.buffer == null) {

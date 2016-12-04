@@ -1,6 +1,6 @@
 var reader = new FileReader();
 
-var offlineMode = false;
+var offlineMode = true;
 
 var loaded = true;
 
@@ -29,7 +29,7 @@ function loadAudio(object, url) {
         context.decodeAudioData(request.response, function (buffer) {
             object.buffer = buffer;
             object.gainNode = context.createGain();
-            if (buffersLoaded()) {
+            if (buffersLoaded() && song == null) {
                 initSong();
             }
         });
@@ -78,7 +78,7 @@ function stopSound(object, time) {
 function getFileName(prefix, count) {
     var count = count;
 	var random = Math.ceil(Math.random() * count);
-    console.log(prefix + ": " + random);
+    // console.log(prefix + ": " + random);
     if (offlineMode) 
 	    return "http://127.0.0.1:8887/" + prefix + "/" + random + ".WAV";
 	return "http://kyledhillon.com/beatgen/server/" + prefix + "/" + random + ".WAV";

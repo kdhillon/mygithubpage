@@ -1,7 +1,7 @@
 var bassObject = new sample(getFileName("bass", 1));
 //var bassObject2 = new sample(getFileName("bass", 0));
 
-// BASS IS G
+// BASS IS C
 
 var semitoneOffset = 100;
 var bassVol = -0.2;
@@ -12,9 +12,13 @@ var octave = 0;
 
 // 0 is G
 var key;
+var minor = true;
 
 function initBass() {
     key = Math.floor(Math.random() * 12 - 4);
+    // key = 0;
+
+    if (Math.random() < 0.2) minor = false;
 } 
 // var key = 0;
 
@@ -79,18 +83,27 @@ function mutateBass(bass, kick) {
 	
 	newBass[0] = 1; // this could be removed below, which is cool sometimes
      for (var i = 0; i < kickRes; i++) {
-        if (kick[i] != 0 || Math.random() < .125) {
+        if (kick[i] != 0 || Math.random() < .1) {
             if (bass[i] != 0) {
-                if (Math.random() < .1) { 
+                if (Math.random() < .2) { 
                     newBass[i] = 0;
                     continue;
                 }
             }
             if (Math.random() < 0.4) newBass[i] = 1;
             else if (Math.random() < 0.1) newBass[i] = 8;
-            else if (Math.random() < 0.1) newBass[i] = 5;
+            // 5 is actually in the minor scale, does it sound good?
+            else if (Math.random() < 0.1) {
+                if (minor)
+                   newBass[i] = 4;
+                else newBass[i] = 5;
+            }
             else if (Math.random() < 0.1) newBass[i] = 3;
-            else if (Math.random() < 0.1) newBass[i] = -2;
+            else if (Math.random() < 0.1) {
+                if (minor)
+                    newBass[i] = -2;
+                else newBass[i] = -1;
+            }
          }
     }
 
