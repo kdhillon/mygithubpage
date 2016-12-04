@@ -14,7 +14,7 @@ function initBeatPart() {
 
     playLongSynth = false;
 
-    muteHarmonyOnB = Math.random() < 0.25;
+    muteHarmonyOnB = Math.random() < 0.5;
     if (muteHarmonyOnB) console.log("Muting harmony on B section");
 
     console.log("mute hat: " + specialMuteHat + " snare: " + specialMuteSnare + " kick: " + specialMuteKick)
