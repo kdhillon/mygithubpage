@@ -28,6 +28,8 @@ var hatObject;
 var kickObject;
 var snareObject;
 
+var accentObject;
+
 // static
 function initKit() {
 	triplets = Math.random() < 0.8;
@@ -36,6 +38,8 @@ function initKit() {
 	hatObject = new sample(getFileName("hat", 1));
  	kickObject = new sample(getFileName("kick", 1));
  	snareObject = new sample(getFileName("snare", 2));
+
+	accentObject = new sample(getFileName("accent", 1));
 }
 
 
@@ -49,7 +53,12 @@ function KitPart(fresh) {
 }
 
 // schedule this beat part to be played for x measures
-function scheduleKitPart(kitPart, muteKick, muteHat, muteSnare) {
+function scheduleKitPart(kitPart, muteKick, muteHat, muteSnare, playAccent) {
+
+	if (playAccent) {
+		playAccent(0);
+	}
+
 	// console.log(kitPart._hat);
 	for (var i = 0; i < measures; i++) {
 		// schedule hat
@@ -334,6 +343,10 @@ function playHat(beat) {
 		// 	playSound(hatObject, 1, hatVol, time + (beat + 1.33) * subBeatEvery);			
 		// 	playSound(hatObject, 1, hatVol, time + (beat + 2.66) * subBeatEvery);			
 		// }
+}
+
+function playAccent(beat) {
+	playSound(accentObject, 1, accentVol, time + beat * subBeatEvery);
 }
 
 // will mute if not already muted
