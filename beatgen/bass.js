@@ -80,16 +80,25 @@ function generateBass(kick) {
 
 function mutateBass(bass, kick) {
 	var newBass = bass.slice(0);
+
+    var maxBassNotes = 3;
+    var totalBass = 0;
 	
 	newBass[0] = 1; // this could be removed below, which is cool sometimes
      for (var i = 0; i < kickRes; i++) {
         if (kick[i] != 0 || Math.random() < .1) {
             if (bass[i] != 0) {
+                // erase a note that was previously there.
                 if (Math.random() < .2) { 
                     newBass[i] = 0;
                     continue;
                 }
             }
+            if (totalBass >= maxBassNotes) {
+                newBass[i] = 0;
+                continue;
+            }
+
             if (Math.random() < 0.4) newBass[i] = 1;
             else if (Math.random() < 0.1) newBass[i] = 8;
             // 5 is actually in the minor scale, does it sound good?
@@ -105,6 +114,7 @@ function mutateBass(bass, kick) {
                 else newBass[i] = -1;
             }
          }
+        if (newBass[i] != 0) totalBass++;
     }
 
     if (trapStyle && Math.random() < 0.2) {

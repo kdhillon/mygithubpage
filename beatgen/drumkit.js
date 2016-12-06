@@ -12,6 +12,8 @@ var hatVol = -0.5;
 var snareVol = 0.0;
 var kickVol = 0.0;
 
+var accentVol = -0.8;
+
 var kickProbs = []
 
 // This represents the drum pad for playing the drum beat
@@ -42,7 +44,6 @@ function initKit() {
 	accentObject = new sample(getFileName("accent", 1));
 }
 
-
 // this will be owned by BeatPart
 function KitPart(fresh) {
 	if (fresh) {
@@ -56,7 +57,7 @@ function KitPart(fresh) {
 function scheduleKitPart(kitPart, muteKick, muteHat, muteSnare, playAccent) {
 
 	if (playAccent) {
-		playAccent(0);
+		playAcct(0);
 	}
 
 	// console.log(kitPart._hat);
@@ -345,8 +346,8 @@ function playHat(beat) {
 		// }
 }
 
-function playAccent(beat) {
-	playSound(accentObject, 1, accentVol, time + beat * subBeatEvery);
+function playAcct(beat) {
+	playSound(accentObject, 1 + key - 12, accentVol, time + beat * subBeatEvery);
 }
 
 // will mute if not already muted

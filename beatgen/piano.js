@@ -1,4 +1,4 @@
-var melodyOffFromG = -1; // definitely -1 for some reason? C?
+// var melodyOffFromG = -1; // definitely -1 for some reason? C?
 var melodyOctave = -1;
 var harmonyOctave;
 
@@ -134,6 +134,9 @@ function getHarmonyNote(melodyNote) {
     //     note = melodyNote + 5 - 12;
     // }
     // if (note <= 0) note -= 1;
+    // prevents 13 + 3 problem, which are dissonant (1, 3);
+    if (melodyNote == 13) melodyNote = 1;
+
     var melodyIndex = getIndexOf(melodyNote);
     if (melodyIndex == -1) return;
 
@@ -336,18 +339,20 @@ function scheduleLongSynth(harmony) {
     }
 }
 
+// 
+
 function playMelody(melody, beat) {
     var note = melody[beat % melody.length];
     if (note != 0) {
         //    stopSound(melodyObject, time + beat * 2 * subBeatEvery - 0.001);
-          playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
+        playSound(melodyObject, note + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
         // if (Math.random() < 0.5) playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);   
         // if (Math.random() < 0.5) playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave + 6, harmonyVol, time + beat * 2 * subBeatEvery);   
         if (melodyChordLevel == 1 || melodyChordLevel == 3) {
-            playSound(melodyObject, getFifthOf(note) - 1 - melodyOffFromG + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
+            playSound(melodyObject, getFifthOf(note) + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
         }
         if (melodyChordLevel == 2 || melodyChordLevel == 3) {
-          playSound(melodyObject, getThirdOf(note) - 1 - melodyOffFromG + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
+          playSound(melodyObject, getThirdOf(note) + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
         }
      }
 }
@@ -383,17 +388,17 @@ function playHarmony(harmony, beat) {
     if (note != 0) {
          stopSound(harmonyObject, time + beat * 2 * subBeatEvery - 0.001);
 
-        playSound(harmonyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
+        playSound(harmonyObject, note + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
         // Play the 5th too.
         if (harmonyChordLevel == 1 || harmonyChordLevel == 3) {
             var fifth = getFifthOf(note);
             if (fifth != null)
-                playSound(harmonyObject, fifth - 1 - melodyOffFromG + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
+                playSound(harmonyObject, fifth + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
          }
          if (harmonyChordLevel == 2 || harmonyChordLevel == 3) {
              var third = getThirdOf(note);
              if (third != null) 
-                playSound(harmonyObject, third - 1 - melodyOffFromG + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
+                playSound(harmonyObject, third+ key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
          }
        
         // playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * harmonyOctave + 7, harmonyVol, time + beat * 2 * subBeatEvery);
@@ -405,7 +410,7 @@ function playLongHarmony(harmony, beat) {
     if (note != 0) {
         stopSound(longHarmonyObject, time + beat * 2 * subBeatEvery - 0.001);
 
-        playSound(longHarmonyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
+        playSound(longHarmonyObject, note + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
         // playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * harmonyOctave + 7, harmonyVol, time + beat * 2 * subBeatEvery);
       }
 }

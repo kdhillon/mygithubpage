@@ -74,7 +74,6 @@ function stopSound(object, time) {
     // object.s.
 }
 
-
 function getFileName(prefix, count) {
     var count = count;
 	var random = Math.ceil(Math.random() * count);

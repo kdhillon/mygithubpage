@@ -6,6 +6,8 @@
 
 var currentBeatPart;
 
+var playAccentThisSong;
+
 // 1-4 A
 // 5-12 B
 // 13-16 A
@@ -22,14 +24,26 @@ sectionFlow = 	[1, 1, 1, 1, 2, 2, 2, 2]
 function Song() {
 	if (Math.random() < 0.5) 
 		this.introLength = 4;
-	else this.introLength = 2;
+	else if (Math.random() < 0.5) this.introLength = 2;
+	else if (Math.random() < 0.5) this.introLength = 1;
+	else this.introLength = 0;
+
 	console.log("intro length: " + this.introLength)
 	// this.introLength = 0;
 
     this.aSection = new BeatPart(true);
     this.bSection = mutateBeatPart(this.aSection)
 
-	
+	this.temporarilyMuteDrums = false;
+
+	this.tempBass;
+	this.tempKit; 
+	this.tempMelody;
+	this.tempHarmony;
+
+	playAccentThisSong = Math.random() < 0.3;
+	console.log("play accent: " + playAccentThisSong)	
+
 	// if (Math.random() < 0.3) {
 	// 	kitFlow[0] = 0;
 	// }
@@ -41,7 +55,6 @@ function Song() {
 	else if (setup < 0.6) {
 		kitFlow[0] = 0;
 	}
-
 
 	// change melodyFlow
 	if (Math.random() < 0.0) {
@@ -94,34 +107,69 @@ function Song() {
 		else {
 			var playHarmony = true;
 
-			var baseMeasure = Math.floor((measure - this.introLength) / 4) % loopLength;
+			var section = Math.floor((measure - this.introLength) / 4) % loopLength;
 
 			var muteKit = false;
 			var muteBass = false;
 			var muteMelody = false;
 			var muteHarmony = false;
-			if (kitFlow[baseMeasure] == 0) muteKit = true;
-			if (bassFlow[baseMeasure] == 0) muteBass = true;
-			if (melodyFlow[baseMeasure] == 0) muteMelody = true;
-			if (harmonyFlow[baseMeasure] == 0) muteHarmony = true;
+			if (kitFlow[section] == 0) muteKit = true;
+			if (bassFlow[section] == 0) muteBass = true;
+			if (melodyFlow[section] == 0) muteMelody = true;
+			if (harmonyFlow[section] == 0) muteHarmony = true;
 
-			if (sectionFlow[baseMeasure] == 1) {
+			if (sectionFlow[section] == 1) {
 				currentSection = this.aSection;
 			}
-			else if (sectionFlow[baseMeasure] == 2) {
+			else if (sectionFlow[section] == 2) {
 				currentSection = this.bSection;
 			}
 
+			var base = measure - (this.introLength);
+
 			// console.log("section a: " + (currentSection == this.aSection) + " mute kit: " + muteKit + " bass: " + muteBass + " melody: " + muteMelody)
-			if ((measure - this.introLength + 1) % 8 == 0 && Math.random() < 0.3) {
+			if ((base + 1) % 8 == 0 && Math.random() < 0.3) {
 				muteKit = true;
 				muteBass = true;
 				muteMelody = false;
 				muteHarmony = true;
 			}
 
-			if (measure % 2 == 0) {
-				currentSection.schedule(true, muteKit, muteMelody, muteBass, muteHarmony);
+			// add "temp drum mute"
+			if (this.temporarilyMuteDrums) {
+				// unmute if 2 measures after, or with random prob
+				this.temporarilyMuteDrums = false;
+				
+				if (Math.random() < 0.2) {
+					console.log("staying muted")
+					muteKit = this.tempKit || muteKit;
+					muteBass = this.tempBass || muteBass;
+					muteMelody = this.tempMelody || muteMelody;
+					muteHarmony = this.tempHarmony || muteHarmony;
+				}
+				// otherwise, stay muted for one more measure.
+			}
+			
+			if (base % 4 == 0 && Math.random() < 0.1) {
+				this.temporarilyMuteDrums = true;
+				console.log("muting temporarily");
+				muteKit = true;
+				muteBass = Math.random() < 0.8 || muteBass;
+				muteMelody = Math.random() < 0.3 || muteMelody;
+				muteHarmony = Math.random() < 0.3 || muteHarmony;
+				this.tempKit = muteKit;
+				this.tempBass = muteBass;
+				this.tempMelody = muteMelody;
+				this.tempHarmony = muteHarmony;
+			} 
+
+			if (base % 2 == 0) {
+				var playAccent = false;
+				if (base % 8 == 0 && playAccentThisSong) {
+					console.log("playing accent: " + base)
+					playAccent = true;
+				}
+				currentSection.schedule(true, muteKit, muteMelody, muteBass, muteHarmony, playAccent);
 			}
 			else {
 				currentSection.schedule(false, muteKit, muteMelody, muteBass, muteHarmony);

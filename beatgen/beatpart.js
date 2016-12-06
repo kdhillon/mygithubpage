@@ -64,7 +64,7 @@ function BeatPart(fresh) {
         if (this.melodyA[0] == 0) specialMuteHat = false;
     }
 
-    this.schedule = function (firstHalf, muteDrums, muteMelody, muteBass, muteHarmony) {
+    this.schedule = function (firstHalf, muteDrums, muteMelody, muteBass, muteHarmony, playAccent) {
         var drums, bass;
         if (firstHalf) {
             drums = this.drumsA;
@@ -95,11 +95,11 @@ function BeatPart(fresh) {
 		
         if (muteDrums) {
             // this needs to be consistent across both measures, these breaks should be globally set.
-            scheduleKitPart(drums, specialMuteKick, specialMuteHat, specialMuteSnare);
+            scheduleKitPart(drums, specialMuteKick, specialMuteHat, specialMuteSnare, false);
         }
-        else 
-            scheduleKitPart(drums, false, false, false);
-		
+        else {
+            scheduleKitPart(drums, false, false, false, playAccent);
+        }
   };
 }
 

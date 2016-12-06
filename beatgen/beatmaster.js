@@ -145,10 +145,11 @@ function onLoad() {
 }
 
 var measuresToLoad = 16;
+var currentMeasureLoaded = 16;
 function updateMeasure() {
-	if (measureCounter > measuresToLoad) {
-		setTimeout(updateMeasure, 45 * 1000);
-		measuresToLoad += 16;
+	if (measureCounter > currentMeasureLoaded) {
+		setTimeout(updateMeasure, 1000 * measuresToLoad * 8 * 60 / tempo - 4000);
+		currentMeasureLoaded += measuresToLoad;
 		return;
 	}
 	time = startTime + measureCounter * measureEvery * 2;
