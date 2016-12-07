@@ -48,8 +48,10 @@ function BeatPart(fresh) {
         this.bassB = mutateBass(this.bassA, this.drumsB._kick);
 		
 		this.melodyA = generateMelody();
-		// this.melodyB = mutateMelody(this.melodyA);
-		this.melodyB = this.melodyA;
+		if (Math.random() < 0.2) {
+            this.melodyB = mutateMelody(this.melodyA);
+        }
+		else this.melodyB = this.melodyA;
 		this.harmonyA = generateHarmony(this.melodyA);
 
         if (Math.random() < 0.5) 

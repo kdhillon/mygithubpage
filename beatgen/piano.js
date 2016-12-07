@@ -287,17 +287,17 @@ function mutateMelody(input) {
 
 //    melody[0] = 1;
 //     should we duplicate the second half?
-    if (Math.random() < 0.5 && resolution < 4) {
+    if (Math.random() < 0.3 && resolution < 4) {
         for (var i = melody.length / 2; i < melody.length; i++) {
             melody[i] = melody[i - melody.length / 2];
         }
     }
-    else if (resolution >= 2 && Math.random() < 0.2) {
-        // clear the second half...
-        for (var i = melody.length / 2; i < melody.length; i++) {
-            melody[i] = 0;
-        }
-    }
+    // else if (resolution >= 2 && Math.random() < 0.2) {
+    //     // clear the second half...
+    //     for (var i = melody.length / 2; i < melody.length; i++) {
+    //         melody[i] = 0;
+    //     }
+    // }
     // for (var i = 0; i < melody.length; i += 2) {
     //     if (melody[i] == 0 && Math.random() < 0.5) melody[i] = 1;
     //     else if (melody[i] > 1 && Math.random() < 0.2) melody[i] = 0;
