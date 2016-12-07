@@ -148,7 +148,7 @@ var measuresToLoad = 16;
 var currentMeasureLoaded = 16;
 function updateMeasure() {
 	if (measureCounter > currentMeasureLoaded) {
-		setTimeout(updateMeasure, 1000 * measuresToLoad * 8 * 60 / tempo - 4000);
+		setTimeout(updateMeasure, 1000 * measuresToLoad * measureEvery * 2 - 8000);
 		currentMeasureLoaded += measuresToLoad;
 		return;
 	}
