@@ -2,8 +2,8 @@
 var melodyOctave = -1;
 var harmonyOctave;
 
-var melodyVol = 0;
-var harmonyVol = 0;
+var melodyVol = -.3;
+var harmonyVol = -.3;
 
 var majorScale = [1, 3, 5, 6, 8, 10, 12, 13];
 var minorScale = [1, 3, 4, 6, 8, 9, 11, 13];
