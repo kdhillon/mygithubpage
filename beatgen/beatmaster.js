@@ -70,6 +70,10 @@ function onTouch() {
 	Math.seedrandom(seed);
 	
 	tempo = Math.floor(Math.random() * (tempoMax - tempoMin) + tempoMin);
+
+	// for testing
+	tempo = tempoMax;
+
 	console.log("Tempo: " + tempo);
 	beatEvery = 60 / tempo;
 	measureEvery = beatEvery * 4;

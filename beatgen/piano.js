@@ -38,7 +38,7 @@ var melodyChordLevel = 0;
 
 function initPiano() {
 	var filename = getFileName("piano", 5)
-    filename = "http://kyledhillon.com/beatgen/server/piano/4.WAV"
+
     console.log("melody file: " + filename)
 	melodyObject = new sample(filename);
 	var filename2 = getFileName("piano", 5)
@@ -262,7 +262,8 @@ function generateHarmony(melody) {
 function mutateMelody(input) {
 	var melody = input.slice(0);
 	var resolution = RES;
-    if (Math.random() < 0.1) resolution = RES * 2;
+    if (Math.random() < 0.2) resolution = RES * 2;
+    else if (Math.random() < 0.2) resolution = RES * 4;
 
     console.log("resolution: " + resolution)
 
@@ -286,7 +287,7 @@ function mutateMelody(input) {
 
 //    melody[0] = 1;
 //     should we duplicate the second half?
-    if (Math.random() < 0.5) {
+    if (Math.random() < 0.5 && resolution < 4) {
         for (var i = melody.length / 2; i < melody.length; i++) {
             melody[i] = melody[i - melody.length / 2];
         }
