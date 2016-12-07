@@ -38,7 +38,7 @@ var melodyChordLevel = 0;
 
 function initPiano() {
 	var filename = getFileName("piano", 5)
-
+    var filename = "http://kyledhillon.com/beatgen/server/piano/5.WAV";
     console.log("melody file: " + filename)
 	melodyObject = new sample(filename);
 	var filename2 = getFileName("piano", 5)
