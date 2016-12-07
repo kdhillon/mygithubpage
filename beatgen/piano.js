@@ -2,8 +2,8 @@
 var melodyOctave = -1;
 var harmonyOctave;
 
-var melodyVol = -.3;
-var harmonyVol = -.3;
+var melodyVol = -.2;
+var harmonyVol = -.2;
 
 var majorScale = [1, 3, 5, 6, 8, 10, 12, 13];
 var minorScale = [1, 3, 4, 6, 8, 9, 11, 13];
@@ -38,6 +38,7 @@ var melodyChordLevel = 0;
 
 function initPiano() {
 	var filename = getFileName("piano", 5)
+    console.log("melody file: " + filename)
 	melodyObject = new sample(filename);
 	var filename2 = getFileName("piano", 5)
 	harmonyObject = new sample(filename2);
