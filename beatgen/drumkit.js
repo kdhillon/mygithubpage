@@ -251,7 +251,7 @@ function mutateHat(hat, canChangeSituation) {
 			invert(ret, i);
 		}
 		
-		if (triplets && ret[i] == 1 && Math.random() < 0.3 && i % 4 == 0) {
+		if (triplets && ret[i] == 1 && Math.random() < 0.2 && i % 4 == 0) {
 			addTriplets(ret, i);
 		}	
 	}
