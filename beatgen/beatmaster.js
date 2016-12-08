@@ -6,13 +6,15 @@ var beatEvery;
 var measureEvery;
 var subBeatEvery;
 
+var shuffleMode = false;
+
 var stepCounter = 32;
-var measureCounter = 0;
+var measureCounter;
 
 var context;
 
-var startTime = 0;
-var time = 0;
+var startTime;
+var time;
 
 var song;
 
@@ -43,14 +45,27 @@ function querySt(ji) {
     }
 }
 
+function onShuffle() {
+	shuffleMode = true;
+	onTouch();
+}
+
 var seed;
 function onTouch() {
 	if (isUnlocked) {
 		console.log("Already unlocked");
 		return;
 	}
+
+	// clear these so we can do new songs
+	song = null;
+ 	time = 0;
+	startTime = 0;
+	measureCounter = 0;
+
 	document.getElementById("start").textContent = "Loading...";
 	document.getElementById("start").disabled = true;
+	document.getElementById("shuffle").disabled = true;
 	document.getElementById("seedinput").readOnly = true;
 
 	var element = document.getElementById("seedinput");
@@ -70,7 +85,7 @@ function onTouch() {
 	Math.seedrandom(seed);
 	
 	tempo = Math.floor(Math.random() * (tempoMax - tempoMin) + tempoMin);
-
+	// tempo = 500;
 	console.log("Tempo: " + tempo);
 	beatEvery = 60 / tempo;
 	measureEvery = beatEvery * 4;
@@ -141,13 +156,24 @@ function unlock() {
 
 function onLoad() {
 	// document.getElementById("b1").addEventListener('click', unlock);
-	document.getElementById("text").addEventListener('click', onTouch);
-	document.getElementById("img").addEventListener('click', onTouch);
+	// document.getElementById("text").addEventListener('click', onTouch);
+	// document.getElementById("img").addEventListener('click', onTouch);
 }
 
 var measuresToLoad = 16;
 var currentMeasureLoaded = 16;
 function updateMeasure() {
+	if (measureCounter == 18) {
+		if (shuffleMode) {
+			isUnlocked = false;
+			document.getElementById("seedinput").value = null;
+			currentMeasureLoaded = 16;
+			
+			setTimeout(onTouch, 5000);
+			return;
+		}
+	}
+
 	if (measureCounter > currentMeasureLoaded) {
 		setTimeout(updateMeasure, 1000 * measuresToLoad * measureEvery * 2 - 8000);
 		currentMeasureLoaded += measuresToLoad;
@@ -159,7 +185,6 @@ function updateMeasure() {
 	console.log("measure: " + measureCounter);
 	song.playMeasure(measureCounter);
 
-	var margin = 200;
 	// setTimeout(updateMeasure, 60/144 * 8  * 1000 - margin);
 	setTimeout(updateMeasure, 100);
 

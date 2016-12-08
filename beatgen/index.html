@@ -29,8 +29,9 @@
   <body bgcolor="white"> 
 	<font id="seedtext"> Seed:<br> </font>
  	<input id="seedinput" type="text" name="seed"><br>
-    <button id="start" type="button" onclick="onTouch()">Start!</button>
-	
+    <button id="start" type="button" onclick="onTouch()">Randomize!</button>
+	  <button id="shuffle" type="button" onclick="onShuffle()">Shuffle!</button>
+
   <script>
 var seed = querySt("seed");
 if (seed != null && seed != "")
