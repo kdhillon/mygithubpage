@@ -12,10 +12,11 @@ var octave = 0;
 
 // 0 is G
 var key;
-var minor = true;
+var minor;
 
 function initBass() {
     key = Math.floor(Math.random() * 12 - 4);
+	minor = true;
     // key = 0;
 
     if (Math.random() < 0.2) minor = false;
