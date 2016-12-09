@@ -169,7 +169,7 @@ function updateMeasure() {
 			document.getElementById("seedinput").value = null;
 			currentMeasureLoaded = 16;
 			
-			setTimeout(onTouch, 5000);
+			setTimeout(onTouch, 15000);
 			return;
 		}
 	}

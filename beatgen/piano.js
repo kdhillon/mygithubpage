@@ -37,10 +37,10 @@ var pianoComplexity;
 var melodyChordLevel = 0;
 
 function initPiano() {
-	var filename = getFileName("piano", 4)
+	var filename = getFileName("piano", 3)
     console.log("melody file: " + filename)
 	melodyObject = new sample(filename);
-	var filename2 = getFileName("piano", 4)
+	var filename2 = getFileName("piano", 3)
 	harmonyObject = new sample(filename2);
     longHarmonyObject = new sample(getFileName("long synth", 1));
 
