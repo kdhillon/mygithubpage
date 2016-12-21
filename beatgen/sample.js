@@ -10,14 +10,14 @@ function sample(url) {
 }
 
 // Doesn't work
-function loadLocalAudio(object, localFileName) {
-    var file = document.getElementById('file').files[0];
-    var buffer = reader.readAsArrayBuffer(file);
-    context.decodeAudioData(request.response, function (buffer) {
-        object.buffer = buffer;
-        object.gainNode = context.createGain();
-    })
-}
+// function loadLocalAudio(object, localFileName) {
+//     var file = document.getElementById('file').files[0];
+//     var buffer = reader.readAsArrayBuffer(file);
+//     context.decodeAudioData(request.response, function (buffer) {
+//         object.buffer = buffer;
+//         object.gainNode = offlineContext.createGain();
+//     })
+// }
 
 function loadAudio(object, url) {
     var request = new XMLHttpRequest();
@@ -28,7 +28,7 @@ function loadAudio(object, url) {
     request.onload = function () {
         context.decodeAudioData(request.response, function (buffer) {
             object.buffer = buffer;
-            object.gainNode = context.createGain();
+            object.gainNode = offlineContext.createGain();
             if (buffersLoaded() && song == null) {
                 initSong();
             }
@@ -49,20 +49,22 @@ function playSound(object, semitones, gain, time) {
     //     object.s.stop();
     //     object.playing = false;
     // }
-    object.s = context.createBufferSource();
+    object.s = offlineContext.createBufferSource();
     object.s.buffer = object.buffer;
     
     // note: detune parameter is new and only supported by chrome
     if (object.s.detune != null)
         object.s.detune.value = 100 * (semitones);
-    object.s.connect(context.destination);
+    object.s.connect(offlineContext.destination);
     
     // if (gain != 0) {
         object.gainNode.gain.value = gain;
         object.s.connect(object.gainNode);
-        object.gainNode.connect(context.destination);
+        object.gainNode.connect(offlineContext.destination);
     // }
 
+    // write to buffer
+    
     object.s.start(time);
     // object.playing = true;
 }
@@ -77,7 +79,8 @@ function stopSound(object, time) {
 function getFileName(prefix, count) {
     var count = count;
 	var random = Math.ceil(Math.random() * count);
-    // console.log(prefix + ": " + random);
+    
+    console.log(prefix + ": " + random);
     if (offlineMode) 
 	    return "http://127.0.0.1:8887/" + prefix + "/" + random + ".WAV";
 	return "http://kyledhillon.com/beatgen/server/" + prefix + "/" + random + ".WAV";

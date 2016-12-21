@@ -12,6 +12,7 @@ var stepCounter = 32;
 var measureCounter;
 
 var context;
+var offlineContext;
 
 var startTime;
 var time;
@@ -22,6 +23,7 @@ try {
     // Fix up for prefixing
     window.AudioContext = window.AudioContext||window.webkitAudioContext;
     context = new AudioContext();
+	offlineContext = new OfflineAudioContext(2,44100*40,44100);
   }
   catch(e) {
     alert('Web Audio API is not supported in this browser');
@@ -102,9 +104,9 @@ function initSong() {
 
 	// create empty buffer and play it
 	var buffer = context.createBuffer(1, 1, 22050);
-	var source = context.createBufferSource();
+	var source = offlineContext.createBufferSource();
 	source.buffer = buffer;
-	source.connect(context.destination);
+	source.connect(offlineContext.destination);
 	source.start ? source.start(0) : source.noteOn(0);	
 	
 	// by checking the play state after some time, we know if we're really unlocked
@@ -160,25 +162,36 @@ function onLoad() {
 	// document.getElementById("img").addEventListener('click', onTouch);
 }
 
-var measuresToLoad = 16;
+// have 2 modes, real time and high quality.
+// todo: render each section separately and then play them at the right time
+var measuresToLoad = 64;
 var currentMeasureLoaded = 16;
 function updateMeasure() {
-	if (measureCounter == 18) {
-		if (shuffleMode) {
-			isUnlocked = false;
-			document.getElementById("seedinput").value = null;
-			currentMeasureLoaded = 16;
+	if (measureCounter == 63) {
+		// if (shuffleMode) {
 			
-			setTimeout(onTouch, 15000);
+			// isUnlocked = false;
+			// document.getElementById("seedinput").value = null;
+			// currentMeasureLoaded = 16;
+			
+			// setTimeout(onTouch, 15000);
+			// return;
+			offlineContext.startRendering().then(function(renderedBuffer) {
+				console.log('Rendering completed successfully');
+				var source2 = context.createBufferSource();
+				source2.buffer = renderedBuffer;
+				source2.connect(context.destination);
+				source2.start(0);
+			})
 			return;
-		}
+		// }
 	}
 
-	if (measureCounter > currentMeasureLoaded) {
-		setTimeout(updateMeasure, 1000 * measuresToLoad * measureEvery * 2 - 8000);
-		currentMeasureLoaded += measuresToLoad;
-		return;
-	}
+	// if (measureCounter > currentMeasureLoaded) {
+	// 	setTimeout(updateMeasure, 1000 * measuresToLoad * measureEvery * 2 - 8000);
+	// 	currentMeasureLoaded += measuresToLoad;
+	// 	return;
+	// }
 	time = startTime + measureCounter * measureEvery * 2;
 
 	// if (measureCounter > 0) nextPart();	
@@ -186,7 +199,7 @@ function updateMeasure() {
 	song.playMeasure(measureCounter);
 
 	// setTimeout(updateMeasure, 60/144 * 8  * 1000 - margin);
-	setTimeout(updateMeasure, 100);
+	setTimeout(updateMeasure, 1);
 
 	measureCounter += 1;
 }

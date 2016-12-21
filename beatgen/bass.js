@@ -1,4 +1,4 @@
-var bassObject = new sample(getFileName("bass", 1));
+var bassObject;
 //var bassObject2 = new sample(getFileName("bass", 0));
 
 // BASS IS C
@@ -15,6 +15,7 @@ var key;
 var minor = true;
 
 function initBass() {
+    bassObject  = new sample(getFileName("bass", 3));
     key = Math.floor(Math.random() * 12 - 4);
     // key = 0;
 

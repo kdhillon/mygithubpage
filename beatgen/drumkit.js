@@ -37,7 +37,7 @@ function initKit() {
 	triplets = Math.random() < 0.8;
 	console.log("triplets: " + triplets);
 
-	hatObject = new sample(getFileName("hat", 1));
+	hatObject = new sample(getFileName("hat", 3));
  	kickObject = new sample(getFileName("kick", 1));
  	snareObject = new sample(getFileName("snare", 2));
 
