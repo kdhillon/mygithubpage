@@ -38,8 +38,8 @@ var melodyChordLevel = 0;
 
 function initPiano() {
 	var filename = 
-	melodyObject = new sample(getFileName("piano", 3));
-	harmonyObject = new sample(getFileName("piano", 3));
+	melodyObject = new sample(getFileName("piano", 4));
+	harmonyObject = new sample(getFileName("piano", 4));
     longHarmonyObject = new sample(getFileName("long synth", 1));
 
     // harmonyChordLevel = Math.floor(Math.random() * 4);

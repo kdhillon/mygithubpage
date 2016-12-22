@@ -23,7 +23,10 @@ try {
     // Fix up for prefixing
     window.AudioContext = window.AudioContext||window.webkitAudioContext;
     context = new AudioContext();
-	offlineContext = new OfflineAudioContext(2,44100*40,44100);
+	
+	// Length in seconds 
+	var length = 120;
+	offlineContext = new OfflineAudioContext(2,44100*length,44100);
   }
   catch(e) {
     alert('Web Audio API is not supported in this browser');
