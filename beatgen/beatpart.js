@@ -7,6 +7,8 @@ var playLongSynth;
 
 var muteHarmonyOnB;
 
+var resolution;
+
 function initBeatPart() {
     specialMuteHat = Math.random() < 0.7;
     specialMuteKick = Math.random() < 0.95;
@@ -26,6 +28,13 @@ function initBeatPart() {
 // this represents a 4 bar phrase of all instruments.
 // this is created by the 
 function BeatPart(fresh) {
+	resolution = RES;
+	
+    if (Math.random() < 0.2) resolution = RES * 2;
+    else if (Math.random() < 0.2) resolution = RES * 4;
+
+    console.log("resolution: " + resolution)
+	
     if (!fresh) {
         this.drumsA = new KitPart();
         this.drumsB = new KitPart();
@@ -49,7 +58,7 @@ function BeatPart(fresh) {
 		
 		this.melodyA = generateMelody();
 		if (Math.random() < 0.2) {
-            this.melodyB = mutateMelody(this.melodyA);
+            this.melodyB = generateMelody(this.melodyA, resolution);
         }
 		else this.melodyB = this.melodyA;
 		this.harmonyA = generateHarmony(this.melodyA);

@@ -167,10 +167,10 @@ function onLoad() {
 
 // have 2 modes, real time and high quality.
 // todo: render each section separately and then play them at the right time
-var measuresToLoad = 64;
+var measuresToLoad = 32;
 var currentMeasureLoaded = 16;
 function updateMeasure() {
-	if (measureCounter == 63) {
+	if (measureCounter == 31) {
 		// if (shuffleMode) {
 			
 			// isUnlocked = false;

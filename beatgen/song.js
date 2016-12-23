@@ -20,6 +20,7 @@ harmonyFlow = 	[0, 0, 1, 1, 0, 0, 1, 1]
 bassFlow = 		[1, 1, 1, 1, 1, 1, 1, 1]
 sectionFlow = 	[1, 1, 1, 1, 2, 2, 2, 2]
 
+
 // x % (A + B) gives you cu
 function Song() {
 	if (Math.random() < 0.5) 
@@ -30,6 +31,14 @@ function Song() {
 
 	console.log("intro length: " + this.introLength)
 	// this.introLength = 0;
+	
+	this.originalKey = key;
+	// this.adjustedKey = (key - 5);
+	// if (Math.random() < 0.5) 
+	// I think this isn't correct for major keys...
+	
+	this.adjustedKey = (key + 7);
+	this.changeKey = minor && Math.random() < 0.2;
 
     this.aSection = new BeatPart(true);
     this.bSection = mutateBeatPart(this.aSection)
@@ -126,6 +135,14 @@ function Song() {
 			}
 
 			var base = measure - (this.introLength);
+			
+			// test out changing key after a few meaures
+			if (this.changeKey && base != 0 && base % 4 == 0) {
+				if (key == this.originalKey) key = this.adjustedKey;
+				else {
+					key = this.originalKey;
+				}
+			}
 
 			// console.log("section a: " + (currentSection == this.aSection) + " mute kit: " + muteKit + " bass: " + muteBass + " melody: " + muteMelody)
 			if ((base + 1) % 8 == 0 && Math.random() < 0.3) {

@@ -38,8 +38,8 @@ var melodyChordLevel = 0;
 
 function initPiano() {
 	var filename = 
-	melodyObject = new sample(getFileName("piano", 4));
-	harmonyObject = new sample(getFileName("piano", 4));
+	melodyObject = new sample(getFileName("piano", 3));
+	harmonyObject = new sample(getFileName("piano", 3));
     longHarmonyObject = new sample(getFileName("long synth", 1));
 
     // harmonyChordLevel = Math.floor(Math.random() * 4);
@@ -47,6 +47,8 @@ function initPiano() {
 
     // between 0 and 1
     pianoComplexity = Math.random();
+	// roll w disadvantage :)
+	pianoComplexity = Math.min(pianoComplexity, Math.random());
     // boost if high to fill every note
     if (pianoComplexity > 0.8) pianoComplexity = 1;
     if (pianoComplexity < 0.2) pianoComplexity = 0.2;
@@ -118,12 +120,12 @@ function getNewHarmony() {
 
 function generateMelody() {
 	var melody = getNewMelody();
-	return mutateMelody(melody);
+	return mutateMelody(melody, resolution);
 }
 
 // function generateHarmony() {
 // 	var harmony = getNewHarmony();
-// 	return mutateMelody(harmony, true);
+// 	return melody(harmony, true);
 // }
 
 function getHarmonyNote(melodyNote) {
@@ -256,17 +258,25 @@ function generateHarmony(melody) {
 	return harmony;
 }
 
-function mutateMelody(input) {
+function countNotes(input) {
+	var count = 0;
+	for (var i = 0; i < input.length; i++) {
+		if (input[i] != 0) {
+			count++;
+		}
+	}
+	// console.log("notes:/ " + count);
+	return count;
+}
+
+function mutateMelody(input, resolution) {
 	var melody = input.slice(0);
-	var resolution = RES;
-    if (Math.random() < 0.2) resolution = RES * 2;
-    else if (Math.random() < 0.2) resolution = RES * 4;
-
-    console.log("resolution: " + resolution)
-
+	
     melody[0] = 13;
     if (Math.random() < 0.3) melody[0] = 1;
 	
+	do {
+		console.log("resolution: " + resolution);
     for (var i = resolution; i < melody.length; i += resolution) {
         if ((melody[i] != 0) && Math.random() < 1 - pianoComplexity) continue;
         else if (melody[i] == 0 && Math.random() < 1 - pianoComplexity) continue;
@@ -274,13 +284,16 @@ function mutateMelody(input) {
         //     melody[i] = 0;
         //     break;
         // }
-       var note = getWeightedNote(i - resolution, false);
+		
+        var note = getWeightedNote(i - resolution, false);
         while (melody[i-resolution] == note) {
             note = getWeightedNote(i - resolution, false);
         }
         if (note == 0) return;
         melody[i] = note;        
     }
+	// console.log(melody);
+	} while (countNotes(melody) <= 1);
 
 //    melody[0] = 1;
 //     should we duplicate the second half?
