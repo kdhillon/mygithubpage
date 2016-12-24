@@ -172,7 +172,6 @@ var currentMeasureLoaded = 16;
 function updateMeasure() {
 	if (measureCounter == 31) {
 		// if (shuffleMode) {
-			
 			// isUnlocked = false;
 			// document.getElementById("seedinput").value = null;
 			// currentMeasureLoaded = 16;
