@@ -37,7 +37,7 @@ function Song() {
 	// this.adjustedKey = (key + 5);
 	// this.adjustedKey = (key + 8);
 	this.changeKey = minor && Math.random() < 0.2;
-	this.changeKey = true;
+	// this.changeKey = true;
 
 	// make sure intro length is multiple of 4 if change key is true
 	if (Math.random() < 0.5 || this.changeKey == true) 

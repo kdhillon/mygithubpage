@@ -19,14 +19,14 @@ var time;
 
 var song;
 
+var length32seconds;
+
+var measuresToLoad = 32;
+
 try {
     // Fix up for prefixing
     window.AudioContext = window.AudioContext||window.webkitAudioContext;
     context = new AudioContext();
-	
-	// Length in seconds 
-	var length = 120;
-	offlineContext = new OfflineAudioContext(2,44100*length,44100);
   }
   catch(e) {
     alert('Web Audio API is not supported in this browser');
@@ -95,7 +95,13 @@ function onTouch() {
 	beatEvery = 60 / tempo;
 	measureEvery = beatEvery * 4;
 	subBeatEvery = beatEvery / 4;
-	
+
+	length32seconds = measureEvery * 2 * measuresToLoad;
+	// Length in seconds 
+	console.log("length 32 seconds " + length32seconds);
+
+	offlineContext = new OfflineAudioContext(2,44100*(length32seconds), 44100);
+				
 	initKit();
 	initBass();
 	initPiano();
@@ -165,28 +171,32 @@ function onLoad() {
 	// document.getElementById("img").addEventListener('click', onTouch);
 }
 
+
+
 // have 2 modes, real time and high quality.
 // todo: render each section separately and then play them at the right time
-var measuresToLoad = 32;
-var currentMeasureLoaded = 16;
+// var currentMeasureLoaded = 16;
+var source2;
 function updateMeasure() {
-	if (measureCounter == 31) {
-		// if (shuffleMode) {
-			// isUnlocked = false;
-			// document.getElementById("seedinput").value = null;
-			// currentMeasureLoaded = 16;
-			
-			// setTimeout(onTouch, 15000);
-			// return;
+	if (measureCounter == measuresToLoad) {
 			offlineContext.startRendering().then(function(renderedBuffer) {
 				console.log('Rendering completed successfully');
-				var source2 = context.createBufferSource();
+				source2 = context.createBufferSource();
 				source2.buffer = renderedBuffer;
 				source2.connect(context.destination);
+				if (!shuffleMode) source2.loop = true;
 				source2.start(0);
 			})
+
+			// also schedule the next song to be played if in shuffle mode
+			if (shuffleMode) {
+				// estimate of time it takes to render the next track
+				var bufferToRender = (measuresToLoad * 100);
+				breakBetween = 1000;
+				setTimeout(restartWithNewSong, measureEvery * 1000 * (measuresToLoad * 2) + breakBetween)
+			}
+	
 			return;
-		// }
 	}
 
 	// if (measureCounter > currentMeasureLoaded) {
@@ -197,11 +207,20 @@ function updateMeasure() {
 	time = startTime + measureCounter * measureEvery * 2;
 
 	// if (measureCounter > 0) nextPart();	
-	// console.log("measure: " + measureCounter);
+	console.log("measure: " + measureCounter);
 	song.playMeasure(measureCounter);
 
 	// setTimeout(updateMeasure, 60/144 * 8  * 1000 - margin);
 	setTimeout(updateMeasure, 1);
 
 	measureCounter += 1;
+}
+
+function restartWithNewSong() {
+    context = new AudioContext();
+	offlineContext = new OfflineAudioContext(2,44100*length32seconds,44100);
+
+	isUnlocked = false;
+	document.getElementById("seedinput").value = null;
+	onTouch();
 }

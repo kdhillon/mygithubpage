@@ -43,7 +43,7 @@ function initKit() {
  	snareObject = new sample(getFileName("snare", 2));
 
 	accentObject = new sample(getFileName("accent", 1));
-	heyObject = new sample(getFileName("hey", 1));
+	heyObject = new sample(getFileName("hey", 2));
 }
 
 // this will be owned by BeatPart
@@ -57,7 +57,7 @@ function KitPart(fresh) {
 
 function playHey(beat) {
 	// console.log("playing hey " + beat);
-	playSound(heyObject, 1 + originalKey, 0, time + beat * subBeatEvery);
+	playSound(heyObject, 1 + originalKey - 12, 0, time + beat * subBeatEvery);
 }
 
 // schedule this beat part to be played for x measures
