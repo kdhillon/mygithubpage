@@ -96,11 +96,16 @@ function onTouch() {
 	measureEvery = beatEvery * 4;
 	subBeatEvery = beatEvery / 4;
 
+	
 	length32seconds = measureEvery * 2 * measuresToLoad;
 	// Length in seconds 
 	console.log("length 32 seconds " + length32seconds);
 
-	offlineContext = new OfflineAudioContext(2,44100*(length32seconds), 44100);
+	var extraTime = 0;
+	if (shuffleMode) {
+		extraTime = 1;
+	}
+	offlineContext = new OfflineAudioContext(2,44100*(length32seconds + extraTime), 44100);
 				
 	initKit();
 	initBass();
