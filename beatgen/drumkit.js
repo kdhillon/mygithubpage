@@ -55,15 +55,13 @@ function KitPart(fresh) {
 	}
 }
 
-function playHey2(beat) {
-	console.log("playing hey " + beat);
-	playSound(heyObject, 1 + key, 0, time + beat * subBeatEvery);
+function playHey(beat) {
+	// console.log("playing hey " + beat);
+	playSound(heyObject, 1 + originalKey, 0, time + beat * subBeatEvery);
 }
 
 // schedule this beat part to be played for x measures
 function scheduleKitPart(kitPart, muteKick, muteHat, muteSnare, playAccent) {
-
-	var playHey = true;
 	if (playAccent) {
 		playAcct(0);
 	}
@@ -72,10 +70,10 @@ function scheduleKitPart(kitPart, muteKick, muteHat, muteSnare, playAccent) {
 	// console.log(kitPart._hat);
 	for (var i = 0; i < measures; i++) {
 		
-		if (playHey && !muteSnare) {
+		if (playHeyThisSong && !muteSnare) {
 			for (var j = 0; j < kickRes; j++) {
 				if (j % 4 == 2) {
-					playHey2(j * 2 + i * 32);
+					playHey(j * 2 + i * 32);
 				}
 			}
 		}

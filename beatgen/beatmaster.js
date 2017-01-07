@@ -197,7 +197,7 @@ function updateMeasure() {
 	time = startTime + measureCounter * measureEvery * 2;
 
 	// if (measureCounter > 0) nextPart();	
-	console.log("measure: " + measureCounter);
+	// console.log("measure: " + measureCounter);
 	song.playMeasure(measureCounter);
 
 	// setTimeout(updateMeasure, 60/144 * 8  * 1000 - margin);

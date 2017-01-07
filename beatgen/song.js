@@ -8,6 +8,8 @@ var currentBeatPart;
 
 var playAccentThisSong;
 
+var playHeyThisSong;
+
 // 1-4 A
 // 5-12 B
 // 13-16 A
@@ -23,22 +25,29 @@ sectionFlow = 	[1, 1, 1, 1, 2, 2, 2, 2]
 
 // x % (A + B) gives you cu
 function Song() {
-	if (Math.random() < 0.5) 
+	// this.introLength = 0;
+	
+	originalKey = key;
+	// this.adjustedKey = (key - 5);
+	// if (Math.random() < 0.5) 
+	// I think this isn't correct for major keys...
+	
+	// this.adjustedKey = (key + 10);
+	this.adjustedKey = (key + 2);
+	// this.adjustedKey = (key + 5);
+	// this.adjustedKey = (key + 8);
+	this.changeKey = minor && Math.random() < 0.2;
+	this.changeKey = true;
+
+	// make sure intro length is multiple of 4 if change key is true
+	if (Math.random() < 0.5 || this.changeKey == true) 
 		this.introLength = 4;
 	else if (Math.random() < 0.5) this.introLength = 2;
 	else if (Math.random() < 0.5) this.introLength = 1;
 	else this.introLength = 0;
 
 	console.log("intro length: " + this.introLength)
-	// this.introLength = 0;
-	
-	this.originalKey = key;
-	// this.adjustedKey = (key - 5);
-	// if (Math.random() < 0.5) 
-	// I think this isn't correct for major keys...
-	
-	this.adjustedKey = (key + 7);
-	this.changeKey = minor && Math.random() < 0.2;
+
 
     this.aSection = new BeatPart(true);
     this.bSection = mutateBeatPart(this.aSection)
@@ -52,6 +61,8 @@ function Song() {
 
 	playAccentThisSong = Math.random() < 0.3;
 	console.log("play accent: " + playAccentThisSong)	
+
+	playHeyThisSong = Math.random() < 0.2;
 
 	// if (Math.random() < 0.3) {
 	// 	kitFlow[0] = 0;
@@ -137,10 +148,12 @@ function Song() {
 			var base = measure - (this.introLength);
 			
 			// test out changing key after a few meaures
-			if (this.changeKey && base != 0 && base % 4 == 0) {
-				if (key == this.originalKey) key = this.adjustedKey;
+			// note we use measure (not base measure) on purpose,
+			// since change key ensures intro length is 4.
+			if (this.changeKey && measure != 0 && measure % 4 == 0) {
+				if (key == originalKey) key = this.adjustedKey;
 				else {
-					key = this.originalKey;
+					key = originalKey;
 				}
 			}
 
@@ -158,7 +171,7 @@ function Song() {
 				this.temporarilyMuteDrums = false;
 				
 				if (Math.random() < 0.2) {
-					console.log("staying muted")
+					console.log("staying muted on: " + measure)
 					muteKit = this.tempKit || muteKit;
 					muteBass = this.tempBass || muteBass;
 					muteMelody = this.tempMelody || muteMelody;
@@ -169,7 +182,7 @@ function Song() {
 			
 			if (base % 4 == 0 && Math.random() < 0.1) {
 				this.temporarilyMuteDrums = true;
-				console.log("muting temporarily");
+				console.log("muting temporarily on: " + measure);
 				muteKit = true;
 				muteBass = Math.random() < 0.8 || muteBass;
 				muteMelody = Math.random() < 0.3 || muteMelody;
@@ -183,7 +196,7 @@ function Song() {
 			if (base % 2 == 0) {
 				var playAccent = false;
 				if (base % 8 == 0 && playAccentThisSong) {
-					console.log("playing accent: " + base)
+					// console.log("playing accent: " + base)
 					playAccent = true;
 				}
 				currentSection.schedule(true, muteKit, muteMelody, muteBass, muteHarmony, playAccent);

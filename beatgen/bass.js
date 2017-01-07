@@ -11,6 +11,7 @@ var trapStyle = false;
 var octave = 0;
 
 // 0 is G
+var originalKey;
 var key;
 
 // todo try changing key down by a fifth for second half of beatpart?
