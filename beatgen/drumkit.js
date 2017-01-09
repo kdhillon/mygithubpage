@@ -57,7 +57,7 @@ function KitPart(fresh) {
 
 function playHey(beat) {
 	// console.log("playing hey " + beat);
-	playSound(heyObject, 1 + originalKey - 12, 0, time + beat * subBeatEvery);
+	playSound(heyObject, 1 + originalKey, 0, time + beat * subBeatEvery);
 }
 
 // schedule this beat part to be played for x measures
