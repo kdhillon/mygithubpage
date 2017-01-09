@@ -21,7 +21,7 @@ var song;
 
 var length32seconds;
 
-var measuresToLoad = 4;
+var measuresToLoad = 32;
 
 try {
     // Fix up for prefixing
