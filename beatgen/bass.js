@@ -23,7 +23,7 @@ function initBass() {
 	minor = true;
     // key = 0;
 
-    if (Math.random() < 0.2) minor = false;
+    if (Math.random() < 0.2 && !(lugerMode || londonMode)) minor = false;
 } 
 // var key = 0;
 

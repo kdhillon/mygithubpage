@@ -1,6 +1,3 @@
-// Fun variables
-var londonMode = false;
-
 // if using triplets, don't allow weird beats to be scheduled
 var triplets;
 
@@ -43,7 +40,7 @@ function initKit() {
  	snareObject = new sample(getFileName("snare", 2));
 
 	accentObject = new sample(getFileName("accent", 1));
-	heyObject = new sample(getFileName("hey", 2));
+	heyObject = new sample(getFileName("hey", 1));
 }
 
 // this will be owned by BeatPart
@@ -240,11 +237,11 @@ function mutateHat(hat, canChangeSituation) {
 	}
 
 	// todo allow hat to go from slow to fast early on in the beat.
-	if (hatTime == 4) {
-		if (Math.random() < 0.5) {
-			hatTime = 1;
-		}
-	}
+	// if (hatTime == 4) {
+// 		if (Math.random() < 0.5) {
+// 			hatTime = 1;
+// 		}
+// 	}
 
 	console.log("hat time: " + hatTime)
 
@@ -252,7 +249,7 @@ function mutateHat(hat, canChangeSituation) {
 		// triplet blocked out
 		if (ret[i] < 0) continue;
 		
-		if ((i % (hatTime * 2) != 0 && (Math.random() < 0.1 / hatTime))) invert(ret, i);
+		if ((i % (hatTime * 2) != 0 && ((londonMode && i % 2 ==0 && Math.random() < 0.5) || (Math.random() < 0.1 / hatTime)))) invert(ret, i);
 		if (i % (hatTime * 2) == 0) {
 			if (ret[i] == 2 || ret[i] == 3) {
 				invert(ret, i); 

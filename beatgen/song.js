@@ -4,9 +4,13 @@
 // A (8 measures) "chorus"
 // B (4 measures verse + 4 measures alt verse)
 
+var lugerMode = false;
+var londonMode = true;
+var mustardMode = false;
+
 var currentBeatPart;
 
-var playAccentThisSong;
+var playAccentThisSong; // what producer does this?
 
 var playHeyThisSong;
 
@@ -37,6 +41,9 @@ function Song() {
 	// this.adjustedKey = (key + 5);
 	// this.adjustedKey = (key + 8);
 	this.changeKey = minor && Math.random() < 0.2;
+	if (lugerMode) {
+		this.changeKey = true;
+	}
 	// this.changeKey = true;
 
 	// make sure intro length is multiple of 4 if change key is true
@@ -62,7 +69,13 @@ function Song() {
 	playAccentThisSong = Math.random() < 0.3;
 	console.log("play accent: " + playAccentThisSong)	
 
-	playHeyThisSong = Math.random() < 0.2;
+	playAccentThisSong = Math.random() < 0.2;
+	if (mustardMode) {
+		playHeyThisSong = true;
+	}
+	else if (londonMode || lugerMode) {
+		playHeyThisSong = false;
+	}
 
 	// if (Math.random() < 0.3) {
 	// 	kitFlow[0] = 0;

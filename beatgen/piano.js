@@ -296,9 +296,10 @@ function mutateMelody(input, resolution) {
 
 //    melody[0] = 1;
 //     should we duplicate the second half?
-    if (Math.random() < 0.3 && resolution < 4) {
+    if ((Math.random() < 0.3 && resolution < 4) ||  true) {
         for (var i = melody.length / 2; i < melody.length; i++) {
-            melody[i] = melody[i - melody.length / 2];
+			if (Math.random() < 0.6)
+            	melody[i] = melody[i - melody.length / 2];
         }
     }
     // else if (resolution >= 2 && Math.random() < 0.2) {
