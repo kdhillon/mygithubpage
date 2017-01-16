@@ -5,7 +5,7 @@
 // B (4 measures verse + 4 measures alt verse)
 
 var lugerMode = false;
-var londonMode = true;
+var londonMode = false;
 var mustardMode = false;
 
 var currentBeatPart;

@@ -11,6 +11,8 @@ var kickVol = 0.0;
 
 var accentVol = -0.8;
 
+var switchHatSample = true;
+
 var kickProbs = []
 
 // This represents the drum pad for playing the drum beat
@@ -23,7 +25,9 @@ var kickProbs = []
 var measures = 1; // actuall should be called measures?
 
 // var currentKitPart;
+var currentHat;
 var hatObject;
+var hatObject2;
 var kickObject;
 var snareObject;
 
@@ -36,8 +40,11 @@ function initKit() {
 	console.log("triplets: " + triplets);
 
 	hatObject = new sample(getFileName("hat", 3));
+	hatObject2 = new sample(getFileName("hat", 3));
  	kickObject = new sample(getFileName("kick", 1));
  	snareObject = new sample(getFileName("snare", 2));
+	
+	currentHat = hatObject;
 
 	accentObject = new sample(getFileName("accent", 1));
 	heyObject = new sample(getFileName("hey", 1));
@@ -81,17 +88,24 @@ function scheduleKitPart(kitPart, muteKick, muteHat, muteSnare, playAccent) {
 			if (kitPart._hat[j] > 0) {
 				playHat(j + i * 32);
 				
+				// triplets
 				if (kitPart._hat[j] == 2) {
+					currentHat = hatObject2;
 					playHat(j + i * 32 + 1.33);		
 					playHat(j + i * 32 + 2.66);		
+					currentHat = hatObject;
 				}
 				if (kitPart._hat[j] == 3) {
+					currentHat = hatObject2;
 					playHat(j + i * 32 + 2.66);		
 					playHat(j + i * 32 + 5.33);
+					currentHat = hatObject;
 				}
 				if (kitPart._hat[j] == 4) {
+					currentHat = hatObject2;
 					playHat(j + i * 32 + 0.33);		
 					playHat(j + i * 32 + 0.66);
+					currentHat = hatObject;
 				}
 			}
 		}
@@ -249,7 +263,7 @@ function mutateHat(hat, canChangeSituation) {
 		// triplet blocked out
 		if (ret[i] < 0) continue;
 		
-		if ((i % (hatTime * 2) != 0 && ((londonMode && i % 2 ==0 && Math.random() < 0.5) || (Math.random() < 0.1 / hatTime)))) invert(ret, i);
+		if ((i % (hatTime * 2) != 0 && ((londonMode && i % 2 == 0 && Math.random() < 0.3) || (Math.random() < 0.1 / hatTime)))) invert(ret, i);
 		if (i % (hatTime * 2) == 0) {
 			if (ret[i] == 2 || ret[i] == 3) {
 				invert(ret, i); 
@@ -345,7 +359,7 @@ function playKick(beat) {
 
 function playHat(beat) {
 		// console.log("queueing hat: " + (time + beat * subBeatEvery));
-	playSound(hatObject, 1, hatVol, time + beat * subBeatEvery);
+	playSound(currentHat, 1, hatVol, time + beat * subBeatEvery);
 		
 		// // play the next two notes in triplet
 		// if (currentKitPart._hat[beat % 32] == 2) {
