@@ -4,15 +4,23 @@
 // A (8 measures) "chorus"
 // B (4 measures verse + 4 measures alt verse)
 
+// todo:
+// full triplet hi hat
+// add crash sound as accent sound
+// triangle?
+// snare breaks (fills)
+
 var lugerMode = false;
 var londonMode = false;
 var mustardMode = false;
 
 var currentBeatPart;
 
-var playAccentThisSong; // what producer does this?
+var playAccentThisSong; // what producer does tubular bells?
 
 var playHeyThisSong;
+
+var canForceHiRes;
 
 // 1-4 A
 // 5-12 B
@@ -77,6 +85,7 @@ function Song() {
 		playHeyThisSong = false;
 	}
 
+	canForceHiRes = Math.random() < 0.3;
 	// if (Math.random() < 0.3) {
 	// 	kitFlow[0] = 0;
 	// }
@@ -135,7 +144,7 @@ function Song() {
     this.playMeasure = function(measure) {
 		// play intro
 		if (measure < this.introLength) {
-			this.aSection.schedule(measure % 2 == 0, true, false, true, true);
+			this.aSection.schedule(measure % 2 == 0, true, false, true, true, false);
 		}
 		else {
 			var playHarmony = true;
@@ -206,16 +215,17 @@ function Song() {
 				this.tempHarmony = muteHarmony;
 			} 
 
+			var forceHiRes = canForceHiRes && (base % 16 >= 4)
 			if (base % 2 == 0) {
 				var playAccent = false;
 				if (base % 8 == 0 && playAccentThisSong) {
 					// console.log("playing accent: " + base)
 					playAccent = true;
 				}
-				currentSection.schedule(true, muteKit, muteMelody, muteBass, muteHarmony, playAccent);
+				currentSection.schedule(true, muteKit, muteMelody, muteBass, muteHarmony, playAccent, forceHiRes);
 			}
 			else {
-				currentSection.schedule(false, muteKit, muteMelody, muteBass, muteHarmony);
+				currentSection.schedule(false, muteKit, muteMelody, muteBass, muteHarmony, false, forceHiRes);
 			}
 		}
 	};

@@ -1,6 +1,6 @@
 var reader = new FileReader();
 
-var offlineMode = false;
+var offlineMode = true;
 
 var loaded = true;
 

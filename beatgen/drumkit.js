@@ -7,11 +7,17 @@ var hatRes = 32;
 
 var hatVol = -0.6;
 var snareVol = 0.0;
+var clapVol = -0.9;
 var kickVol = 0.0;
 
 var accentVol = -0.8;
 
-var switchHatSample = true;
+var switchHatSample;
+var shouldPlayOpenHat;
+var shouldPlayClap;
+
+var openHatRes = 8; // 4, 8, 16
+var openHatMod = 0; // 0 or openHatRes/2
 
 var kickProbs = []
 
@@ -28,8 +34,10 @@ var measures = 1; // actuall should be called measures?
 var currentHat;
 var hatObject;
 var hatObject2;
+var openHat;
 var kickObject;
 var snareObject;
+var clapObject;
 
 var accentObject;
 var heyObject;
@@ -39,11 +47,18 @@ function initKit() {
 	triplets = Math.random() < 0.8;
 	console.log("triplets: " + triplets);
 
+	switchHatSample = Math.random() < 0.3;
+	shouldPlayOpenHat = Math.random() < 0.2;
+	shouldPlayClap = Math.random() < 0.0;
+	console.log("should play clap: " + shouldPlayClap)
+
 	hatObject = new sample(getFileName("hat", 3));
 	hatObject2 = new sample(getFileName("hat", 3));
+	openHat = new sample(getFileName("open hat", 1));
  	kickObject = new sample(getFileName("kick", 1));
- 	snareObject = new sample(getFileName("snare", 2));
-	
+ 	snareObject = new sample(getFileName("snare", 5));
+	clapObject = new sample(getFileName("clap", 1));
+
 	currentHat = hatObject;
 
 	accentObject = new sample(getFileName("accent", 1));
@@ -65,18 +80,17 @@ function playHey(beat) {
 }
 
 // schedule this beat part to be played for x measures
-function scheduleKitPart(kitPart, muteKick, muteHat, muteSnare, playAccent) {
+function scheduleKitPart(kitPart, muteKick, muteHat, muteSnare, playAccent, forceHiRes) {
 	if (playAccent) {
 		playAcct(0);
 	}
-	
 	
 	// console.log(kitPart._hat);
 	for (var i = 0; i < measures; i++) {
 		
 		if (playHeyThisSong && !muteSnare) {
 			for (var j = 0; j < kickRes; j++) {
-				if (j % 4 == 2) {
+				if (j % 8 == 2) {
 					playHey(j * 2 + i * 32);
 				}
 			}
@@ -85,9 +99,18 @@ function scheduleKitPart(kitPart, muteKick, muteHat, muteSnare, playAccent) {
 		// schedule hat
 		if (!muteHat) {
 		for (var j = 0; j < hatRes; j++) {
-			if (kitPart._hat[j] > 0) {
+			if (shouldPlayOpenHat) {
+				if (j % openHatRes == openHatMod) {
+					playOpenHat(j + i * 32);
+				} 
+			}
+
+			if (kitPart._hat[j] > 0 || (forceHiRes && j % 2 == 0)) {
 				playHat(j + i * 32);
 				
+				// don't play triplets if doing hi res hat.
+				if  (forceHiRes && j % 2 == 0) continue;
+
 				// triplets
 				if (kitPart._hat[j] == 2) {
 					currentHat = hatObject2;
@@ -123,6 +146,9 @@ function scheduleKitPart(kitPart, muteKick, muteHat, muteSnare, playAccent) {
 		if (!muteSnare) {
 		// schedule snare
 		for (var j = 0; j < snareRes; j++) {
+			if (shouldPlayClap && j % 4 == 2) {
+				playClap(j * 2 + 1 * 32);
+			}
 			if (kitPart._snare[j] == 1) {
 				playSnare(j * 2 + i * 32);
 			}
@@ -353,8 +379,17 @@ function playSnare(beat) {
 	playSound(snareObject, 1, snareVol, time + beat * subBeatEvery);
 }
 
+function playClap(beat) {
+	// console.log("queueing snare: " + (time + beat * subBeatEvery));
+	playSound(clapObject, 1, clapVol, time + beat * subBeatEvery);
+}
+
 function playKick(beat) {
 	playSound(kickObject, 1, kickVol, time + beat * subBeatEvery);
+}
+
+function playOpenHat(beat) {
+	playSound(openHat, 1, hatVol, time + beat * subBeatEvery);
 }
 
 function playHat(beat) {

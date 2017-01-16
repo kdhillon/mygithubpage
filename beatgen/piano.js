@@ -31,19 +31,21 @@ var RES = 1;
 var melodyObject;
 var harmonyObject;
 var longHarmonyObject;
+var cutOffPiano;
 
+var pianoResolution;
 var pianoComplexity;
 
 var melodyChordLevel = 0;
 
 function initPiano() {
-	melodyObject = new sample(getFileName("piano", 3));
-	harmonyObject = new sample(getFileName("piano", 3));
-    longHarmonyObject = new sample(getFileName("long synth", 1));
+
 
     // harmonyChordLevel = Math.floor(Math.random() * 4);
     console.log("HarmonyChordLevel: " + harmonyChordLevel)
 
+    // todo make this useful for picking samples. ie, make this based 
+    // on number of notes, and don't let a long syth play if it's a lot of notes.
     // between 0 and 1
     pianoComplexity = Math.random();
 	// roll w disadvantage :)
@@ -57,6 +59,23 @@ function initPiano() {
         // melodyChordLevel = Math.floor(Math.random() * 4);
         console.log("melody chord level: " + melodyChordLevel)
     }
+
+    pianoResolution = 2;
+    if (Math.random() < 0.5) pianoResolution = 4;
+    else if (Math.random() < 0.5) pianoResolution = 8;
+
+    if (pianoComplexity < 0.3 && pianoResolution >= 4 && Math.random() < 0.6) {
+        melodyObject = new sample(getFileName("long synth", 3));
+        cutOffPiano = true;
+    }
+    else {
+        melodyObject = new sample(getFileName("piano", 4));
+        cutOffPiano = false;
+    }
+    console.log("cut off piano: " + cutOffPiano)
+
+	harmonyObject = new sample(getFileName("long synth", 4));
+    longHarmonyObject = new sample(getFileName("long synth", 1));
 
 	// var melodyObject1 = new sample(getFileName("piano", 1));
 	// var melodyObject2 = new sample(getFileName("piano", 1));
@@ -216,12 +235,11 @@ function generateLongSynth(bass) {
 function generateHarmony(melody) {
     var harmony = getNewHarmony();
 	// var resolution = 8;
-    var resolution = 2;
-    if (Math.random() < 0.5) resolution = 4;
+   
     // harmony[0] = 1;
     // if (Math.random() < 0.5) melody[0] = 13;
 	
-    for (var i = 0; i < harmony.length; i += resolution) {
+    for (var i = 0; i < harmony.length; i += pianoResolution) {
         // proportional to melody complexity
     if (Math.random() < 1 - (0.25 + pianoComplexity / 2)) continue;
     //    var note = getWeightedNote(i - resolution, true);
@@ -357,7 +375,9 @@ function scheduleLongSynth(harmony) {
 function playMelody(melody, beat) {
     var note = melody[beat % melody.length];
     if (note != 0) {
-        //    stopSound(melodyObject, time + beat * 2 * subBeatEvery - 0.001);
+        if (cutOffPiano) {
+           stopSound(melodyObject, time + beat * 2 * subBeatEvery - 0.001);
+        }
         playSound(melodyObject, note + key + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
         // if (Math.random() < 0.5) playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);   
         // if (Math.random() < 0.5) playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * melodyOctave + 6, harmonyVol, time + beat * 2 * subBeatEvery);   
@@ -394,6 +414,9 @@ function getThirdOf(note) {
 }
 
 function playHarmony(harmony, beat) {
+
+    return;
+
     var note = harmony[beat % harmony.length];
     // if (note == 25) {
     //     note = 12 + 8;
