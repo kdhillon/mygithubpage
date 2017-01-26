@@ -18,7 +18,7 @@ var key;
 var minor;
 
 function initBass() {
-    bassObject  = new sample(getFileName("bass", 1));
+    bassObject  = new sample(getFileName("bass", 2));
     key = Math.floor(Math.random() * 12 - 4);
 	minor = true;
     // key = 0;
