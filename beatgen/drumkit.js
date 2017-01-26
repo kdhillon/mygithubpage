@@ -56,7 +56,7 @@ function initKit() {
 	hatObject2 = new sample(getFileName("hat", 3));
 	openHat = new sample(getFileName("open hat", 1));
  	kickObject = new sample(getFileName("kick", 1));
- 	snareObject = new sample(getFileName("snare", 5));
+ 	snareObject = new sample(getFileName("snare", 4));
 	clapObject = new sample(getFileName("clap", 1));
 
 	currentHat = hatObject;

@@ -64,17 +64,17 @@ function initPiano() {
     if (Math.random() < 0.5) pianoResolution = 4;
     else if (Math.random() < 0.5) pianoResolution = 8;
 
-    if (pianoComplexity < 0.3 && pianoResolution >= 4 && Math.random() < 0.6) {
+    if (pianoComplexity < 0.25 && pianoResolution >= 4 && Math.random() < 0.6) {
         melodyObject = new sample(getFileName("long synth", 3));
         cutOffPiano = true;
     }
     else {
-        melodyObject = new sample(getFileName("piano", 4));
+        melodyObject = new sample(getFileName("piano", 3));
         cutOffPiano = false;
     }
     console.log("cut off piano: " + cutOffPiano)
 
-	harmonyObject = new sample(getFileName("long synth", 4));
+	harmonyObject = new sample(getFileName("piano", 3));
     longHarmonyObject = new sample(getFileName("long synth", 1));
 
 	// var melodyObject1 = new sample(getFileName("piano", 1));
@@ -415,7 +415,7 @@ function getThirdOf(note) {
 
 function playHarmony(harmony, beat) {
 
-    return;
+    // return;
 
     var note = harmony[beat % harmony.length];
     // if (note == 25) {
