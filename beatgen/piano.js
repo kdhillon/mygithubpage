@@ -69,7 +69,7 @@ function initPiano() {
         cutOffPiano = true;
     }
     else {
-        melodyObject = new sample(getFileName("piano", 5));
+        melodyObject = new sample(getFileName("piano", 4));
         cutOffPiano = false;
     }
     console.log("cut off piano: " + cutOffPiano)
@@ -286,6 +286,7 @@ function countNotes(input) {
 	return count;
 }
 
+// todo prevent there from being just a single note 
 function mutateMelody(input, resolution) {
 	var melody = input.slice(0);
 	
