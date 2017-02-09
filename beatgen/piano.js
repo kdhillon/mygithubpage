@@ -74,7 +74,7 @@ function initPiano() {
     }
     console.log("cut off piano: " + cutOffPiano)
 
-	harmonyObject = new sample(getFileName("piano", 5));
+	harmonyObject = new sample(getFileName("piano", 4));
     longHarmonyObject = new sample(getFileName("long synth", 1));
 
 	// var melodyObject1 = new sample(getFileName("piano", 1));
