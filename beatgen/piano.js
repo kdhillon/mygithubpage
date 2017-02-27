@@ -34,6 +34,7 @@ var RES = 1;
 
 var melodyObject;
 var harmonyObject;
+var soloObject;
 var longHarmonyObject;
 var cutOffPiano;
 
@@ -43,8 +44,6 @@ var pianoComplexity;
 var melodyChordLevel = 0;
 
 function initPiano() {
-
-
     // harmonyChordLevel = Math.floor(Math.random() * 4);
     console.log("HarmonyChordLevel: " + harmonyChordLevel)
 
@@ -77,10 +76,8 @@ function initPiano() {
         cutOffPiano = false;
     }
 	
-	if (tooMuchSauce) {
-        melodyObject = new sample(getFileName("piano", 1));
-        cutOffPiano = false;
-	}
+    soloObject = new sample(getFileName("piano", 1));
+	
     console.log("cut off piano: " + cutOffPiano)
 
 	harmonyObject = new sample(getFileName("piano", 4));
@@ -353,7 +350,7 @@ function mutateMelody(input, resolution) {
 function scheduleMelody(melody) {
       for (var i = 0; i < measures; i++) {
 		for (var j = 0; j < melody.length; j++) {
-			if (melody[j] != 0 && !tooMuchSauce) {
+			if (melody[j] != 0) {
 				playMelody(melody, j + i * melody.length);
 			}
 			playSolo(j + i * melody.length);
@@ -382,8 +379,7 @@ function scheduleLongSynth(harmony) {
 }
 
 function playSolo(beat) {
- if (tooMuchSauce) {
-	 
+ if (isZayMode()) {
 	 // Play extra note
 	 if (Math.random() < 0.2) {
 		 playSoloNote(beat - subBeatEvery * 4);
@@ -395,8 +391,9 @@ function playSolo(beat) {
 }
 
 function playSoloNote(beat) {
+ if ((zayNote == 0 || zayNote == 12) && Math.random() < 0.5) return;
  if (Math.random() < scaleProb[zayNote] * 2 + .4) {
-    playSound(melodyObject, currentNotes[zayNote] + key + 12 + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
+    playSound(soloObject, currentNotes[zayNote] + key + 12 + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
  }
 if (Math.random() < 0.2) {
  zayMomentum = zayMomentum * -1;
