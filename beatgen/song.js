@@ -10,10 +10,6 @@
 // triangle?
 // snare breaks (fills)
 
-var lugerMode = false;
-var londonMode = false;
-var mustardMode = false;
-
 var currentBeatPart;
 
 var playAccentThisSong; // what producer does tubular bells?
@@ -34,6 +30,22 @@ harmonyFlow = 	[0, 0, 1, 1, 0, 0, 1, 1]
 bassFlow = 		[1, 1, 1, 1, 1, 1, 1, 1]
 sectionFlow = 	[1, 1, 1, 1, 2, 2, 2, 2]
 
+function isLugerMode() {
+	var lugBox=document.getElementById('luger');
+	return lugBox.checked; 
+}
+function isMustardMode() {
+	var mustardBox=document.getElementById('mustard');
+	return mustardBox.checked; 
+}
+function isLondonMode() {
+	var londonBox=document.getElementById('london');
+	return londonBox.checked; 
+}
+function isZayMode() {
+	var zayBox=document.getElementById('zay');
+	return zayBox.checked;
+}
 
 // x % (A + B) gives you cu
 function Song() {
@@ -49,7 +61,7 @@ function Song() {
 	// this.adjustedKey = (key + 5);
 	// this.adjustedKey = (key + 8);
 	this.changeKey = minor && Math.random() < 0.2;
-	if (lugerMode) {
+	if (isLugerMode()) {
 		this.changeKey = true;
 	}
 	// this.changeKey = true;
@@ -62,7 +74,6 @@ function Song() {
 	else this.introLength = 0;
 
 	console.log("intro length: " + this.introLength)
-
 
     this.aSection = new BeatPart(true);
     this.bSection = mutateBeatPart(this.aSection)
@@ -78,10 +89,10 @@ function Song() {
 	console.log("play accent: " + playAccentThisSong)	
 
 	playAccentThisSong = Math.random() < 0.2;
-	if (mustardMode) {
+	if (isMustardMode()) {
 		playHeyThisSong = true;
 	}
-	else if (londonMode || lugerMode) {
+	else if (isLondonMode() || isLugerMode()) {
 		playHeyThisSong = false;
 	}
 

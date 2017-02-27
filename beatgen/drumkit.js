@@ -172,7 +172,7 @@ function genHat() {
 
 	if (Math.random() < 0.3) hatTime = 2;
 	else if (Math.random() < 0.5) hatTime = 4;
-	if (londonMode) hatTime = 4;
+	if (isLondonMode()) hatTime = 4;
 	
 	// muteHat = Math.random() < 0.7;
 	hat  = mutateHat(hat, false);
@@ -289,7 +289,7 @@ function mutateHat(hat, canChangeSituation) {
 		// triplet blocked out
 		if (ret[i] < 0) continue;
 		
-		if ((i % (hatTime * 2) != 0 && ((londonMode && i % 2 == 0 && Math.random() < 0.3) || (Math.random() < 0.1 / hatTime)))) invert(ret, i);
+		if ((i % (hatTime * 2) != 0 && ((isLondonMode() && i % 2 == 0 && Math.random() < 0.3) || (Math.random() < 0.1 / hatTime)))) invert(ret, i);
 		if (i % (hatTime * 2) == 0) {
 			if (ret[i] == 2 || ret[i] == 3) {
 				invert(ret, i); 
