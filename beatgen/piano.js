@@ -23,6 +23,10 @@ var chordProb = [0.25, 0.25, 0.25, 0.25];
 var currentNotes = pentatonic;
 var currentProb = pentatonicProb;
 
+// Last played note in solo
+var zayNote = 0;
+var zayMomentum = -1;
+
 var harmonyChordLevel = 0; // 0 is no chord, 1 is 5th, 2 is 3rd, 3 is 5th & 3rd
 // var harmonyChordLevel = 1; // 1 is 
 
@@ -72,6 +76,11 @@ function initPiano() {
         melodyObject = new sample(getFileName("piano", 4));
         cutOffPiano = false;
     }
+	
+	if (tooMuchSauce) {
+        melodyObject = new sample(getFileName("piano", 1));
+        cutOffPiano = false;
+	}
     console.log("cut off piano: " + cutOffPiano)
 
 	harmonyObject = new sample(getFileName("piano", 4));
@@ -286,6 +295,7 @@ function countNotes(input) {
 	return count;
 }
 
+// todo prevent there from being just a single note 
 function mutateMelody(input, resolution) {
 	var melody = input.slice(0);
 	
@@ -343,9 +353,10 @@ function mutateMelody(input, resolution) {
 function scheduleMelody(melody) {
       for (var i = 0; i < measures; i++) {
 		for (var j = 0; j < melody.length; j++) {
-			if (melody[j] != 0) {
+			if (melody[j] != 0 && !tooMuchSauce) {
 				playMelody(melody, j + i * melody.length);
 			}
+			playSolo(j + i * melody.length);
 		}
     }
 }
@@ -370,7 +381,33 @@ function scheduleLongSynth(harmony) {
     }
 }
 
-// 
+function playSolo(beat) {
+ if (tooMuchSauce) {
+	 
+	 // Play extra note
+	 if (Math.random() < 0.2) {
+		 playSoloNote(beat - subBeatEvery * 4);
+ 	 } else if (Math.random() < 0.2) {
+		 // playSoloNote(beat - subBeatEvery * 2); 
+ 	 }
+	playSoloNote(beat);
+ }
+}
+
+function playSoloNote(beat) {
+ if (Math.random() < scaleProb[zayNote] * 2 + .4) {
+    playSound(melodyObject, currentNotes[zayNote] + key + 12 + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
+ }
+if (Math.random() < 0.2) {
+ zayMomentum = zayMomentum * -1;
+}
+if (zayNote == 0 && zayMomentum < 0) {
+	zayMomentum = 1;
+}
+ // Drunken walk the solo
+zayNote += zayMomentum;
+zayNote = zayNote % currentNotes.length;
+}
 
 function playMelody(melody, beat) {
     var note = melody[beat % melody.length];
