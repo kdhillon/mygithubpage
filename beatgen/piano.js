@@ -23,8 +23,8 @@ var chordProb = [0.25, 0.25, 0.25, 0.25];
 var currentNotes = pentatonic;
 var currentProb = pentatonicProb;
 
-// Last played note in solo
-var zayNote = 0;
+// Current solo note (start halfway up the scale)
+var zayNote = currentNotes.length
 var zayMomentum = -1;
 
 var harmonyChordLevel = 0; // 0 is no chord, 1 is 5th, 2 is 3rd, 3 is 5th & 3rd
@@ -121,6 +121,7 @@ function initPiano() {
     else {
         currentNotes = majorScale;
     }
+	zayNote = currentNotes.length;
 
 	if (currentNotes == minorScale || currentNotes == extMinorScale || currentNotes == minorChord) {
 	    console.log("Key: " + getNoteName(key) + " minor");
@@ -356,6 +357,7 @@ function scheduleMelody(melody) {
 			if (melody[j] != 0) {
 				playMelody(melody, j + i * melody.length);
 			}
+			
 			playSolo(j + i * melody.length);
 		}
     }
@@ -382,7 +384,11 @@ function scheduleLongSynth(harmony) {
 }
 
 function playSolo(beat) {
+<<<<<<< HEAD
+ if (tooMuchSauce) {
+=======
  if (isZayMode()) {
+>>>>>>> ba91fa6c574c2f8c53b7310c87271e99d74b4bfb
 	 // Play extra note
 	 if (Math.random() < 0.2) {
 		 playSoloNote(beat - subBeatEvery * 4);
@@ -394,19 +400,41 @@ function playSolo(beat) {
 }
 
 function playSoloNote(beat) {
+<<<<<<< HEAD
+ if (Math.random() < scaleProb[zayNote % currentNotes.length] * 2 + .5) {
+	 var octaveup = 0;
+	 console.log(zayNote)
+	 if (zayNote >= currentNotes.length) octaveup = 12;
+    playSound(melodyObject, currentNotes[zayNote % currentNotes.length] + key + octaveup + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
+=======
  if ((zayNote == 0 || zayNote == 12) && Math.random() < 0.5) return;
  if (Math.random() < scaleProb[zayNote] * 2 + .4) {
     playSound(soloObject, currentNotes[zayNote] + key + 12 + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
+>>>>>>> ba91fa6c574c2f8c53b7310c87271e99d74b4bfb
  }
 if (Math.random() < 0.2) {
  zayMomentum = zayMomentum * -1;
 }
-if (zayNote == 0 && zayMomentum < 0) {
-	zayMomentum = 1;
-}
+ if (zayMomentum == -2 && Math.random() < 0.4) {
+	 zayMomentum = -1;
+ }
+ if (zayMomentum == 2 && Math.random() < 0.4) {
+	 zayMomentum = 1;
+ }
+ 
+ if (zayMomentum == 1 && Math.random() < 0.4) {
+	 zayMomentum = 2;
+ } else if (zayMomentum == -1 && Math.random() < 0.4) {
+	 zayMomentum = -2;
+ }
+ 
  // Drunken walk the solo
 zayNote += zayMomentum;
-zayNote = zayNote % currentNotes.length;
+if (zayNote >= currentNotes.length * 2) {
+	zayNote = currentNotes.length * 2 - 1;
+} else if (zayNote < 1) {
+	zayNote = 1;
+}
 }
 
 function playMelody(melody, beat) {
