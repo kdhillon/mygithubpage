@@ -31,36 +31,34 @@ bassFlow = 		[1, 1, 1, 1, 1, 1, 1, 1]
 sectionFlow = 	[1, 1, 1, 1, 2, 2, 2, 2]
 
 function isLugerMode() {
-	var lugBox=document.getElementById('luger');
-	return lugBox.checked; 
+	return document.getElementById('luger').checked;
 }
 function isMustardMode() {
-	var mustardBox=document.getElementById('mustard');
-	return mustardBox.checked; 
+	return document.getElementById('mustard').checked;
 }
 function isLondonMode() {
-	var londonBox=document.getElementById('london');
-	return londonBox.checked; 
+	return document.getElementById('london').checked;
 }
 function isZayMode() {
-	var zayBox=document.getElementById('zay');
-	return zayBox.checked;
+	return document.getElementById('zay').checked;
+}
+function isChordsMode() {
+	return document.getElementById('chords') != null ? document.getElementById('chords').checked : false;
+}
+function isChillhopMode() {
+	return document.getElementById('chillhop') != null ? document.getElementById('chillhop').checked : false;
 }
 
 // x % (A + B) gives you cu
 function Song() {
 	// this.introLength = 0;
-	
 	originalKey = key;
-	// this.adjustedKey = (key - 5);
-	// if (Math.random() < 0.5) 
-	// I think this isn't correct for major keys...
-	
+
 	// this.adjustedKey = (key + 10);
 	this.adjustedKey = (key + 2);
 	// this.adjustedKey = (key + 5);
 	// this.adjustedKey = (key + 8);
-	this.changeKey = minor && Math.random() < 0.2;
+	this.changeKey = minor && Math.random() < 0.1;
 	if (isLugerMode()) {
 		this.changeKey = true;
 	}

@@ -67,8 +67,9 @@ function initPiano() {
     if (Math.random() < 0.5) pianoResolution = 4;
     else if (Math.random() < 0.5) pianoResolution = 8;
 
-    if (pianoComplexity < 0.25 && pianoResolution >= 4 && Math.random() < 0.6) {
-        melodyObject = new sample(getFileName("long synth", 3));
+    var forceLongSynth = isChillhopMode();
+    if (forceLongSynth  || pianoComplexity < 0.25 && pianoResolution >= 4 && Math.random() < 0.6) {
+        melodyObject = new sample(getFileName("long synth", 1));
         cutOffPiano = true;
     }
     else {
@@ -93,17 +94,19 @@ function initPiano() {
 	// melodyOctave = ;
 	console.log("octave: " + melodyOctave);
 
-	// var harmonyOctave = melodyOctave + 2;
-	// if (Math.random() < 0.5) {
     harmonyOctave = melodyOctave;
-	// }
-	if (harmonyOctave == 2) harmonyOctave = 1;
-	// harmonyOctave = 1;
 
-	 if (melodyOctave == -2) {
-	     melodyVol += 0.4;
-	     harmonyVol += 0.4;
-	}
+    if (harmonyObject == melodyObject) {
+        harmonyOctave = melodyOctave + 1;
+    }
+
+	// if (harmonyOctave == 2) harmonyOctave = 1;
+	// // harmonyOctave = 1;
+
+	//  if (melodyOctave == -2) {
+	//      melodyVol += 0.4;
+	//      harmonyVol += 0.4;
+	// }
 
 	// if (melodyOctave == 1) {
 	//     melodyVol -= .2;
@@ -245,7 +248,7 @@ function generateHarmony(melody) {
     // harmony[0] = 1;
     // if (Math.random() < 0.5) melody[0] = 13;
 	
-    for (var i = 0; i < harmony.length; i += pianoResolution) {
+    for (var i = 0; i < harmony.length; i += 2) {
         // proportional to melody complexity
     if (Math.random() < 1 - (0.25 + pianoComplexity / 2)) continue;
     //    var note = getWeightedNote(i - resolution, true);
@@ -458,17 +461,17 @@ function playHarmony(harmony, beat) {
     if (note != 0) {
          stopSound(harmonyObject, time + beat * 2 * subBeatEvery - 0.001);
 
-        playSound(harmonyObject, note + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
+        playSound(harmonyObject, note + key + 12 * harmonyOctave, harmonyVol, time + beat * 2 * subBeatEvery);
         // Play the 5th too.
         if (harmonyChordLevel == 1 || harmonyChordLevel == 3) {
             var fifth = getFifthOf(note);
             if (fifth != null)
-                playSound(harmonyObject, fifth + key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
+                playSound(harmonyObject, fifth + key + 12 * harmonyOctave, harmonyVol, time + beat * 2 * subBeatEvery);
          }
          if (harmonyChordLevel == 2 || harmonyChordLevel == 3) {
              var third = getThirdOf(note);
              if (third != null) 
-                playSound(harmonyObject, third+ key + 12 * melodyOctave + 12, harmonyVol, time + beat * 2 * subBeatEvery);
+                playSound(harmonyObject, third+ key + 12 * harmonyOctave, harmonyVol, time + beat * 2 * subBeatEvery);
          }
        
         // playSound(melodyObject, note - 1 - melodyOffFromG + key + 12 * harmonyOctave + 7, harmonyVol, time + beat * 2 * subBeatEvery);

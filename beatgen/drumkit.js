@@ -130,6 +130,13 @@ function scheduleKitPart(kitPart, muteKick, muteHat, muteSnare, playAccent, forc
 					playHat(j + i * 32 + 0.66);
 					currentHat = hatObject;
 				}
+				if (kitPart._hat[j] == 5) {
+					currentHat = hatObject2;
+					playHat(j + i * 32 + 0.25);		
+					playHat(j + i * 32 + 0.5);
+					playHat(j + i * 32 + 0.75);
+					currentHat = hatObject;
+				}
 			}
 		}
 		}
@@ -181,10 +188,10 @@ function genHat() {
 }
 
 function addTriplets(hat, i) {
-	// super fast triplet
-	if (Math.random() < .3) {
+	// super fast triplet // 0.3
+	if (Math.random() < 0.3) {
 		hat[i] = 4;
-		// if ( == 0) invert(hat, (i+1)%hatRes); // make the next one 1 (THIS IS FucKing stuff up)
+		// make the next one a triplet with high prob
 		if (Math.random() < 0.5) hat[(i+1)%hatRes] = 4;
 	}
 	else if (Math.random() < .5) {
@@ -289,7 +296,12 @@ function mutateHat(hat, canChangeSituation) {
 		// triplet blocked out
 		if (ret[i] < 0) continue;
 		
-		if ((i % (hatTime * 2) != 0 && ((isLondonMode() && i % 2 == 0 && Math.random() < 0.3) || (Math.random() < 0.1 / hatTime)))) invert(ret, i);
+		// On an off beat
+		if ((i % (hatTime * 2) != 0 && ((isLondonMode() && i % 2 == 0 && Math.random() < 0.3) || (Math.random() < 0.3 / hatTime)))) {
+			invert(ret, i);
+			
+			if (Math.random() < 0.1 && hatTime == 1) ret[i] = 5;
+		}
 		if (i % (hatTime * 2) == 0) {
 			if (ret[i] == 2 || ret[i] == 3) {
 				invert(ret, i); 
@@ -297,6 +309,8 @@ function mutateHat(hat, canChangeSituation) {
 			}
 			else if (ret[i] == 0)
 				invert(ret, i); 
+
+			if (Math.random() < 0.1 && hatTime == 1) ret[i] = 5;
 		}
 		
 		// this prevents triplets from sounding weird with a beat right after?

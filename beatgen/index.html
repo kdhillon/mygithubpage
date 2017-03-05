@@ -28,17 +28,19 @@
 
 <body bgcolor="white">
  
-  <button id="start" type="button" onclick="onTouch()">Randomize!</button>
-  <button id="shuffle" type="button" onclick="onShuffle()">Shuffle!</button>
-<br>   
-<br>  <font id="seedtext"> Seed:<br> </font>
+<br>  <font id="seedtext"> Name:<br> </font>
   <input id="seedinput" type="text" name="seed">
 
 <br>
-<label><input type="checkbox" id="luger">Luger Mode</label><br>
+
+  <button id="start" type="button" onclick="onTouch()">Start</button>
+  <label><input type="checkbox" id="shuffle">Shuffle</label><br>
+  
+  <label><input type="checkbox" id="luger">Luger Mode</label><br>
 <label><input type="checkbox" id="london">London Mode</label><br>
 <label><input type="checkbox" id="zay">Zay Mode</label><br>
 <label><input type="checkbox" id="mustard">Mustard Mode</label><br>
+<label><input type="checkbox" id="chillhop">Chillhop Mode</label><br>
 
   <script>
 var seed = querySt("seed");

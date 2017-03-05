@@ -32,9 +32,10 @@ try {
     alert('Web Audio API is not supported in this browser');
 }
   
-// window.addEventListener ? 
-// window.addEventListener("load",onLoad,false) : 
-// window.attachEvent && window.attachEvent("onload",onLoad);
+
+window.addEventListener ? 
+window.addEventListener("load",onLoad,false) : 
+window.attachEvent && window.attachEvent("onload",onLoad);
 
 var isUnlocked = false;
 
@@ -50,16 +51,15 @@ function querySt(ji) {
     }
 }
 
-function onShuffle() {
-	shuffleMode = true;
-	onTouch();
-}
-
 var seed;
 function onTouch() {
 	if (isUnlocked) {
 		console.log("Already unlocked");
 		return;
+	}
+
+	if (document.getElementById('shuffle').checked) {
+		shuffleMode = true;
 	}
 
 	// clear these so we can do new songs
@@ -73,21 +73,7 @@ function onTouch() {
 	document.getElementById("shuffle").disabled = true;
 	document.getElementById("seedinput").readOnly = true;
 
-	var element = document.getElementById("seedinput");
-
-	if (element.value == null || element.value == "") {
-		seed = Math.floor(Math.random() * 10000); 
-		element.value = "" + seed;
-		// must be made into a string.
-		seed = seed + "";
-	}
-	else if (seed == null || seed == "") {
-		seed = element.value;
-		seed = seed.toLowerCase();
-	}
-		
-	console.log("Seed: " + seed);
-	Math.seedrandom(seed);
+	setSeed();
 	
 	tempo = Math.floor(Math.random() * (tempoMax - tempoMin) + tempoMin);
 	// tempo = 500;
@@ -113,6 +99,23 @@ function onTouch() {
 	initBeatPart();
 }
 
+function setSeed() {
+	var element = document.getElementById("seedinput");
+	if (element.value == null || element.value == "") {
+		seed = Math.floor(Math.random() * 10000); 
+		element.value = "Song " + seed;
+		// must be made into a string.
+		seed = seed + "";
+	}
+	else if (seed == null || seed == "") {
+		seed = element.value;
+		seed = seed.toLowerCase();
+	}
+		
+	console.log("Seed: " + seed);
+	Math.seedrandom(seed);
+}
+
 function initSong() {
 	song = new Song();
 
@@ -127,7 +130,7 @@ function initSong() {
 	setTimeout(function() {
 		if((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
 			unlock();
-			document.getElementById("start").textContent = "Playing!"
+			document.getElementById("start").textContent = "Loading..."
 		}
 	}, 0);
 }
@@ -171,6 +174,8 @@ function unlock() {
 }
 
 function onLoad() {
+	setSeed();
+
 	// document.getElementById("b1").addEventListener('click', unlock);
 	// document.getElementById("text").addEventListener('click', onTouch);
 	// document.getElementById("img").addEventListener('click', onTouch);
@@ -186,6 +191,7 @@ function updateMeasure() {
 	if (measureCounter == measuresToLoad) {
 			offlineContext.startRendering().then(function(renderedBuffer) {
 				console.log('Rendering completed successfully');
+				document.getElementById("start").textContent = "Playing!"				
 				source2 = context.createBufferSource();
 				source2.buffer = renderedBuffer;
 				source2.connect(context.destination);
