@@ -4,6 +4,7 @@ var harmonyOctave;
 
 var melodyVol = -.2;
 var harmonyVol = -.2;
+var soloVol = -.3;
 
 var majorScale = [1, 3, 5, 6, 8, 10, 12, 13];
 var minorScale = [1, 3, 4, 6, 8, 9, 11, 13];
@@ -42,6 +43,8 @@ var pianoResolution;
 var pianoComplexity;
 
 var melodyChordLevel = 0;
+
+var pauseZay = false;
 
 function initPiano() {
     // harmonyChordLevel = Math.floor(Math.random() * 4);
@@ -384,11 +387,20 @@ function scheduleLongSynth(harmony) {
 }
 
 function playSolo(beat) {
-<<<<<<< HEAD
- if (tooMuchSauce) {
-=======
  if (isZayMode()) {
->>>>>>> ba91fa6c574c2f8c53b7310c87271e99d74b4bfb
+
+     if (pauseZay) {
+         if (beat % 2 == 0 && Math.random() < 0.1) {
+            pauseZay = false;
+         } else if (beat % 4 == 0 && Math.random() < 0.1) {
+             pauseZay = false;
+         } else if (Math.random() < 0.1) {
+             pauseZay = false;
+         }
+         // if still paused, try again next time
+         if (pauseZay) return;
+     }
+
 	 // Play extra note
 	 if (Math.random() < 0.2) {
 		 playSoloNote(beat - subBeatEvery * 4);
@@ -400,18 +412,20 @@ function playSolo(beat) {
 }
 
 function playSoloNote(beat) {
-<<<<<<< HEAD
- if (Math.random() < scaleProb[zayNote % currentNotes.length] * 2 + .5) {
+//  if (Math.random() < scaleProb[zayNote % currentNotes.length] * 2 + .5) {
 	 var octaveup = 0;
-	 console.log(zayNote)
 	 if (zayNote >= currentNotes.length) octaveup = 12;
-    playSound(melodyObject, currentNotes[zayNote % currentNotes.length] + key + octaveup + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
-=======
- if ((zayNote == 0 || zayNote == 12) && Math.random() < 0.5) return;
- if (Math.random() < scaleProb[zayNote] * 2 + .4) {
-    playSound(soloObject, currentNotes[zayNote] + key + 12 + 12 * melodyOctave, melodyVol, time + beat * 2 * subBeatEvery);
->>>>>>> ba91fa6c574c2f8c53b7310c87271e99d74b4bfb
- }
+    playSound(soloObject, currentNotes[zayNote % currentNotes.length] + key + octaveup + 12 * melodyOctave, soloVol, time + beat * 2 * subBeatEvery);
+
+    // Play a chord
+    if (Math.random() < 0.1 && (zayNote == 1 || zayNote == 13)) {
+        playSound(soloObject, currentNotes[(zayNote + 2) % currentNotes.length] + key + octaveup + 12 * melodyOctave, soloVol, time + beat * 2 * subBeatEvery);
+    }
+    // have a chance of pausing
+    if (Math.random() < 0.7 && (zayNote == currentNotes.length || zayNote == 1 || Math.random() < 0.2)) {
+        pauseZay = true;
+    }
+//  }
 if (Math.random() < 0.2) {
  zayMomentum = zayMomentum * -1;
 }
@@ -432,8 +446,14 @@ if (Math.random() < 0.2) {
 zayNote += zayMomentum;
 if (zayNote >= currentNotes.length * 2) {
 	zayNote = currentNotes.length * 2 - 1;
+    if (Math.random() < 0.5) {
+        zayNote = currentNotes.length;
+    }
 } else if (zayNote < 1) {
 	zayNote = 1;
+    if (Math.random() < 0.5) {
+        zayNote = currentNotes.length;
+    }
 }
 }
 

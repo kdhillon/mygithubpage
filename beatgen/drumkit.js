@@ -300,7 +300,7 @@ function mutateHat(hat, canChangeSituation) {
 		if ((i % (hatTime * 2) != 0 && ((isLondonMode() && i % 2 == 0 && Math.random() < 0.3) || (Math.random() < 0.3 / hatTime)))) {
 			invert(ret, i);
 			
-			if (Math.random() < 0.1 && hatTime == 1) ret[i] = 5;
+			if (Math.random() < 0.02 && hatTime == 1) ret[i] = 5;
 		}
 		if (i % (hatTime * 2) == 0) {
 			if (ret[i] == 2 || ret[i] == 3) {
@@ -310,7 +310,7 @@ function mutateHat(hat, canChangeSituation) {
 			else if (ret[i] == 0)
 				invert(ret, i); 
 
-			if (Math.random() < 0.1 && hatTime == 1) ret[i] = 5;
+			if (Math.random() < 0.05 && hatTime == 1) ret[i] = 5;
 		}
 		
 		// this prevents triplets from sounding weird with a beat right after?
