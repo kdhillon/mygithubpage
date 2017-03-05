@@ -102,12 +102,13 @@ function onTouch() {
 function setSeed() {
 	var element = document.getElementById("seedinput");
 	if (element.value == null || element.value == "") {
-		seed = Math.floor(Math.random() * 10000); 
-		element.value = "Song " + seed;
+		seed = "Song " + Math.floor(Math.random() * 10000); 
+		element.value = seed;
 		// must be made into a string.
 		seed = seed + "";
 	}
-	else if (seed == null || seed == "") {
+	else {
+		console.log("seed already set to: " + element.value)
 		seed = element.value;
 		seed = seed.toLowerCase();
 	}
