@@ -2,7 +2,6 @@ var bassObject;
 //var bassObject2 = new sample(getFileName("bass", 0));
 
 // BASS IS C
-
 var semitoneOffset = 100;
 var bassVol = -0.2;
 
@@ -122,7 +121,7 @@ function mutateBass(bass, kick) {
         if (newBass[i] != 0) totalBass++;
     }
 
-    if (trapStyle && Math.random() < 0.2) {
+    if (trapStyle && Math.random() < 1) {
         newBass = [0, 0, 0, 0, 0, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
         newBass[0] = 0;
