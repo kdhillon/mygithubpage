@@ -31,16 +31,7 @@ var kickProbs = []
 var measures = 1; // actuall should be called measures?
 
 // var currentKitPart;
-var currentHat;
-var hatObject;
-var hatObject2;
-var openHat;
-var kickObject;
-var snareObject;
-var clapObject;
 
-var accentObject;
-var heyObject;
 
 // static
 function initKit() {
@@ -52,17 +43,11 @@ function initKit() {
 	shouldPlayClap = Math.random() < 0.0;
 	console.log("should play clap: " + shouldPlayClap)
 
-	hatObject = new sample(getFileName("hat", 3));
-	hatObject2 = new sample(getFileName("hat", 3));
-	openHat = new sample(getFileName("open hat", 1));
- 	kickObject = new sample(getFileName("kick", 1));
- 	snareObject = new sample(getFileName("snare", 4));
-	clapObject = new sample(getFileName("clap", 1));
+// TODO change to "sample" or "channel"
+	hatObject = SoundType.HAT_1;
+	hatObject2 = SoundType.HAT_2;	
 
 	currentHat = hatObject;
-
-	accentObject = new sample(getFileName("accent", 1));
-	heyObject = new sample(getFileName("hey", 1));
 }
 
 // this will be owned by BeatPart
@@ -75,8 +60,7 @@ function KitPart(fresh) {
 }
 
 function playHey(beat) {
-	// console.log("playing hey " + beat);
-	playSound(heyObject, 1 + originalKey, 0, time + beat * subBeatEvery);
+	scheduleSound(SoundType.HEY, 1 + originalKey, 0, time + beat * subBeatEvery);
 }
 
 // schedule this beat part to be played for x measures
@@ -85,12 +69,10 @@ function scheduleKitPart(kitPart, muteKick, muteHat, muteSnare, playAccent, forc
 		playAcct(0);
 	}
 	
-	// console.log(kitPart._hat);
 	for (var i = 0; i < measures; i++) {
-		
 		if (playHeyThisSong && !muteSnare) {
 			for (var j = 0; j < kickRes; j++) {
-				if (j % 8 == 2) {
+				if (j % 4 == 2) {
 					playHey(j * 2 + i * 32);
 				}
 			}
@@ -374,70 +356,27 @@ function invert(array, index) {
 	}
 }
 
-//
-// function playBeat(beat) {
-// 	if (beat % 2 == 0) {
-// 		playSnare(beat / 2);
-// 	}
-// 	if (beat % 2 == 0) {
-// 		playKick(beat / 2);
-// 		// playBass(beat / 2);
-// 	}
-//
-// 	playHat(beat);
-// }
-
 // schedule instruments to be played on the given beat
 function playSnare(beat) {
-	// console.log("queueing snare: " + (time + beat * subBeatEvery));
-	playSound(snareObject, 1, snareVol, time + beat * subBeatEvery);
+	scheduleSound(SoundType.SNARE, 1, snareVol, time + beat * subBeatEvery);
 }
 
 function playClap(beat) {
-	// console.log("queueing snare: " + (time + beat * subBeatEvery));
-	playSound(clapObject, 1, clapVol, time + beat * subBeatEvery);
+	scheduleSound(SoundType.CLAP, 1, clapVol, time + beat * subBeatEvery);
 }
 
 function playKick(beat) {
-	playSound(kickObject, 1, kickVol, time + beat * subBeatEvery);
+	scheduleSound(SoundType.KICK, 1, kickVol, time + beat * subBeatEvery);
 }
 
 function playOpenHat(beat) {
-	playSound(openHat, 1, hatVol, time + beat * subBeatEvery);
+	scheduleSound(SoundType.HAT_OPEN, 1, hatVol, time + beat * subBeatEvery);
 }
 
 function playHat(beat) {
-		// console.log("queueing hat: " + (time + beat * subBeatEvery));
-	playSound(currentHat, 1, hatVol, time + beat * subBeatEvery);
-		
-		// // play the next two notes in triplet
-		// if (currentKitPart._hat[beat % 32] == 2) {
-		// 	playSound(hatObject, 1, hatVol, time + (beat + 2.66) * subBeatEvery);			
-		// 	playSound(hatObject, 1, hatVol, time + (beat + 5.33) * subBeatEvery);			
-		// }
-		// // play next two notes in triplet
-		// if (currentKitPart._hat[beat % 32] == 3) {
-		// 	playSound(hatObject, 1, hatVol, time + (beat + 1.33) * subBeatEvery);			
-		// 	playSound(hatObject, 1, hatVol, time + (beat + 2.66) * subBeatEvery);			
-		// }
+	scheduleSound(currentHat, 1, hatVol, time + beat * subBeatEvery);
 }
 
 function playAcct(beat) {
-	playSound(accentObject, 1 + key - 12, accentVol, time + beat * subBeatEvery);
+	scheduleSound(SoundType.ACCENT, 1 + key - 12, accentVol, time + beat * subBeatEvery);
 }
-
-// will mute if not already muted
-// function tryToMute(array) {
-// 	if (array == currentKitPart._kick) {
-// 		if (muteSnare && muteHat) return;
-// 		muteKick = true;
-// 	}
-// 	else if (array == currentKitPart._snare) {
-// 		if (muteKick && muteHat) return;
-// 		muteSnare = true;
-// 	}
-// 	else if (array == currentKitPart._hat) {
-// 		if (muteSnare && muteKick) return;
-// 		muteHat = true;
-// 	}
-// }

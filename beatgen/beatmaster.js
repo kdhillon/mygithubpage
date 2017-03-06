@@ -11,9 +11,6 @@ var shuffleMode = false;
 var stepCounter = 32;
 var measureCounter;
 
-var context;
-var offlineContext;
-
 var startTime;
 var time;
 
@@ -23,21 +20,16 @@ var length32seconds;
 
 var measuresToLoad = 32;
 
-try {
-    // Fix up for prefixing
-    window.AudioContext = window.AudioContext||window.webkitAudioContext;
-    context = new AudioContext();
-  }
-  catch(e) {
-    alert('Web Audio API is not supported in this browser');
-}
-  
-
 window.addEventListener ? 
 window.addEventListener("load",onLoad,false) : 
 window.attachEvent && window.attachEvent("onload",onLoad);
 
-var isUnlocked = false;
+// var isUnlocked = false;
+
+// We set the seed on load so the field is prepopulated
+function onLoad() {
+	setSeed();
+}
 
 function querySt(ji) {
     hu = window.location.search.substring(1);
@@ -52,12 +44,26 @@ function querySt(ji) {
 }
 
 var seed;
-function onTouch() {
-	if (isUnlocked) {
-		console.log("Already unlocked");
-		return;
+function setSeed() {
+	var element = document.getElementById("seedinput");
+	if (element.value == null || element.value == "") {
+		seed = "Song " + Math.floor(Math.random() * 10000); 
+		element.value = seed;
+		// must be made into a string.
+		seed = seed + "";
 	}
+	else {
+		console.log("seed already set to: " + element.value)
+		seed = element.value;
+		seed = seed.toLowerCase();
+	}
+		
+	console.log("Seed: " + seed);
+	Math.seedrandom(seed);
+}
 
+// When user clicks start button
+function startPressed() {
 	if (document.getElementById('shuffle').checked) {
 		shuffleMode = true;
 	}
@@ -96,142 +102,54 @@ function onTouch() {
 	initBass();
 	initPiano();
 	initBeatPart();
-}
 
-function setSeed() {
-	var element = document.getElementById("seedinput");
-	if (element.value == null || element.value == "") {
-		seed = "Song " + Math.floor(Math.random() * 10000); 
-		element.value = seed;
-		// must be made into a string.
-		seed = seed + "";
-	}
-	else {
-		console.log("seed already set to: " + element.value)
-		seed = element.value;
-		seed = seed.toLowerCase();
-	}
-		
-	console.log("Seed: " + seed);
-	Math.seedrandom(seed);
+	// When all sounds are loaded, calls initSong();
+	loadAllSounds();
 }
 
 function initSong() {
+	console.log("initializing song()")
 	song = new Song();
-
-	// create empty buffer and play it
-	var buffer = context.createBuffer(1, 1, 22050);
-	var source = offlineContext.createBufferSource();
-	source.buffer = buffer;
-	source.connect(offlineContext.destination);
-	source.start ? source.start(0) : source.noteOn(0);	
-	
-	// by checking the play state after some time, we know if we're really unlocked
-	setTimeout(function() {
-		if((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
-			unlock();
-			document.getElementById("start").textContent = "Loading..."
-		}
-	}, 0);
-}
-
-function buffersLoaded() {
-	if (melodyObject == null || melodyObject.buffer == null) {
-		// console.log("melody null")
-		return false;
-	}
-	if (harmonyObject == null || harmonyObject.buffer == null) {
-		// console.log("harmony null")
-		return false;
-	}
-	if (bassObject == null || bassObject.buffer == null) {
-		// console.log("bass null")
-		return false;
-	}
-	if (hatObject == null || hatObject.buffer == null) {
-		console.log("hat null")
-		return false;
-	}
-	if (kickObject == null || kickObject.buffer == null) {
-		console.log("kick null")
-		return false;
-	}
-	if (snareObject == null || snareObject.buffer == null) {
-		console.log("snare null")
-		return false;
-	}
-	return true;
-}
-
-function unlock() {
-	isUnlocked = true;
 	startTime = context.currentTime;
 	time = startTime;
 	
-	setTimeout(updateMeasure, 0);
-		// document.getElementById("text").innerText = "&nbsp;";
-	// document.getElementById("img").src = "img/1.jpg";
-}
-
-function onLoad() {
-	setSeed();
-
-	// document.getElementById("b1").addEventListener('click', unlock);
-	// document.getElementById("text").addEventListener('click', onTouch);
-	// document.getElementById("img").addEventListener('click', onTouch);
-}
-
-
-
-// have 2 modes, real time and high quality.
-// todo: render each section separately and then play them at the right time
-// var currentMeasureLoaded = 16;
-var source2;
-function updateMeasure() {
-	if (measureCounter == measuresToLoad) {
-			offlineContext.startRendering().then(function(renderedBuffer) {
-				console.log('Rendering completed successfully');
-				document.getElementById("start").textContent = "Playing!"				
-				source2 = context.createBufferSource();
-				source2.buffer = renderedBuffer;
-				source2.connect(context.destination);
-				if (!shuffleMode) source2.loop = true;
-				source2.start(0);
-			})
-
-			// also schedule the next song to be played if in shuffle mode
-			if (shuffleMode) {
-				// estimate of time it takes to render the next track
-				var bufferToRender = (measuresToLoad * 100);
-				breakBetween = 1000;
-				setTimeout(restartWithNewSong, measureEvery * 1000 * (measuresToLoad * 2) + breakBetween)
-			}
-	
-			return;
+	for (measure = 0; measure < measuresToLoad; measure++) {
+		updateMeasure(measure);
 	}
 
-	// if (measureCounter > currentMeasureLoaded) {
-	// 	setTimeout(updateMeasure, 1000 * measuresToLoad * measureEvery * 2 - 8000);
-	// 	currentMeasureLoaded += measuresToLoad;
-	// 	return;
-	// }
-	time = startTime + measureCounter * measureEvery * 2;
+	startPlaying();
+}
 
-	// if (measureCounter > 0) nextPart();	
+function updateMeasure(measureCounter) {
+	time = startTime + measureCounter * measureEvery * 2;
 	console.log("measure: " + measureCounter);
 	song.playMeasure(measureCounter);
-
-	// setTimeout(updateMeasure, 60/144 * 8  * 1000 - margin);
-	setTimeout(updateMeasure, 1);
 
 	measureCounter += 1;
 }
 
+function startPlaying() {
+	playSong();
+
+	// also schedule the next song to be played if in shuffle mode
+	if (shuffleMode) {
+		// estimate of time it takes to render the next track
+		var bufferToRender = (measuresToLoad * 100);
+		breakBetween = 1000;
+		setTimeout(restartWithNewSong, measureEvery * 1000 * (measuresToLoad * 2) + breakBetween)
+	}
+
+	return;
+}
+
 function restartWithNewSong() {
+	masterList = []
+	context.close()
     context = new AudioContext();
 	offlineContext = new OfflineAudioContext(2,44100*length32seconds,44100);
+	// offlineContext.close();
 
-	isUnlocked = false;
+	// isUnlocked = false;
 	document.getElementById("seedinput").value = null;
-	onTouch();
+	startPressed();
 }

@@ -1,4 +1,3 @@
-var bassObject;
 //var bassObject2 = new sample(getFileName("bass", 0));
 
 // BASS IS C
@@ -17,7 +16,6 @@ var key;
 var minor;
 
 function initBass() {
-    bassObject  = new sample(getFileName("bass", 2));
     key = Math.floor(Math.random() * 12 - 4);
 	minor = true;
     // key = 0;
@@ -146,8 +144,7 @@ function playBass(bass, beat) {
     var index = beat;
     var note = bass[index % kickRes];
     if (note != 0) {
-        stopSound(bassObject, time + beat * 2 * subBeatEvery - 0.001);
-        playSound(bassObject, note + key + 12 * octave, bassVol, time + beat * 2 * subBeatEvery);
-        // playSound(bassObject2, note + 12, bassVol, time + beat * subBeatEvery);
+        scheduleStop(SoundType.BASS, time + beat * 2 * subBeatEvery - 0.001);
+        scheduleSound(SoundType.BASS, note + key + 12 * octave, bassVol, time + beat * 2 * subBeatEvery);
     }
 }
