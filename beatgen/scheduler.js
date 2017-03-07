@@ -26,6 +26,7 @@ function scheduleStop(sampleType, time) {
 }
 
 function scheduleSound(sampleType, semitones, gain, time) {
+    if (sampleType == null) throw "Bad sampletype"
    masterList.push([sampleType, semitones, gain, time]);
 }
 

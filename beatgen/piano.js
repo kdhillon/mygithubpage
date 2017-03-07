@@ -10,6 +10,9 @@ var majorScale = [1, 3, 5, 6, 8, 10, 12, 13];
 var minorScale = [1, 3, 4, 6, 8, 9, 11, 13];
 var scaleProb = [0.3, 0.05, 0.15, 0.05, 0.15, 0.05, 0.05, 0.2];
 
+var blues = [1, 4, 6, 7, 8, 11, 13];
+var minorJazz = [1, 3, 4, 6, 8, 10, 12, 13];
+
 var pentatonic = [1, 3, 5, 8, 10, 13];
 var pentatonicProb = [0.2, 0.15, 0.15, 0.15, 0.15, 0.2]
 
@@ -21,8 +24,9 @@ var majorChord = [1, 5, 8, 13];
 var minorChord = [1, 4, 8, 13];
 var chordProb = [0.25, 0.25, 0.25, 0.25];
 
-var currentNotes = pentatonic;
-var currentProb = pentatonicProb;
+var currentNotes = majorScale;
+var currentProb = scaleProb;
+var currentSolo;
 
 // Current solo note (start halfway up the scale)
 var zayNote = currentNotes.length
@@ -118,9 +122,11 @@ function initPiano() {
 	
 	if (minor) {
         currentNotes = minorScale;
+        currentSolo = blues;
     } 
     else {
         currentNotes = majorScale;
+        currentSolo = blues;
     }
 	zayNote = currentNotes.length;
 
@@ -359,7 +365,7 @@ function scheduleMelody(melody) {
 				playMelody(melody, j + i * melody.length);
 			}
 			
-			playSolo(j + i * melody.length);
+			playSolo(j + i * melody.length, melody);
 		}
     }
 }
@@ -384,7 +390,8 @@ function scheduleHarmony(harmony) {
 //     }
 // }
 
-function playSolo(beat) {
+// pass the melody so we don't collide with any notes
+function playSolo(beat, melody) {
  if (isZayMode()) {
 
      if (pauseZay) {
@@ -401,26 +408,33 @@ function playSolo(beat) {
 
 	 // Play extra note
 	 if (Math.random() < 0.2) {
-		 playSoloNote(beat - subBeatEvery * 4);
+		 playSoloNote(beat - subBeatEvery * 4, melody);
  	 } else if (Math.random() < 0.2) {
 		 // playSoloNote(beat - subBeatEvery * 2); 
  	 }
-	playSoloNote(beat);
+	playSoloNote(beat, melody);
  }
 }
 
-function playSoloNote(beat) {
+function playSoloNote(beat, melody) {
 //  if (Math.random() < scaleProb[zayNote % currentNotes.length] * 2 + .5) {
 	 var octaveup = 0;
-	 if (zayNote >= currentNotes.length) octaveup = 12;
-    scheduleSound(SoundType.SOLO, currentNotes[zayNote % currentNotes.length] + key + octaveup + 12 * melodyOctave, soloVol, time + beat * 2 * subBeatEvery);
-
+	 if (zayNote >= currentSolo.length) octaveup = 12;
+     var noteToPlay = currentSolo[zayNote % currentSolo.length]
+    // Don't play solo note if it's adjacent to melody note.
+    if (Math.abs(melody[beat] - noteToPlay != 1)) 
+        scheduleSound(SoundType.SOLO, noteToPlay + key + octaveup + 12 * melodyOctave, soloVol, time + beat * 2 * subBeatEvery);
+    else {
+        console.log("skipping adjacent solo note: " + noteToPlay + " (" + melody[beat] + ")")
+    }
     // Play a chord
-    if (Math.random() < 0.1 && (zayNote == 1 || zayNote == 13)) {
-        scheduleSound(SoundType.SOLO, currentNotes[(zayNote + 2) % currentNotes.length] + key + octaveup + 12 * melodyOctave, soloVol, time + beat * 2 * subBeatEvery);
+    if (Math.random() < 0.1 && (zayNote == 1 || zayNote == currentSolo.length - 1)) {
+        var secondNoteToPlay = currentSolo[(zayNote + 2) % currentSolo.length] 
+        if (Math.abs(melody[beat] - secondNoteToPlay != 1)) 
+            scheduleSound(SoundType.SOLO, currentSolo[(zayNote + 2) % currentSolo.length] + key + octaveup + 12 * melodyOctave, soloVol, time + beat * 2 * subBeatEvery);
     }
     // have a chance of pausing
-    if (Math.random() < 0.7 && (zayNote == currentNotes.length || zayNote == 1 || Math.random() < 0.2)) {
+    if (Math.random() < 0.7 && (zayNote == currentSolo.length || zayNote == 1 || Math.random() < 0.2)) {
         pauseZay = true;
     }
 //  }
@@ -442,15 +456,15 @@ if (Math.random() < 0.2) {
  
  // Drunken walk the solo
 zayNote += zayMomentum;
-if (zayNote >= currentNotes.length * 2) {
-	zayNote = currentNotes.length * 2 - 1;
+if (zayNote >= currentSolo.length * 2) {
+	zayNote = currentSolo.length * 2 - 1;
     if (Math.random() < 0.5) {
-        zayNote = currentNotes.length;
+        zayNote = currentSolo.length;
     }
 } else if (zayNote < 1) {
 	zayNote = 1;
     if (Math.random() < 0.5) {
-        zayNote = currentNotes.length;
+        zayNote = currentSolo.length;
     }
 }
 }
