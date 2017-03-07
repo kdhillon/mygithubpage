@@ -122,11 +122,15 @@ function initPiano() {
 	
 	if (minor) {
         currentNotes = minorScale;
-        currentSolo = blues;
+        currentSolo = minorScale;
     } 
     else {
         currentNotes = majorScale;
+        currentSolo = majorScale;
+    }
+    if (Math.random() < 0.3) {
         currentSolo = blues;
+        console.log("blues solo ;)")
     }
 	zayNote = currentNotes.length;
 
