@@ -55,7 +55,6 @@ function setSeed() {
 	else {
 		console.log("seed already set to: " + element.value)
 		seed = element.value;
-		seed = seed.toLowerCase();
 	}
 		
 	console.log("Seed: " + seed);
