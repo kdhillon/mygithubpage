@@ -15,47 +15,98 @@
 
   <head>
     <style>
-      @font-face {
-        font-family:myFirstFont;
-        src: url(BEBAS.TTF);
+      body { 
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center; 
+        font-family: bebas;
+        color:white !important;
+      }
+      input {
+        font-family: bebas;  
+        color: white;
+        text-decoration: underline;
+        background-color : transparent;    
+        border-style: none;
+        font-size: 17px;
       }
 
+    button {
+        font-family: bebas;     
+       width: auto;
+        height:40px;   
+        font-size:20px;
+        margin-left:8px;
+        background-color:dimgray;
+          border-style: none;
+      color:white;
+        margin-top:2px;
+      }
+      div.title {
+        width:1000px;
+         font-size: 400%;
+         margin-left: 10px;
+         margin-bottom:10px;
+      }
       #b1 {
         margin-left: -5;
       }
+      div.top {
+      width: auto;
+      height: 180;
+      background-color: rgba(0, 0, 0, 0.15);
+      position: absolute;
+      float: left;
+      top:0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: block;
+    }
+    div.name {
+      float:left;
+     margin-left: 10px;
+    }
+    div.checkboxes {
+      float:left;
+    }
+    
 
 </style>
 </head>
 
 <body bgcolor="white">
- 
-<br>  <font id="seedtext"> Name:<br> </font>
-  <input id="seedinput" type="text" name="seed">
+    <div class="top">
+  <div class="title">Firebot</div>
 
+  <div class="name"> <font id="seedtext" size=4px> NAME:&nbsp</font>
+  <input id="seedinput" size=10px type="text" name="seed">
 <br>
+  <button id="start" type="button" onclick="startPressed()">Generate</button>
+ </div>
 
-  <button id="start" type="button" onclick="startPressed()">Start</button>
-  <label><input type="checkbox" id="shuffle">Shuffle</label><br>
-  
+<div class="checkboxes">
+ <label><input type="checkbox" id="shuffle">Shuffle</label><br>
   <label><input type="checkbox" id="luger">Luger Mode</label><br>
-<label><input type="checkbox" id="london">London Mode</label><br>
+<label><input type="checkbox" id="london">London Mode</label>
+</div>
+<div class="checkboxes">
 <label><input type="checkbox" id="zay">Zay Mode</label><br>
 <label><input type="checkbox" id="mustard">Mustard Mode</label><br>
-<label><input type="checkbox" id="chillhop">Chillhop Mode</label><br>
-
+<label><input type="checkbox" id="chillhop">Chillhop Mode</label>
+</div>
   <script>
 var seed = querySt("seed");
 if (seed != null && seed != "")
   document.getElementById("seedinput").value = seed;
+
+image = Math.floor(5 * Math.random() + 1)
+image_file = "url('img/" + image + ".jpg')"
+document.body.style.backgroundImage = image_file;
+console.log(image_file)
 </script>
-    <div id="container">
-      <div id="content">
-        
-      
-    <div class="candle">
-      
-    </div>
-    </div>
+  </div>
   </div>
   </body>
 </html>
