@@ -51,6 +51,10 @@ var melodyChordLevel = 0;
 
 var pauseZay = false;
 
+function isMuteMelody() {
+	return document.getElementById('mute_melody') != null ? document.getElementById('mute_melody').checked : false;
+}
+
 function initPiano() {
     // harmonyChordLevel = Math.floor(Math.random() * 4);
     console.log("HarmonyChordLevel: " + harmonyChordLevel)
@@ -474,6 +478,9 @@ if (zayNote >= currentSolo.length * 2) {
 }
 
 function playMelody(melody, beat) {
+	if (isMuteMelody()) {
+		return;
+	}
     var note = melody[beat % melody.length];
     if (note != 0) {
         if (cutOffPiano) {
@@ -515,7 +522,9 @@ function getThirdOf(note) {
 }
 
 function playHarmony(harmony, beat) {
-
+	if (isMuteMelody()) {
+		return;
+	}
     // return;
 
     var note = harmony[beat % harmony.length];
