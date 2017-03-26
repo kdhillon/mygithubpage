@@ -37,7 +37,7 @@ function isMustardMode() {
 	return document.getElementById('mustard').checked;
 }
 function isLondonMode() {
-	return document.getElementById('london').checked;
+	return document.getElementById('chords') != null ? document.getElementById('london').checked : false;
 }
 function isZayMode() {
 	return document.getElementById('zay').checked;
