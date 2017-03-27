@@ -7,6 +7,7 @@ SoundType = {
     HAT_2 : "hat2",
     HAT_OPEN : "openhat",
     SNARE: "snare",
+    SNARE_2: "snare",
     KICK: "kick",
     CLAP: "clap",
     HEY: "hey",

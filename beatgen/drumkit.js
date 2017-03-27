@@ -30,9 +30,6 @@ var kickProbs = []
 
 var measures = 1; // actuall should be called measures?
 
-// var currentKitPart;
-
-
 // static
 function initKit() {
 	triplets = Math.random() < 0.8;
@@ -56,6 +53,7 @@ function KitPart(fresh) {
 		this._kick = genKick();
 		this._snare = genSnare();
 		this._hat = genHat();
+		this._roll = genRoll();
 	}
 }
 
@@ -141,6 +139,11 @@ function scheduleKitPart(kitPart, muteKick, muteHat, muteSnare, playAccent, forc
 			if (kitPart._snare[j] == 1) {
 				playSnare(j * 2 + i * 32);
 			}
+			var shouldPlayRoll = false;
+			if (shouldPlayRoll) {
+				console.log("playing roll")
+				playRoll(j * 2 + i * 32);
+			}
 		}
 		}
 	}
@@ -216,6 +219,12 @@ function genSnare() {
 	muteSnare = true;
 	
 	return snare;
+}
+
+function genRoll() {
+	// 1 is 2 beats, 2 is 3 beats (not triplet), 3 is triplet, 4 is 
+	var roll = [1, 0, 1, 0, 1, 0, 1, 0]
+	
 }
 
 function genKick() {
@@ -359,6 +368,19 @@ function invert(array, index) {
 // schedule instruments to be played on the given beat
 function playSnare(beat) {
 	scheduleSound(SoundType.SNARE, 1, snareVol, time + beat * subBeatEvery);
+}
+
+function playRoll(beat) {
+	beat = beat % 32;
+	// Determine note based on beat:
+	// 0 - 3 is 3
+	// 4 - 7 is 2 
+	// 8 - 11 is 1
+	// 12 - 15 is 0
+	var note = 3 - Math.floor(beat / 8);
+	console.log(note);
+	
+	scheduleSound(SoundType.SNARE_2, key + currentNotes[note], snareVol, time + beat * subBeatEvery);
 }
 
 function playClap(beat) {

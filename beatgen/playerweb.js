@@ -9,7 +9,7 @@ var STOP_GAIN = -99;
 
 var reader = new FileReader();
 
-var offlineMode = false;
+var offlineMode = true;
 
 var loaded = true;
 
@@ -28,6 +28,10 @@ try {
 function sample(url) {
     this.source = url;
     loadAudio(this, url);
+	if (this == null || this.buffer == null) {
+		console.log(url + " can't be loaded");
+	    loadAudio(this, url);
+	}
 }
 
 function loadAllSounds() {
@@ -37,6 +41,7 @@ function loadAllSounds() {
     objectMap.set(SoundType.HAT_2, getObjectForFolder("hat", 3));
     objectMap.set(SoundType.HAT_OPEN, getObjectForFolder("open hat", 1));
     objectMap.set(SoundType.SNARE, getObjectForFolder("snare", 4));
+    objectMap.set(SoundType.SNARE_2, getObjectForFolder("snare", 1));
     objectMap.set(SoundType.KICK, getObjectForFolder("kick", 1));
     objectMap.set(SoundType.CLAP, getObjectForFolder("clap", 1));
     objectMap.set(SoundType.HEY, getObjectForFolder("hey", 1));
@@ -84,7 +89,7 @@ function playMasterList(masterList) {
 
         var object = objectMap.get(sampleType);
 
-        if (object == null || object.buffer == null) console.log(sampletype + "  is null")
+        if (object == null || object.buffer == null) console.log(sampleType + "  is null")
 
         if (gain == STOP_GAIN) {
             stopSound(object, time);
