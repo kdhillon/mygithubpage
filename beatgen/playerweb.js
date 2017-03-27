@@ -9,7 +9,7 @@ var STOP_GAIN = -99;
 
 var reader = new FileReader();
 
-var offlineMode = true;
+var offlineMode = false;
 
 var loaded = true;
 
