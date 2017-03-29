@@ -13,6 +13,8 @@ var offlineMode = false;
 
 var loaded = true;
 
+var soundsToLoad = 0;
+
 // Maps one object to each channel
 var objectMap = new Map();
 
@@ -26,12 +28,9 @@ try {
 }
 
 function sample(url) {
+	console.log("sample being made")
     this.source = url;
     loadAudio(this, url);
-	if (this == null || this.buffer == null) {
-		console.log(url + " can't be loaded");
-	    loadAudio(this, url);
-	}
 }
 
 function loadAllSounds() {
@@ -72,10 +71,13 @@ function loadAudio(object, url) {
             object.buffer = buffer;
             object.gainNode = offlineContext.createGain();
             // TODO do a check here to make sure everything in objectMap has a buffer
-                console.log("sound loaded");
+		    soundsToLoad--;
+            console.log("sound loaded. " + soundsToLoad + " left");
         });
     }
     request.send();
+	soundsToLoad++;
+	console.log("sounds to load: " + soundsToLoad)
 }
 
 function playMasterList(masterList) {
@@ -100,6 +102,8 @@ function playMasterList(masterList) {
 
 	offlineContext.startRendering().then(function (renderedBuffer) {
 		console.log('Rendering completed successfully');
+		var object = objectMap.get(SoundType.BASS)
+
 		document.getElementById("start").textContent = "Playing!"
     	var source = context.createBufferSource();
 		source.buffer = renderedBuffer;
@@ -160,6 +164,6 @@ function getFileName(prefix, count) {
     
     console.log(prefix + ": " + random);
     if (offlineMode) 
-	    return "http://127.0.0.1:8887/" + prefix + "/" + random + ".WAV";
+	    return "http://127.0.0.1:8886/" + prefix + "/" + random + ".WAV";
 	return "http://kyledhillon.com/beatgen/server/" + prefix + "/" + random + ".WAV";
 }

@@ -53,6 +53,7 @@ function isChillhopMode() {
 function Song() {
 	// this.introLength = 0;
 	originalKey = key;
+	
 
 	// this.adjustedKey = (key + 10);
 	this.adjustedKey = (key + 2);
@@ -67,9 +68,11 @@ function Song() {
 	// make sure intro length is multiple of 4 if change key is true
 	if (Math.random() < 0.5 || this.changeKey == true) 
 		this.introLength = 4;
-	else if (Math.random() < 0.5) this.introLength = 2;
+	else if (Math.random() < 0.5) this.length = 2;
 	else if (Math.random() < 0.5) this.introLength = 1;
 	else this.introLength = 0;
+	
+	this.introLength = 0;
 
 	console.log("intro length: " + this.introLength)
 
@@ -83,10 +86,10 @@ function Song() {
 	this.tempMelody;
 	this.tempHarmony;
 
-	playAccentThisSong = Math.random() < 0.3;
-	console.log("play accent: " + playAccentThisSong)	
-
 	playAccentThisSong = Math.random() < 0.2;
+	playAccentThisSong = true;
+	console.log("play accent: " + playAccentThisSong)	
+	
 	if (isMustardMode()) {
 		playHeyThisSong = true;
 	}
@@ -228,7 +231,7 @@ function Song() {
 			if (base % 2 == 0) {
 				var playAccent = false;
 				if (base % 8 == 0 && playAccentThisSong) {
-					// console.log("playing accent: " + base)
+					console.log("playing accent: " + measure)
 					playAccent = true;
 				}
 				currentSection.schedule(true, muteKit, muteMelody, muteBass, muteHarmony, playAccent, forceHiRes);
