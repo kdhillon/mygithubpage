@@ -139,6 +139,7 @@ function playSoundHere(object, semitones, gain, time) {
     }
 	if (object == objectMap.get(SoundType.ACCENT)) {
 		object.s.playbackRate.value = tempo / 130
+		object.s.detune.value = 0;
 		console.log("playback rate: " + object.s.playbackRate.value)
 	}
 	
