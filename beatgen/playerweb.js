@@ -28,7 +28,6 @@ try {
 }
 
 function sample(url) {
-	console.log("sample being made")
     this.source = url;
     loadAudio(this, url);
 }
@@ -52,8 +51,6 @@ function loadAllSounds() {
     objectMap.set(SoundType.SYNTH, getObjectForFolder("long synth", 3));
 
     console.log("waiting on sounds to load");
-
-    setTimeout(initSong, 500);
 }
 
 function getObjectForFolder(folder, total) {
@@ -73,6 +70,10 @@ function loadAudio(object, url) {
             // TODO do a check here to make sure everything in objectMap has a buffer
 		    soundsToLoad--;
             console.log("sound loaded. " + soundsToLoad + " left");
+			if (soundsToLoad == 0) {
+				console.log("ready to continue.")
+				initSong()
+			}
         });
     }
     request.send();
@@ -136,6 +137,11 @@ function playSoundHere(object, semitones, gain, time) {
     if (object.s.detune != null) {
         object.s.detune.value = 100 * (semitones);
     }
+	if (object == objectMap.get(SoundType.ACCENT)) {
+		object.s.playbackRate.value = tempo / 130
+		console.log("playback rate: " + object.s.playbackRate.value)
+	}
+	
     object.s.connect(offlineContext.destination);
     
     // if (gain != 0) {

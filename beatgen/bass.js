@@ -16,9 +16,7 @@ var key;
 var minor;
 
 function initBass() {
-    key = Math.floor(Math.random() * 12 - 4);
-	key = 0;
-	
+    key = Math.floor(Math.random() * 12 - 4);	
 	minor = true;
     // key = 0;
 

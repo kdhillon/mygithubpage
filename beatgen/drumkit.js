@@ -11,6 +11,7 @@ var clapVol = -0.9;
 var kickVol = 0.0;
 
 var accentVol = -0.8;
+var accentVolLoud = -0.5;
 
 var switchHatSample;
 var shouldPlayOpenHat;
@@ -400,5 +401,7 @@ function playHat(beat) {
 }
 
 function playAcct(beat) {
-	scheduleSound(SoundType.ACCENT, 1 + key - 12, accentVol, time + beat * subBeatEvery);
+	// - 12 if it's a bell
+	scheduleSound(SoundType.ACCENT, 1 + key , accentVolLoud, time + beat * subBeatEvery);
+	// scheduleSound(SoundType.ACCENT, 1 + key -12, accentVol, time + beat * subBeatEvery);
 }
