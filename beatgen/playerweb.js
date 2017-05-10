@@ -45,9 +45,9 @@ function loadAllSounds() {
     objectMap.set(SoundType.HEY, getObjectForFolder("hey", 1));
     objectMap.set(SoundType.ACCENT, getObjectForFolder("accent", 1));
 
-    objectMap.set(SoundType.MELODY, getObjectForFolder("piano", 4));
-    objectMap.set(SoundType.HARMONY, getObjectForFolder("piano", 4));
-    objectMap.set(SoundType.SOLO, getObjectForFolder("piano", 1));
+    objectMap.set(SoundType.MELODY, getObjectForFolder("piano/nexus", 12));
+    objectMap.set(SoundType.HARMONY, getObjectForFolder("piano/nexus", 12));
+    objectMap.set(SoundType.SOLO, getObjectForFolder("piano/nexus", 1));
     objectMap.set(SoundType.SYNTH, getObjectForFolder("long synth", 3));
 
     console.log("waiting on sounds to load");
