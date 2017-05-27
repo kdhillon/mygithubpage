@@ -72,8 +72,6 @@ function Song() {
 	else if (Math.random() < 0.5) this.introLength = 1;
 	else this.introLength = 0;
 	
-	this.introLength = 0;
-
 	console.log("intro length: " + this.introLength)
 
     this.aSection = new BeatPart(true);
@@ -87,7 +85,6 @@ function Song() {
 	this.tempHarmony;
 
 	playAccentThisSong = Math.random() < 0.2;
-	playAccentThisSong = true;
 	console.log("play accent: " + playAccentThisSong)	
 	
 	if (isMustardMode()) {
