@@ -45,8 +45,8 @@ function loadAllSounds() {
     objectMap.set(SoundType.HEY, getObjectForFolder("hey", 1));
     objectMap.set(SoundType.ACCENT, getObjectForFolder("accent", 1));
 
-    objectMap.set(SoundType.MELODY, getObjectForFolder("piano/nexus", 7));
-    objectMap.set(SoundType.HARMONY, getObjectForFolder("piano/nexus", 7));
+    objectMap.set(SoundType.MELODY, getObjectForFolder("piano/nexus", 8));
+    objectMap.set(SoundType.HARMONY, getObjectForFolder("piano/nexus", 8));
     objectMap.set(SoundType.SOLO, getObjectForFolder("piano/nexus", 1));
     objectMap.set(SoundType.SYNTH, getObjectForFolder("long synth", 3));
 
