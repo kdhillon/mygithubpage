@@ -172,7 +172,7 @@ function Song() {
 			if (sectionFlow[section] == 1) {
 				currentSection = this.aSection;
 			}
-			else if (sectionFlow[section] == 2) {
+			else {
 				currentSection = this.bSection;
 			}
 
