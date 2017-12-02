@@ -58,7 +58,7 @@ function BeatPart(fresh) {
 		
 		this.melodyA = generateMelody();
 		if (Math.random() < 0.2) {
-            this.melodyB = generateMelody(this.melodyA, resolution);
+            this.melodyB = mutateMelody(this.melodyA, resolution);
         }
 		else this.melodyB = this.melodyA;
 		this.harmonyA = generateHarmony(this.melodyA);

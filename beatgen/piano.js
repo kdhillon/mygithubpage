@@ -166,6 +166,8 @@ function generateMelody() {
 	return mutateMelody(melody, resolution);
 }
 
+
+
 // function generateHarmony() {
 // 	var harmony = getNewHarmony();
 // 	return melody(harmony, true);
