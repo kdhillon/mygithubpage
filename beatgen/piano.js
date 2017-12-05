@@ -54,7 +54,9 @@ var pauseZay = false;
 function isMuteMelody() {
 	return document.getElementById('mute_melody') != null ? document.getElementById('mute_melody').checked : false;
 }
-
+function isMuteHarmony() {
+	return document.getElementById('mute_harmony') != null ? document.getElementById('mute_harmony').checked : false;
+}
 function initPiano() {
     // harmonyChordLevel = Math.floor(Math.random() * 4);
     console.log("HarmonyChordLevel: " + harmonyChordLevel)
@@ -522,7 +524,7 @@ function getThirdOf(note) {
 }
 
 function playHarmony(harmony, beat) {
-	if (isMuteMelody()) {
+	if (isMuteHarmony()) {
 		return;
 	}
     // return;
