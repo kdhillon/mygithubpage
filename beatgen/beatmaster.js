@@ -18,7 +18,7 @@ var song;
 
 var length32seconds;
 
-var measuresToLoad = 32;
+var measuresToLoad = 16; // used to be 32
 
 var deathclubVol = -0.2;
 
@@ -49,7 +49,7 @@ var seed;
 function setSeed() {
 	var element = document.getElementById("seedinput");
 	if (element.value == null || element.value == "") {
-		seed = "Song " + Math.floor(Math.random() * 10000); 
+		seed = "" + Math.floor(Math.random() * 100000); 
 		element.value = seed;
 		// must be made into a string.
 		seed = seed + "";
@@ -141,7 +141,7 @@ function startPlaying() {
 		// estimate of time it takes to render the next track
 		var bufferToRender = (measuresToLoad * 100);
 		breakBetween = 1000;
-		setTimeout(restartWithNewSong, measureEvery * 1000 * (measuresToLoad * 2) + breakBetween)
+		setTimeout(restartWithNewSong, measureEvery * 1000 * (measuresToLoad * 2 + breakBetween))
 	}
 
 	return;
