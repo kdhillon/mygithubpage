@@ -9,7 +9,7 @@ var STOP_GAIN = -99;
 
 var reader = new FileReader();
 
-var offlineMode = true;
+var offlineMode = false;
 
 var loaded = true;
 
@@ -21,6 +21,7 @@ var objectMap = new Map();
 try {
     // Fix up for prefixing
     window.AudioContext = window.AudioContext||window.webkitAudioContext;
+    // supposedly this needs explicit user gesture to start.
     context = new AudioContext();
   }
   catch(e) {
@@ -32,7 +33,28 @@ function sample(url) {
     loadAudio(this, url);
 }
 
-function loadAllSounds() {
+function loadAllSoundsDeathclub() {
+    objectMap.set(SoundType.BASS, getObjectForFolder("deathclub/808", 5));
+
+    objectMap.set(SoundType.HAT_1, getObjectForFolder("deathclub/hat", 4));
+    objectMap.set(SoundType.HAT_2, getObjectForFolder("deathclub/hat", 4));
+    objectMap.set(SoundType.HAT_OPEN, getObjectForFolder("open hat", 1));
+    objectMap.set(SoundType.SNARE, getObjectForFolder("deathclub/snare", 3));
+    objectMap.set(SoundType.SNARE_2, getObjectForFolder("deathclub/perc", 1));
+    objectMap.set(SoundType.KICK, getObjectForFolder("deathclub/kick", 5));
+    objectMap.set(SoundType.CLAP, getObjectForFolder("deathclub/clap", 5));
+    objectMap.set(SoundType.HEY, getObjectForFolder("deathclub/chant", 1));
+    objectMap.set(SoundType.ACCENT, getObjectForFolder("deathclub/tag", 1));
+
+    objectMap.set(SoundType.MELODY, getObjectForFolder("deathclub/melody", 7));
+    objectMap.set(SoundType.HARMONY, getObjectForFolder("deathclub/melody", 7));
+    objectMap.set(SoundType.SOLO, getObjectForFolder("deathclub/melody", 1));
+    objectMap.set(SoundType.SYNTH, getObjectForFolder("deathclub/melody", 7));
+
+    console.log("waiting on sounds to load");
+}
+
+function loadAllSoundsOriginal() {
     objectMap.set(SoundType.BASS, getObjectForFolder("bass", 2));
 
     objectMap.set(SoundType.HAT_1, getObjectForFolder("hat", 3));
@@ -51,6 +73,10 @@ function loadAllSounds() {
     objectMap.set(SoundType.SYNTH, getObjectForFolder("long synth", 3));
 
     console.log("waiting on sounds to load");
+}
+
+function isDeathclubMode() {
+	return document.getElementById('deathclub') != null ? document.getElementById('deathclub').checked : false;
 }
 
 function getObjectForFolder(folder, total) {

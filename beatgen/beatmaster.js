@@ -20,6 +20,8 @@ var length32seconds;
 
 var measuresToLoad = 32;
 
+var deathclubVol = -0.2;
+
 window.addEventListener ? 
 window.addEventListener("load",onLoad,false) : 
 window.attachEvent && window.attachEvent("onload",onLoad);
@@ -103,7 +105,11 @@ function startPressed() {
 	initBeatPart();
 
 	// When all sounds are loaded, calls initSong();
-	loadAllSounds();
+	if (isDeathclubMode()) {
+		loadAllSoundsDeathclub();
+	} else{
+		loadAllSoundsOriginal();
+	}
 }
 
 function initSong() {
