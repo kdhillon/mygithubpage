@@ -9,7 +9,7 @@ var STOP_GAIN = -99;
 
 var reader = new FileReader();
 
-var offlineMode = false;
+var offlineMode = true;
 
 var loaded = true;
 
@@ -45,9 +45,9 @@ function loadAllSounds() {
     objectMap.set(SoundType.HEY, getObjectForFolder("hey", 1));
     objectMap.set(SoundType.ACCENT, getObjectForFolder("accent", 1));
 
-    objectMap.set(SoundType.MELODY, getObjectForFolder("piano/nexus", 8));
-    objectMap.set(SoundType.HARMONY, getObjectForFolder("piano/nexus", 8));
-    objectMap.set(SoundType.SOLO, getObjectForFolder("piano/nexus", 1));
+    objectMap.set(SoundType.MELODY, getObjectForFolder("piano/nexus2", 15));
+    objectMap.set(SoundType.HARMONY, getObjectForFolder("piano/nexus2", 15));
+    objectMap.set(SoundType.SOLO, getObjectForFolder("piano/nexus2", 1));
     objectMap.set(SoundType.SYNTH, getObjectForFolder("long synth", 3));
 
     console.log("waiting on sounds to load");
