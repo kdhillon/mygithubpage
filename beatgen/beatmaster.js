@@ -18,7 +18,7 @@ var song;
 
 var length32seconds;
 
-var measuresToLoad = 16; // used to be 32
+var measuresToLoad = 32; 
 
 var deathclubVol = -0.2;
 
